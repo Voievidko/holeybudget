@@ -14,6 +14,7 @@
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <liquibase.driver.version>3.6.1</liquibase.driver.version>
         <liquibase.plugin.version>3.6.1</liquibase.plugin.version>
+        <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
     </properties>
 
 
@@ -32,6 +33,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.driver.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.entitymanager.version}</version>
         </dependency>
     </dependencies>
 

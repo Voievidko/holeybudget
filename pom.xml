@@ -15,6 +15,7 @@
         <liquibase.driver.version>3.6.1</liquibase.driver.version>
         <liquibase.plugin.version>3.6.1</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
+        <joda-time.version>2.10</joda-time.version>
     </properties>
 
 
@@ -38,6 +39,11 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.entitymanager.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>${joda-time.version}</version>
         </dependency>
     </dependencies>
 

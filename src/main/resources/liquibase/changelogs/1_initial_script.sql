@@ -15,7 +15,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Table `yourfoundsdb`.`category`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`category` (
-  `category_id` INT NOT NULL,
+  `category_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `desciption` VARCHAR(45) NULL,
   PRIMARY KEY (`category_id`))
@@ -46,7 +46,7 @@ ENGINE = InnoDB;
 -- Table `yourfoundsdb`.`account`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`account` (
-  `account_id` INT NOT NULL,
+  `account_id` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(45) NOT NULL,
   `summary` DECIMAL(18,2) NOT NULL,
   `description` VARCHAR(300) NOT NULL,
@@ -58,7 +58,7 @@ ENGINE = InnoDB;
 -- Table `yourfoundsdb`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`user` (
-  `user_id` INT NOT NULL,
+  `user_id` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `name` VARCHAR(45) NULL,

@@ -1,20 +1,51 @@
 package entity;
 
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "user")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private int userId;
+
+    @Column(name = "email")
     private String email;
+
+    @Column(name = "password")
     private String password;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "surname")
     private String surname;
-    private Expense expense;
-    private Account account;
+
+    @OneToMany
+    @JoinTable(name = "expense")
+    @JoinColumn(name = "expense_id")
+    private List<Expense> expenses;
+
+    @OneToMany
+    @JoinTable(name = "account")
+    @JoinColumn(name = "account_id")
+    private List<Account> accounts;
+
+    public User() {
+    }
+
+    public User(String email, String password, String name, String surname) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+    }
 
     public int getUserId() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getEmail() {
@@ -49,19 +80,4 @@ public class User {
         this.surname = surname;
     }
 
-    public Expense getExpense() {
-        return expense;
-    }
-
-    public void setExpense(Expense expense) {
-        this.expense = expense;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
-    public void setAccount(Account account) {
-        this.account = account;
-    }
 }

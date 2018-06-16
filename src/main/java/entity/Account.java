@@ -1,17 +1,40 @@
 package entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "account")
 public class Account {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private int accountID;
+
+    @Column(name = "type")
     private String type;
-    private String summary;
+
+    @Column(name = "summary")
+    private double summary;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "user_id")
+    private int userId;
+
+    public Account() {
+    }
+
+    public Account(String type, double summary, String description, int userId) {
+        this.type = type;
+        this.summary = summary;
+        this.description = description;
+        this.userId = userId;
+    }
 
     public int getAccountID() {
         return accountID;
-    }
-
-    public void setAccountID(int accountID) {
-        this.accountID = accountID;
     }
 
     public String getType() {
@@ -22,11 +45,11 @@ public class Account {
         this.type = type;
     }
 
-    public String getSummary() {
+    public double getSummary() {
         return summary;
     }
 
-    public void setSummary(String summary) {
+    public void setSummary(double summary) {
         this.summary = summary;
     }
 
@@ -36,5 +59,13 @@ public class Account {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

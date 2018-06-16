@@ -9,13 +9,11 @@
     <version>1.0-SNAPSHOT</version>
     <properties>
         <java.version>10</java.version>
-
         <mysql.driver.version>8.0.11</mysql.driver.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <liquibase.driver.version>3.6.1</liquibase.driver.version>
         <liquibase.plugin.version>3.6.1</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
-        <joda-time.version>2.10</joda-time.version>
     </properties>
 
 
@@ -40,10 +38,29 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.entitymanager.version}</version>
         </dependency>
+
+        <!--For Hibernate in Java 10-->
         <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>${joda-time.version}</version>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <!--From SDK 9, for JAXB to work for web services it's needed-->
+        <!--to have the following dependencies, since they are not part of the SDK.-->
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-core</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
+            <version>1.1.1</version>
         </dependency>
     </dependencies>
 
@@ -56,6 +73,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerVersion>${java.version}</compilerVersion>
                 </configuration>
             </plugin>
             <plugin>

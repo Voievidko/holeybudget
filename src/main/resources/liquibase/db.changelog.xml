@@ -8,4 +8,10 @@
     <changeSet id="1" author="voievidko">
         <sqlFile path="src/main/resources/liquibase/changelogs/1_initial_script.sql"></sqlFile>
     </changeSet>
+    <changeSet id="2" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/2_rename_description_column.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="3" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/3_change_table_relationships.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

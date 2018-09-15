@@ -40,9 +40,7 @@ public class Main {
 
 
         Configuration configuration = new Configuration().configure();
-
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-
         Session session = sessionFactory.openSession();
 
         Transaction transaction = session.beginTransaction();
@@ -52,6 +50,7 @@ public class Main {
         session.save(account);
         transaction.commit();
 
-
+        session.close();
+        sessionFactory.close();
     }
 }

@@ -1,4 +1,4 @@
-package entity;
+package com.yourfounds.entity;
 
 import javax.persistence.*;
 import java.util.List;

@@ -1,7 +1,4 @@
-import entity.Account;
-import entity.Category;
-import entity.Expense;
-import entity.User;
+import com.yourfounds.entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

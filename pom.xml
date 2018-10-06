@@ -15,6 +15,7 @@
         <liquibase.driver.version>3.6.1</liquibase.driver.version>
         <liquibase.plugin.version>3.6.1</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
+        <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
         <spring.framework.version>5.0.9.RELEASE</spring.framework.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
     </properties>
@@ -51,6 +52,11 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.entitymanager.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
+        </dependency>
 
         <!--Spring-->
         <dependency>
@@ -75,6 +81,7 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.2.11</version>
         </dependency>
+
         <!--From SDK 9, for JAXB to work for web services it's needed-->
         <!--to have the following dependencies, since they are not part of the SDK.-->
         <dependency>

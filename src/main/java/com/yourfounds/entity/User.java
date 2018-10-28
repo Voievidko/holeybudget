@@ -1,5 +1,7 @@
 package com.yourfounds.entity;
 
+import com.yourfounds.validation.ValidEmail;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -16,7 +18,7 @@ public class User {
 
     @Column(name = "email")
     @NotNull(message = "is required")
-    @Pattern(regexp = ".+", message = "Email is required")
+    @ValidEmail
     private String email;
 
     @Column(name = "password")
@@ -25,7 +27,7 @@ public class User {
 
     @Column(name = "name")
     @NotNull(message = "is required")
-    @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
+    @Pattern(regexp = "[a-zA-Z]*")
     private String name;
 
     @Column(name = "surname")

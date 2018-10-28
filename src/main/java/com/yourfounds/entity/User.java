@@ -1,6 +1,8 @@
 package com.yourfounds.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Entity
@@ -13,15 +15,22 @@ public class User {
     private int userId;
 
     @Column(name = "email")
+    @NotNull(message = "is required")
+    @Pattern(regexp = ".+", message = "Email is required")
     private String email;
 
     @Column(name = "password")
+    @NotNull(message = "is required")
     private String password;
 
     @Column(name = "name")
+    @NotNull(message = "is required")
+    @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
     private String name;
 
     @Column(name = "surname")
+    @NotNull(message = "is required")
+    @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
     private String surname;
 
     @OneToMany

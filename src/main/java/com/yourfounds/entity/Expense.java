@@ -1,6 +1,9 @@
 package com.yourfounds.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -14,10 +17,13 @@ public class Expense {
     private int expenseId;
 
     @Column(name = "sum")
+    @NotNull(message = "is required")
+    @Min(value = 0, message = "Sum can't have minus value")
+    @Max(value = 1000000, message = "Sum is too big")
     private double sum;
 
     @Column(name = "category_id")
-    private int category;
+    private int categoryId;
 
     @Column(name = "date")
     private LocalDate date;
@@ -31,12 +37,15 @@ public class Expense {
     @Column(name = "user_id")
     private int userId;
 
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "expense", cascade = CascadeType.ALL)
+    private Category category;
+
     public Expense() {
     }
 
-    public Expense(double sum, int category, LocalDate date, LocalTime time, String comment, int userId) {
+    public Expense(double sum, int categoryId, LocalDate date, LocalTime time, String comment, int userId) {
         this.sum = sum;
-        this.category = category;
+        this.categoryId = categoryId;
         this.date = date;
         this.time = time;
         this.comment = comment;
@@ -55,12 +64,12 @@ public class Expense {
         this.sum = sum;
     }
 
-    public int getCategory() {
-        return category;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setCategory(int categoryId) {
-        this.category = categoryId;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public LocalDate getDate() {
@@ -93,5 +102,13 @@ public class Expense {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

@@ -1,6 +1,7 @@
 package com.yourfounds.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "category")
@@ -16,6 +17,10 @@ public class Category {
 
     @Column(name = "description")
     private String description;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @PrimaryKeyJoinColumn
+    private Expense expense;
 
     public Category() {
     }
@@ -44,5 +49,17 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
     }
 }

@@ -18,17 +18,7 @@ public class Category {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @PrimaryKeyJoinColumn
-    private Expense expense;
-
     public Category() {
-    }
-
-    public Category(int categoryId, String name, String description) {
-        this.categoryId = categoryId;
-        this.name = name;
-        this.description = description;
     }
 
     public int getCategoryId() {
@@ -49,17 +39,5 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public Expense getExpense() {
-        return expense;
-    }
-
-    public void setExpense(Expense expense) {
-        this.expense = expense;
     }
 }

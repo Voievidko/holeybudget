@@ -1,7 +1,6 @@
 package com.yourfounds.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -19,11 +18,7 @@ public class Expense {
     @Column(name = "sum")
     @NotNull(message = "is required")
     @Min(value = 0, message = "Sum can't have minus value")
-    @Max(value = 1000000, message = "Sum is too big")
     private double sum;
-
-    @Column(name = "category_id")
-    private int categoryId;
 
     @Column(name = "date")
     private LocalDate date;
@@ -34,22 +29,16 @@ public class Expense {
     @Column(name = "comment")
     private String comment;
 
-    @Column(name = "user_id")
-    private int userId;
-
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "expense", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "category_id")
     private Category category;
 
-    public Expense() {
-    }
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                           CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="user_id") //user_id is a field in expense table
+    private User user;
 
-    public Expense(double sum, int categoryId, LocalDate date, LocalTime time, String comment, int userId) {
-        this.sum = sum;
-        this.categoryId = categoryId;
-        this.date = date;
-        this.time = time;
-        this.comment = comment;
-        this.userId = userId;
+    public Expense() {
     }
 
     public int getExpenseId() {
@@ -62,14 +51,6 @@ public class Expense {
 
     public void setSum(double sum) {
         this.sum = sum;
-    }
-
-    public int getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
     }
 
     public LocalDate getDate() {
@@ -96,19 +77,19 @@ public class Expense {
         this.comment = comment;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
     public Category getCategory() {
         return category;
     }
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

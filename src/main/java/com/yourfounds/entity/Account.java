@@ -20,17 +20,19 @@ public class Account {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "user_id")
-    private int userId;
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                           CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Account() {
     }
 
-    public Account(String type, double summary, String description, int userId) {
+    public Account(String type, double summary, String description, User user) {
         this.type = type;
         this.summary = summary;
         this.description = description;
-        this.userId = userId;
+        this.user = user;
     }
 
     public int getAccountID() {
@@ -61,11 +63,11 @@ public class Account {
         this.description = description;
     }
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

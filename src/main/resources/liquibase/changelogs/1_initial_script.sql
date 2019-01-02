@@ -12,9 +12,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Table `yourfoundsdb`.`category`
+-- Table `yourfoundsdb`.`categoryId`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`category` (
+CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`categoryId` (
   `category_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   `desciption` VARCHAR(45) NULL,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`expense` (
   INDEX `fk_expense_category1_idx` (`category_id` ASC),
   CONSTRAINT `fk_expense_category1`
     FOREIGN KEY (`category_id`)
-    REFERENCES `yourfoundsdb`.`category` (`category_id`)
+    REFERENCES `yourfoundsdb`.`categoryId` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -82,9 +82,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `yourfoundsdb`.`category`
+-- Table `yourfoundsdb`.`categoryId`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`category` (
+CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`categoryId` (
   `category_id` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
   `desciption` VARCHAR(45) NULL,

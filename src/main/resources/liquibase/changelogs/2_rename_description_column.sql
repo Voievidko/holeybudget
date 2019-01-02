@@ -1,1 +1,1 @@
-ALTER TABLE `category` CHANGE `desciption` `description` varchar(45);
+ALTER TABLE `categoryId` CHANGE `desciption` `description` varchar(45);

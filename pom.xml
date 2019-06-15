@@ -9,17 +9,18 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
-        <java.version>10</java.version>
+        <java.version>11</java.version>
         <mysql.driver.version>8.0.11</mysql.driver.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+        <maven.war.plugin.version>3.2.2</maven.war.plugin.version>
         <liquibase.driver.version>3.6.1</liquibase.driver.version>
         <liquibase.plugin.version>3.6.1</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
-        <spring.framework.version>5.0.9.RELEASE</spring.framework.version>
+        <spring.framework.version>5.1.4.RELEASE</spring.framework.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <junit.version>5.4.0</junit.version>
     </properties>
-
 
     <dependencies>
         <dependency>
@@ -74,6 +75,11 @@
             <artifactId>spring-webmvc</artifactId>
             <version>${spring.framework.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-orm</artifactId>
+            <version>${spring.framework.version}</version>
+        </dependency>
 
         <!--For Hibernate in Java 10-->
         <dependency>
@@ -81,6 +87,14 @@
             <artifactId>jaxb-impl</artifactId>
             <version>2.2.11</version>
         </dependency>
+
+        <!--Testing-->
+        <!--<dependency>-->
+            <!--<groupId>org.junit</groupId>-->
+            <!--<artifactId>junit-bom</artifactId>-->
+            <!--<version>${junit.version}</version>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
 
         <!--From SDK 9, for JAXB to work for web services it's needed-->
         <!--to have the following dependencies, since they are not part of the SDK.-->
@@ -99,6 +113,19 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
+
+        <!--If you need for loop and prefix 'c' in JSP files-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -110,6 +137,7 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
                     <compilerVersion>${java.version}</compilerVersion>
                 </configuration>
             </plugin>
@@ -129,7 +157,13 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.war.plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
 </project>

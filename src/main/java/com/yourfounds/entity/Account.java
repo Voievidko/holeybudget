@@ -28,15 +28,12 @@ public class Account {
     public Account() {
     }
 
-    public Account(String type, double summary, String description, User user) {
-        this.type = type;
-        this.summary = summary;
-        this.description = description;
-        this.user = user;
-    }
-
     public int getAccountID() {
         return accountID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
     }
 
     public String getType() {

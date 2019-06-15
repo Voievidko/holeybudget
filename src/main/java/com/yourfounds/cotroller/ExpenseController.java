@@ -5,6 +5,7 @@ import com.yourfounds.entity.Expense;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.CategoryService;
 import com.yourfounds.service.ExpenseService;
+import com.yourfounds.util.Calculation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -83,7 +84,7 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getAllExpenses();
         model.addAttribute("expenseName", "Expenses during all time");
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", expenses.stream().map(a -> a.getSum()).reduce(0d, (a, b) -> a + b));
+        model.addAttribute("totalSum", Calculation.exspenseSum(expenses));
         return "expense/all";
     }
 
@@ -92,7 +93,7 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getExpensesDuringCurrentMonth();
         model.addAttribute("expenseName", "Expenses during " + expenseService.getCurrentMonthName());
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", expenses.stream().map(a -> a.getSum()).reduce(0d, (a, b) -> a + b));
+        model.addAttribute("totalSum", Calculation.exspenseSum(expenses));
         return "expense/all";
     }
 

@@ -36,26 +36,21 @@ public class User {
     @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
     private String surname;
 
-    @OneToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @OneToMany (mappedBy = "user",
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(name = "expense")
-    @JoinColumn(name = "expense_id")
     private List<Expense> expenses;
 
-    @OneToMany (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @OneToMany (mappedBy = "user",
+                cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinTable(name = "account")
-    @JoinColumn(name = "account_id")
     private List<Account> accounts;
 
     public User() {
     }
 
-    public User(String email, String password, String name, String surname) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public int getUserId() {

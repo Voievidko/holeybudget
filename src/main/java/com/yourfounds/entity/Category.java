@@ -1,7 +1,7 @@
 package com.yourfounds.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "category")
@@ -19,6 +19,10 @@ public class Category {
     private String description;
 
     public Category() {
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public int getCategoryId() {
@@ -39,5 +43,20 @@ public class Category {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Category)) return false;
+        Category category = (Category) o;
+        return getCategoryId() == category.getCategoryId() &&
+                Objects.equals(getName(), category.getName()) &&
+                Objects.equals(getDescription(), category.getDescription());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCategoryId(), getName(), getDescription());
     }
 }

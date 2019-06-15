@@ -3,12 +3,12 @@ package com.yourfounds.entity;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
-import java.time.LocalTime;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "expense")
-public class Expense {
+public class Expense implements Comparable<Expense>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,15 +21,16 @@ public class Expense {
     private double sum;
 
     @Column(name = "date")
-    private LocalDate date;
+    private Date date;
 
     @Column(name = "time")
-    private LocalTime time;
+    private Date time;
 
     @Column(name = "comment")
     private String comment;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                         CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -45,6 +46,10 @@ public class Expense {
         return expenseId;
     }
 
+    public void setExpenseId(int expenseId) {
+        this.expenseId = expenseId;
+    }
+
     public double getSum() {
         return sum;
     }
@@ -53,19 +58,19 @@ public class Expense {
         this.sum = sum;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 
@@ -91,5 +96,14 @@ public class Expense {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public int compareTo(Expense o) {
+        //todo: review this design
+        if (this.date.compareTo(o.date) == 0) {
+            return this.time.compareTo(o.time);
+        }
+        return this.date.compareTo(o.date);
     }
 }

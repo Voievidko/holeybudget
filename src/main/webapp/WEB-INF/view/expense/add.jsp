@@ -34,6 +34,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <td><label>Account:</label></td>
+                    <td>
+                        <select name="accountId">
+                            <c:forEach var="tempAccount" items="${accounts}">
+                                <option value=${tempAccount.accountId}>${tempAccount.type}</option>
+                            </c:forEach>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td><label>Date:</label></td>
                     <td>
                         <form:input type="date" path="date" pattern="dd/MM/yyyy"/>

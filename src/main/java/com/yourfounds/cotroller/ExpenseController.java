@@ -1,8 +1,10 @@
 package com.yourfounds.cotroller;
 
+import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Category;
 import com.yourfounds.entity.Expense;
 import com.yourfounds.entity.User;
+import com.yourfounds.service.AccountService;
 import com.yourfounds.service.CategoryService;
 import com.yourfounds.service.ExpenseService;
 import com.yourfounds.util.Calculation;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,9 @@ public class ExpenseController {
     @Autowired
     private ExpenseService expenseService;
 
+    @Autowired
+    private AccountService accountService;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -44,10 +48,14 @@ public class ExpenseController {
         Expense expense = new Expense();
 
         List<Category> categories = categoryService.getCategories();
+        List<Account> accounts = accountService.getAccounts();
+
+        //insert today's date
         expense.setDate(new Date());
 
         model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);
+        model.addAttribute("accounts", accounts);
 
         return "expense/add";
     }
@@ -56,17 +64,21 @@ public class ExpenseController {
     //Validation annotation should be in POJO class like @NotNull, @Min
     @RequestMapping("addProcess")
     public String processForm(@Valid @ModelAttribute("expense") Expense expense, BindingResult bindingResult,
-                              @ModelAttribute("tempCategory") Category category, Model model){
+                              @ModelAttribute("tempCategory") Category category, @ModelAttribute("tempAccount") Account account,
+                              Model model){
         if(bindingResult.hasErrors()){
             List<Category> categories = categoryService.getCategories();
+            List<Account> accounts = accountService.getAccounts();
             expense.setDate(new Date());
             model.addAttribute("categories", categories);
+            model.addAttribute("accounts", accounts);
             return "expense/add";
         }
         //todo: User is hardcoded. Replace it when implement needed logic.
         User user = new User();
         user.setUserId(1);
         expense.setCategory(categoryService.getCategory(category.getCategoryId()));
+        expense.setAccount(accountService.getAccount(account.getAccountId()));
         expense.setTime(new Date());
         expense.setUser(user);
         expenseService.addExpense(expense);

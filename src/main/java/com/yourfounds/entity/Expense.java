@@ -34,6 +34,11 @@ public class Expense implements Comparable<Expense>{
     @JoinColumn(name = "category_id")
     private Category category;
 
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "account_id")
+    private Account account;
+
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="user_id") //user_id is a field in expense table
@@ -88,6 +93,14 @@ public class Expense implements Comparable<Expense>{
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 
     public User getUser() {

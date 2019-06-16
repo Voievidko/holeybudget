@@ -22,6 +22,7 @@
                     <th>Date</th>
                     <th>Sum</th>
                     <th>Category</th>
+                    <th>Account</th>
                     <th>Comment</th>
                 </tr>
 
@@ -37,6 +38,7 @@
 
                         <td>${tempExpense.sum}</td>
                         <td>${tempExpense.category.name}</td>
+                        <td>${tempExpense.account.type}</td>
                         <td>${tempExpense.comment}</td>
                         <td>
                             <a href="${deleteLink}" onclick="if (!(confirm('Are you sure you want to delete this expense?'))) return false">Delete</a>

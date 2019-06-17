@@ -1,6 +1,7 @@
 package com.yourfounds.entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "account")
@@ -66,5 +67,30 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void substract(double sum){
+        this.summary = this.summary - sum;
+    }
+
+    public void plus(double sum){
+        this.summary = this.summary + sum;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Account)) return false;
+        Account account = (Account) o;
+        return getAccountId() == account.getAccountId() &&
+                Double.compare(account.getSummary(), getSummary()) == 0 &&
+                Objects.equals(getType(), account.getType()) &&
+                Objects.equals(getDescription(), account.getDescription()) &&
+                Objects.equals(getUser().getUserId(), account.getUser().getUserId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAccountId(), getType(), getSummary(), getDescription(), getUser());
     }
 }

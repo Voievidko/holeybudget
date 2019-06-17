@@ -48,4 +48,27 @@ public class AccountDaoImpl implements AccountDao {
         Account account = session.get(Account.class, id);
         session.delete(account);
     }
+
+    @Override
+    public boolean isAccountHaveRelations(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Account account = get(id);
+        Query query = session.createQuery("FROM Expense E WHERE E.account = :obj");
+        query.setParameter("obj", account);
+        return !query.list().isEmpty();
+    }
+
+    @Override
+    public int replaceAccountInAllExpenses(int fromAccountId, int toAccountId){
+        Session session = sessionFactory.getCurrentSession();
+
+        Account fromAccount = get(fromAccountId);
+        Account toAccount = get(toAccountId);
+
+        Query query = session.createQuery("UPDATE Expense SET account = :toAccount" +
+                " WHERE account = :fromAccount");
+        query.setParameter("toAccount", toAccount);
+        query.setParameter("fromAccount", fromAccount);
+        return query.executeUpdate();
+    }
 }

@@ -97,6 +97,11 @@ public class ExpenseController {
         model.addAttribute("expenseName", "Expenses during all time");
         model.addAttribute("expenses", expenses);
         model.addAttribute("totalSum", Calculation.exspenseSum(expenses));
+
+        //for sums
+        List<Account> accounts = accountService.getAccounts();
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("allMoneySummary", Calculation.accountSum(accounts));
         return "expense/all";
     }
 

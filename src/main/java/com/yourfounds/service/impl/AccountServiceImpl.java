@@ -44,4 +44,23 @@ public class AccountServiceImpl implements AccountService {
     public void updateAccount(Account account) {
         accountDao.update(account);
     }
+
+    @Override
+    @Transactional
+    public boolean isAccountHaveRelations(int id) {
+        return accountDao.isAccountHaveRelations(id);
+    }
+
+    @Override
+    @Transactional
+    public int replaceAccountInAllExpenses(int fromAccountId, int toAccountId) {
+        int numberOfReplaced = accountDao.replaceAccountInAllExpenses(fromAccountId, toAccountId);
+        Account accountToDelete = accountDao.get(fromAccountId);
+        Account accountToUpdate = accountDao.get(toAccountId);
+        accountToUpdate.plus(accountToDelete.getSummary());
+        accountDao.update(accountToUpdate);
+        accountDao.delete(accountToDelete.getAccountId());
+
+        return numberOfReplaced;
+    }
 }

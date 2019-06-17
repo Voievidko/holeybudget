@@ -1,0 +1,19 @@
+<nav>
+    <ul>
+        <p1>Money:<br></p1>
+    </ul>
+    <table>
+        <tbody>
+        <c:forEach var="tempAccount" items="${accounts}">
+            <tr>
+                <th>${tempAccount.type}</th>
+                <th>${tempAccount.summary}</th>
+            </tr>
+        </c:forEach>
+        <tr>
+            <th>Total:</th>
+            <th>${allMoneySummary}</th>
+        </tr>
+        </tbody>
+    </table>
+</nav>

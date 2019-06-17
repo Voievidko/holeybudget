@@ -5,6 +5,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "expense")
@@ -118,5 +119,25 @@ public class Expense implements Comparable<Expense>{
             return this.time.compareTo(o.time);
         }
         return this.date.compareTo(o.date);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Expense)) return false;
+        Expense expense = (Expense) o;
+        return getExpenseId() == expense.getExpenseId() &&
+                Double.compare(expense.getSum(), getSum()) == 0 &&
+                Objects.equals(getDate(), expense.getDate()) &&
+                Objects.equals(getTime(), expense.getTime()) &&
+                Objects.equals(getComment(), expense.getComment()) &&
+                Objects.equals(getCategory(), expense.getCategory()) &&
+                Objects.equals(getAccount(), expense.getAccount()) &&
+                Objects.equals(getUser(), expense.getUser());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getExpenseId(), getSum(), getDate(), getTime(), getComment(), getCategory(), getAccount(), getUser());
     }
 }

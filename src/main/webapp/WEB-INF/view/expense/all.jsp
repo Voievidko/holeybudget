@@ -54,6 +54,8 @@
             </tbody>
         </table>
     </article>
+
+    <%@include file="../sums.jsp" %>
 </section>
 
 <footer>

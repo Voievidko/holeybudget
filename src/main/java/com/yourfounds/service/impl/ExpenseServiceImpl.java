@@ -1,6 +1,8 @@
 package com.yourfounds.service.impl;
 
+import com.yourfounds.dao.AccountDao;
 import com.yourfounds.dao.ExpenseDao;
+import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Expense;
 import com.yourfounds.service.ExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,18 +15,24 @@ import java.util.*;
 public class ExpenseServiceImpl implements ExpenseService {
 
     @Autowired
-    private ExpenseDao expenseDAO;
+    private ExpenseDao expenseDao;
+
+    @Autowired
+    private AccountDao accountDao;
 
     @Override
     @Transactional
     public void addExpense(Expense expense) {
-        expenseDAO.save(expense);
+        Account account = expense.getAccount();
+        account.substract(expense.getSum());
+        accountDao.update(account);
+        expenseDao.save(expense);
     }
 
     @Override
     @Transactional
     public List<Expense> getAllExpenses() {
-        List <Expense> expenses = expenseDAO.getAll();
+        List <Expense> expenses = expenseDao.getAll();
         Collections.sort(expenses);
         return expenses;
     }
@@ -32,13 +40,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public Expense getExpenseById(int id) {
-        return expenseDAO.get(id);
+        return expenseDao.get(id);
     }
 
     @Override
     @Transactional
     public List<Expense> getExpensesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDAO.getAllBetweenDates(getFirstDayOfCurrentMonth(), getLastDayOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getAllBetweenDates(getFirstDayOfCurrentMonth(), getLastDayOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -46,13 +54,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public void updateExpense(Expense expense) {
-        expenseDAO.update(expense);
+        expenseDao.update(expense);
     }
 
     @Override
     @Transactional
     public void deleteExpenseById(int id) {
-        expenseDAO.delete(id);
+        expenseDao.delete(id);
     }
 
     @Override

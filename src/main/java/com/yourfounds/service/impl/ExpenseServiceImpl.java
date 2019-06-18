@@ -60,6 +60,10 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public void deleteExpenseById(int id) {
+        Expense expense = expenseDao.get(id);
+        Account account = expense.getAccount();
+        account.plus(expense.getSum());
+        accountDao.update(account);
         expenseDao.delete(id);
     }
 

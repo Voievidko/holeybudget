@@ -133,7 +133,7 @@ public class Expense implements Comparable<Expense>{
                 Objects.equals(getComment(), expense.getComment()) &&
                 Objects.equals(getCategory(), expense.getCategory()) &&
                 Objects.equals(getAccount(), expense.getAccount()) &&
-                Objects.equals(getUser(), expense.getUser());
+                Objects.equals(getUser().getUserId(), expense.getUser().getUserId());
     }
 
     @Override

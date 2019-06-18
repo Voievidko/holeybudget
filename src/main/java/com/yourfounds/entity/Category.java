@@ -18,6 +18,11 @@ public class Category {
     @Column(name = "description")
     private String description;
 
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Category() {
     }
 
@@ -45,6 +50,15 @@ public class Category {
         this.description = description;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,11 +66,12 @@ public class Category {
         Category category = (Category) o;
         return getCategoryId() == category.getCategoryId() &&
                 Objects.equals(getName(), category.getName()) &&
-                Objects.equals(getDescription(), category.getDescription());
+                Objects.equals(getDescription(), category.getDescription()) &&
+                Objects.equals(getUser().getUserId(), category.getUser().getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCategoryId(), getName(), getDescription());
+        return Objects.hash(getCategoryId(), getName(), getDescription(), getUser());
     }
 }

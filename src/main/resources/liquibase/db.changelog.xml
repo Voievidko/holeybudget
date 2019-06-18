@@ -17,4 +17,7 @@
     <changeSet id="4" author="voievidko">
         <sqlFile path="src/main/resources/liquibase/changelogs/4_add_account_to_expense_table.sql"></sqlFile>
     </changeSet>
+    <changeSet id="5" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/5_add_user_to_category_table.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

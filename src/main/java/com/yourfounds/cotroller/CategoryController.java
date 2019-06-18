@@ -1,6 +1,7 @@
 package com.yourfounds.cotroller;
 
 import com.yourfounds.entity.Category;
+import com.yourfounds.entity.User;
 import com.yourfounds.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,10 @@ public class CategoryController {
             model.addAttribute("category", category);
             return "category/nameexist";
         }
+        //todo: User is hardcoded. Replace it when implement needed logic.
+        User user = new User();
+        user.setUserId(1);
+        category.setUser(user);
         categoryService.addCategory(category);
         return "success";
     }

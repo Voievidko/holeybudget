@@ -63,4 +63,16 @@ public class AccountServiceImpl implements AccountService {
 
         return numberOfReplaced;
     }
+
+    @Override
+    @Transactional
+    public boolean transferMoneyBetweenAccounts(int fromAccountId, int toAccountId, double sum) {
+        Account accountFrom = accountDao.get(fromAccountId);
+        Account accountTo = accountDao.get(toAccountId);
+        accountFrom.substract(sum);
+        accountTo.plus(sum);
+        accountDao.update(accountFrom);
+        accountDao.update(accountTo);
+        return true;
+    }
 }

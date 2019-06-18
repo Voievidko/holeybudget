@@ -4,6 +4,7 @@
         <p1>Accounts<br></p1>
         <li><a href="/account/add">Add</a></li>
         <li><a href="/account/all">Show all</a></li>
+        <li><a href="/account/transfer">Transfer money</a></li>
         <p1>Categories<br></p1>
         <li><a href="/category/add">Add</a></li>
         <li><a href="/category/all">Show all</a></li>

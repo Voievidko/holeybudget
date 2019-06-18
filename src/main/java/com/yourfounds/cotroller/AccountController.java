@@ -3,6 +3,7 @@ package com.yourfounds.cotroller;
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.AccountService;
+import com.yourfounds.util.Calculation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,6 +86,22 @@ public class AccountController {
     @RequestMapping("transferToExistAccount")
     public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId, @ModelAttribute("accountToDelete") int fromAccountId, Model model){
         accountService.replaceAccountInAllExpenses(fromAccountId, toAccountId);
+        return "success";
+    }
+
+    @RequestMapping("transfer")
+    public String transferMoneyBetweenAccounts(Model model){
+        List<Account> accounts = accountService.getAccounts();
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("allMoneySummary", Calculation.accountSum(accounts));
+        return "account/transfer";
+    }
+
+    @RequestMapping("transferProcess")
+    public String transferMoneyBetweenAccountsProcess(@ModelAttribute("accountFrom") int accountFrom,
+                                                      @ModelAttribute("accountTo") int accountTo,
+                                                      @ModelAttribute("sum") double sum){
+        accountService.transferMoneyBetweenAccounts(accountFrom, accountTo, sum);
         return "success";
     }
 }

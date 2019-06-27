@@ -6,15 +6,16 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        // TODO Auto-generated method stub
         return null;
     }
 
+    // This method should return config class
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class[] { AppConfig.class };
     }
 
+    // Equivalent to <servlet-mapping> tag in xml configuration
     @Override
     protected String[] getServletMappings() {
         return new String[] { "/" };

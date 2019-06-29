@@ -18,16 +18,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication()
                 .withUser(users.username("john").password("test123").roles("USER"))
                 .withUser(users.username("mary").password("test123").roles("MANAGER"))
-                .withUser(users.username("roman").password("test123").roles("ADMIN"));
+                .withUser(users.username("roman").password("test123").roles("USER", "ADMIN"));
     }
 
     // Configure security of web paths in application, login, logout etc
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http.authorizeRequests() // Restrict access based on HttpServletRequest
+//                    .anyRequest().authenticated() // Any request to the app must be logged in
+//                .and()
+//                .formLogin() // Customize for for login
+//                    .loginPage("/login")
+//                    // No controller request mapping for this
+//                    .loginProcessingUrl("/authenticate") // Login form should POST data to this URL
+//                    .permitAll() // Allow everyone to see login page
+//                .and()
+//                    .logout().permitAll(); // Allow everyone to logout
+//    }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() // Restrict access based on HttpServletRequest
-                    .anyRequest().authenticated() // Any request to the app must be logged in
+                .antMatchers("/").hasRole("USER")
+                .antMatchers("/user/all").hasRole("ADMIN")
                 .and()
-                .formLogin() // Customize for for login
+                    .formLogin() // Customize for for login
                     .loginPage("/login")
                     // No controller request mapping for this
                     .loginProcessingUrl("/authenticate") // Login form should POST data to this URL

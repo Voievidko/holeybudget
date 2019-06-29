@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public void save(Expense expense) {
         Session session = sessionFactory.getCurrentSession();
-        session.saveOrUpdate(expense);
+        session.save(expense);
     }
 
     @Override

@@ -17,31 +17,31 @@
         <h1>All categories</h1>
         <table>
             <tbody>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+
+            <c:forEach var="tempCategory" items="${categories}">
+                <!-- construct an "update" link with customer id -->
+                <c:url var="updateLink" value="/category/update">
+                    <c:param name="categoryId" value="${tempCategory.categoryId}" />
+                </c:url>
+
+                <!-- construct an "delete" link with customer id -->
+                <c:url var="deleteLink" value="/category/delete">
+                    <c:param name="categoryId" value="${tempCategory.categoryId}" />
+                </c:url>
                 <tr>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <td>${tempCategory.name}</td>
+                    <td>${tempCategory.description}</td>
+                    <td>
+
+                        <a href="${updateLink}">Update</a>
+                        <a href="${deleteLink}" onclick="if (!(confirm('Are you sure you want to delete this category?'))) return false">Delete</a>
+                    </td>
                 </tr>
-
-                <c:forEach var="tempCategory" items="${categories}">
-                    <!-- construct an "update" link with customer id -->
-                    <c:url var="updateLink" value="/category/update">
-                        <c:param name="categoryId" value="${tempCategory.categoryId}" />
-                    </c:url>
-
-                    <!-- construct an "delete" link with customer id -->
-                    <c:url var="deleteLink" value="/category/delete">
-                        <c:param name="categoryId" value="${tempCategory.categoryId}" />
-                    </c:url>
-                    <tr>
-                        <td>${tempCategory.name}</td>
-                        <td>${tempCategory.description}</td>
-                        <td>
-
-                            <a href="${updateLink}">Update</a>
-                            <a href="${deleteLink}" onclick="if (!(confirm('Are you sure you want to delete this category?'))) return false">Delete</a>
-                        </td>
-                    </tr>
-                </c:forEach>
+            </c:forEach>
             </tbody>
         </table>
     </article>

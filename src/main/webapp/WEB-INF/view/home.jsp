@@ -1,8 +1,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>CSS Template</title>
+    <title>Yourfounds</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -21,6 +23,11 @@
         <h1>Welcome</h1>
         <p>With this cite you can easily keep track with your money.</p>
         <p>Enjoy.</p>
+        <p>
+            User: <security:authentication property="principal.username"/>
+            <br/>
+            Role: <security:authentication property="principal.authorities"/>
+        </p>
     </article>
 </section>
 

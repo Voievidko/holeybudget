@@ -1,5 +1,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +21,9 @@
     <article>
         <h1>Welcome</h1>
         <p>To keep track with your money, please login</p>
+        <c:if test="${param.error != null}">
+            <i>Sorry! You entered invalid username or password</i>
+        </c:if>
         <form:form action="/authenticate" method="post">
             <p>
                 Username: <input type="text" name="username"/>
@@ -27,9 +32,7 @@
                 Password: <input type="password" name="password"/>
             </p>
             <input type="submit" value="Login"/>
-
         </form:form>
-
     </article>
 </section>
 

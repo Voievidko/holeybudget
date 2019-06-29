@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
@@ -12,5 +13,10 @@
         <li><a href="/expense/add">Add</a></li>
         <li><a href="/expense/all">Show all</a></li>
         <li><a href="/expense/currentmonth">Current month</a></li>
+        <p1><label>Users</label><br></p1>
+        <li><a href="/user/all">Show all</a></li>
+        <form:form action="/logout" method="post">
+            <input type="submit" value="Logout">
+        </form:form>
     </ul>
 </nav>

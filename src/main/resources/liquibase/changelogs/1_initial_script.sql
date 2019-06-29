@@ -16,8 +16,8 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`category` (
   `category_id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(45) NOT NULL,
-  `desciption` VARCHAR(45) NULL,
+  `name` VARCHAR(50) NOT NULL,
+  `desciption` VARCHAR(50) NULL,
   PRIMARY KEY (`category_id`))
 ENGINE = InnoDB;
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`expense` (
   `category_id` INT NOT NULL,
   `date` DATE NOT NULL,
   `time` TIME(0) NOT NULL,
-  `comment` VARCHAR(45) NULL,
+  `comment` VARCHAR(50) NULL,
   PRIMARY KEY (`expense_id`),
   INDEX `fk_expense_category1_idx` (`category_id` ASC),
   CONSTRAINT `fk_expense_category1`
@@ -47,7 +47,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`account` (
   `account_id` INT NOT NULL AUTO_INCREMENT,
-  `type` VARCHAR(45) NOT NULL,
+  `type` VARCHAR(50) NOT NULL,
   `summary` DECIMAL(18,2) NOT NULL,
   `description` VARCHAR(300) NOT NULL,
   PRIMARY KEY (`account_id`))
@@ -58,14 +58,14 @@ ENGINE = InnoDB;
 -- Table `yourfoundsdb`.`user`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`user` (
-  `user_id` INT NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(45) NOT NULL,
-  `password` VARCHAR(45) NOT NULL,
-  `name` VARCHAR(45) NULL,
-  `surname` VARCHAR(45) NULL,
+  `username` VARCHAR(50) NOT NULL UNIQUE,
+  `email` VARCHAR(50) NOT NULL,
+  `password` VARCHAR(200) NOT NULL,
+  `name` VARCHAR(50) NULL,
+  `surname` VARCHAR(50) NULL,
   `expense_id` INT NOT NULL,
   `account_id` INT NOT NULL,
-  PRIMARY KEY (`user_id`),
+  PRIMARY KEY (`username`),
   INDEX `fk_user_expense_idx` (`expense_id` ASC),
   INDEX `fk_user_account1_idx` (`account_id` ASC),
   CONSTRAINT `fk_user_expense`

@@ -20,4 +20,10 @@
     <changeSet id="5" author="voievidko">
         <sqlFile path="src/main/resources/liquibase/changelogs/5_add_user_to_category_table.sql"></sqlFile>
     </changeSet>
+    <changeSet id="6" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/6_change_user_table.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="7" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/7_create_authority_table.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

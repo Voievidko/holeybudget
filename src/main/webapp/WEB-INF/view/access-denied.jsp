@@ -9,8 +9,6 @@
 </header>
 
 <section>
-    <%@include file="navigation.jsp" %>
-
     <article>
         <h1>Access denied. You are not authorized to access this resource</h1>
     </article>

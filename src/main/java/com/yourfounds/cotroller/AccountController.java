@@ -31,7 +31,7 @@ public class AccountController {
     public String processAddAccountForm(@ModelAttribute("account") Account account, Model model){
         //todo: User is hardcoded. Replace it when implement needed logic.
         User user = new User();
-        user.setUserId(1);
+        user.setUsername("user1");
         account.setUser(user);
         accountService.addAccount(account);
         return "success";

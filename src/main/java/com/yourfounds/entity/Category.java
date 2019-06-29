@@ -20,7 +20,7 @@ public class Category {
 
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "username")
     private User user;
 
     public Category() {
@@ -67,7 +67,7 @@ public class Category {
         return getCategoryId() == category.getCategoryId() &&
                 Objects.equals(getName(), category.getName()) &&
                 Objects.equals(getDescription(), category.getDescription()) &&
-                Objects.equals(getUser().getUserId(), category.getUser().getUserId());
+                Objects.equals(getUser().getUsername(), category.getUser().getUsername());
     }
 
     @Override

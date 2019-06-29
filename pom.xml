@@ -12,9 +12,9 @@
         <java.version>11</java.version>
         <mysql.driver.version>8.0.11</mysql.driver.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
-        <maven.war.plugin.version>3.2.2</maven.war.plugin.version>
+        <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
         <liquibase.driver.version>3.6.1</liquibase.driver.version>
-        <liquibase.plugin.version>3.6.1</liquibase.plugin.version>
+        <liquibase.plugin.version>3.6.3</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
         <spring.framework.version>5.1.6.RELEASE</spring.framework.version>
@@ -152,46 +152,42 @@
 
     <build>
         <finalName>YourFounds</finalName>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>${maven.compiler.plugin.version}</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <encoding>UTF-8</encoding>
-                        <compilerVersion>${java.version}</compilerVersion>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.liquibase</groupId>
-                    <artifactId>liquibase-maven-plugin</artifactId>
-                    <version>${liquibase.plugin.version}</version>
-                    <configuration>
-                        <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <phase>process-resources</phase>
-                            <goals>
-                                <goal>update</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <!--Need to customize maven build. Since we're not using web.xml-->
-                <plugin>
-                    <groupId>com.apache.maven.plugins</groupId>
-                    <artifactId>maven-war-plugin</artifactId>
-                    <version>${maven.war.plugin.version}</version>
-                    <configuration>
-                        <failOnMissingWebXml>false</failOnMissingWebXml>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <compilerVersion>${java.version}</compilerVersion>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>${liquibase.plugin.version}</version>
+                <configuration>
+                    <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--Need to customize maven build. Since we're not using web.xml-->
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>${maven.war.plugin.version}</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

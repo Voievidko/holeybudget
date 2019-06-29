@@ -23,7 +23,7 @@ public class Account {
 
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "username")
     private User user;
 
     public Account() {
@@ -86,7 +86,7 @@ public class Account {
                 Double.compare(account.getSummary(), getSummary()) == 0 &&
                 Objects.equals(getType(), account.getType()) &&
                 Objects.equals(getDescription(), account.getDescription()) &&
-                Objects.equals(getUser().getUserId(), account.getUser().getUserId());
+                Objects.equals(getUser().getUsername(), account.getUser().getUsername());
     }
 
     @Override

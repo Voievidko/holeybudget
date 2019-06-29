@@ -45,7 +45,7 @@ public class CategoryController {
         }
         //todo: User is hardcoded. Replace it when implement needed logic.
         User user = new User();
-        user.setUserId(1);
+        user.setUsername("user1");
         category.setUser(user);
         categoryService.addCategory(category);
         return "success";

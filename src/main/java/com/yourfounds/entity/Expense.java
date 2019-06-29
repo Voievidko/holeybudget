@@ -42,7 +42,7 @@ public class Expense implements Comparable<Expense>{
 
     @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name="user_id") //user_id is a field in expense table
+    @JoinColumn(name="username") //username is a field in expense table
     private User user;
 
     public Expense() {
@@ -133,7 +133,7 @@ public class Expense implements Comparable<Expense>{
                 Objects.equals(getComment(), expense.getComment()) &&
                 Objects.equals(getCategory(), expense.getCategory()) &&
                 Objects.equals(getAccount(), expense.getAccount()) &&
-                Objects.equals(getUser().getUserId(), expense.getUser().getUserId());
+                Objects.equals(getUser().getUsername(), expense.getUser().getUsername());
     }
 
     @Override

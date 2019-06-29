@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <nav>
     <ul>
         <li><a href="/">Home</a></li>
@@ -13,8 +14,12 @@
         <li><a href="/expense/add">Add</a></li>
         <li><a href="/expense/all">Show all</a></li>
         <li><a href="/expense/currentmonth">Current month</a></li>
-        <p1><label>Users</label><br></p1>
-        <li><a href="/user/all">Show all</a></li>
+
+        <security:authorize access="hasRole('ADMIN')">
+            <p1><label>Users</label><br></p1>
+            <li><a href="/user/all">Show all</a></li>
+        </security:authorize>
+
         <form:form action="/logout" method="post">
             <input type="submit" value="Logout">
         </form:form>

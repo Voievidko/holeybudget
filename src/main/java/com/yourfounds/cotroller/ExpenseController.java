@@ -76,7 +76,7 @@ public class ExpenseController {
         }
         //todo: User is hardcoded. Replace it when implement needed logic.
         User user = new User();
-        user.setUserId(1);
+        user.setUsername("user1");
         expense.setCategory(categoryService.getCategory(category.getCategoryId()));
         expense.setAccount(accountService.getAccount(account.getAccountId()));
         expense.setTime(new Date());

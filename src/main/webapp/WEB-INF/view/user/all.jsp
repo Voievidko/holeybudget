@@ -18,20 +18,22 @@
         <table>
             <tbody>
                 <tr>
-                    <th>Id</th>
+                    <th>Username</th>
                     <th>Email</th>
+                    <th>Password</th>
                     <th>Name</th>
                     <th>Surname</th>
-                    <th>Password</th>
+                    <th>Enabled</th>
                 </tr>
 
                 <c:forEach var="user" items="${users}">
                     <tr>
-                        <td>${user.userId}</td>
+                        <td>${user.username}</td>
                         <td>${user.email}</td>
+                        <td>${user.password}</td>
                         <td>${user.name}</td>
                         <td>${user.surname}</td>
-                        <td>${user.password}</td>
+                        <td>${user.enabled}</td>
                     </tr>
                 </c:forEach>
             </tbody>

@@ -13,9 +13,9 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private int userId;
+    @NotNull(message = "is required")
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email")
     @NotNull(message = "is required")
@@ -36,6 +36,9 @@ public class User {
     @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
     private String surname;
 
+    @Column(name = "enabled")
+    private byte enabled;
+
     @OneToMany (mappedBy = "user",
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
@@ -49,12 +52,12 @@ public class User {
     public User() {
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public String getUsername() {
+        return username;
     }
 
-    public int getUserId() {
-        return userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -87,6 +90,14 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public byte getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(byte enabled) {
+        this.enabled = enabled;
     }
 
     public List<Expense> getExpenses() {

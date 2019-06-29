@@ -17,7 +17,7 @@ public class UserDaoImpl implements UserDao {
     private SessionFactory sessionFactory;
 
     @Override
-    public User get(int id) {
+    public User get(String id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(User.class, id);
     }
@@ -42,7 +42,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(String id) {
         Session session = sessionFactory.getCurrentSession();
         User user = session.get(User.class, id);
         session.delete(user);

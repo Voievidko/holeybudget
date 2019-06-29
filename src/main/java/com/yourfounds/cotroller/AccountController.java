@@ -1,9 +1,12 @@
 package com.yourfounds.cotroller;
 
+import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.AccountService;
+import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
+import com.yourfounds.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +21,9 @@ import java.util.List;
 public class AccountController {
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private AccountService accountService;
 
     @RequestMapping("add")
@@ -29,9 +35,7 @@ public class AccountController {
 
     @RequestMapping("addProcess")
     public String processAddAccountForm(@ModelAttribute("account") Account account, Model model){
-        //todo: User is hardcoded. Replace it when implement needed logic.
-        User user = new User();
-        user.setUsername("user1");
+        User user = userService.getUser(Util.getCurrentUser());
         account.setUser(user);
         accountService.addAccount(account);
         return "success";

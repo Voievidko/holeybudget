@@ -1,5 +1,6 @@
 package com.yourfounds.cotroller;
 
+import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Category;
 import com.yourfounds.entity.Expense;
@@ -7,7 +8,9 @@ import com.yourfounds.entity.User;
 import com.yourfounds.service.AccountService;
 import com.yourfounds.service.CategoryService;
 import com.yourfounds.service.ExpenseService;
+import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
+import com.yourfounds.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -35,6 +38,9 @@ public class ExpenseController {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private UserService userService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -74,9 +80,8 @@ public class ExpenseController {
             model.addAttribute("accounts", accounts);
             return "expense/add";
         }
-        //todo: User is hardcoded. Replace it when implement needed logic.
-        User user = new User();
-        user.setUsername("user1");
+
+        User user = userService.getUser(Util.getCurrentUser());
         expense.setCategory(categoryService.getCategory(category.getCategoryId()));
         expense.setAccount(accountService.getAccount(account.getAccountId()));
         expense.setTime(new Date());

@@ -2,10 +2,13 @@ package com.yourfounds.dao.impl;
 
 import com.yourfounds.dao.CategoryDao;
 import com.yourfounds.entity.Category;
+import com.yourfounds.util.Util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,7 +25,8 @@ public class CategoryDaoImpl implements CategoryDao {
         Session currentSession = sessionFactory.getCurrentSession();
 
         //create a query
-        Query<Category> query = currentSession.createQuery("FROM Category", Category.class);
+        Query<Category> query = currentSession.createQuery("FROM Category where username = :param", Category.class);
+        query.setParameter("param", Util.getCurrentUser());
 
         //execute query and get a result list
         List<Category> categories = query.getResultList();
@@ -41,14 +45,14 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public Category get(int id) {
+    public Category get(Integer id) {
         Session currentSession = sessionFactory.getCurrentSession();
         Category category = currentSession.get(Category.class, id);
         return category;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Category category = session.get(Category.class, id);
         session.delete(category);
@@ -68,7 +72,7 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public boolean isCategoryHaveRelations(int id) {
+    public boolean isCategoryHaveRelations(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Category category = get(id);
         Query query = session.createQuery("FROM Expense E WHERE E.category = :obj");
@@ -77,7 +81,7 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public int replaceCategoryInAllExpenses(int fromCategoryId, int toCategoryId){
+    public int replaceCategoryInAllExpenses(Integer fromCategoryId, Integer toCategoryId){
         Session session = sessionFactory.getCurrentSession();
 
         Category fromCategory = get(fromCategoryId);

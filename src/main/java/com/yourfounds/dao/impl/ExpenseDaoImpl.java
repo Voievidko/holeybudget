@@ -2,6 +2,7 @@ package com.yourfounds.dao.impl;
 
 import com.yourfounds.dao.ExpenseDao;
 import com.yourfounds.entity.Expense;
+import com.yourfounds.util.Util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -26,12 +27,13 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        Query<Expense> query = session.createQuery("FROM Expense", Expense.class);
+        Query<Expense> query = session.createQuery("FROM Expense where username = :param", Expense.class);
+        query.setParameter("param", Util.getCurrentUser());
         return query.getResultList();
     }
 
     @Override
-    public Expense get(int id) {
+    public Expense get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Expense expense = session.get(Expense.class, id);
         return expense;
@@ -44,7 +46,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Expense expense = session.get(Expense.class, id);
         session.delete(expense);
@@ -53,9 +55,10 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getAllBetweenDates(Date dateFrom, Date dateTo) {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("FROM Expense AS e WHERE e.date BETWEEN :stDate AND :edDate ")
+        List<Expense> expenses = session.createQuery("FROM Expense AS e WHERE e.date BETWEEN :stDate AND :edDate AND username = :param")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
+                .setParameter("param", Util.getCurrentUser())
                 .list();
         return expenses;
     }

@@ -1,8 +1,11 @@
 package com.yourfounds.cotroller;
 
+import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Category;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.CategoryService;
+import com.yourfounds.service.UserService;
+import com.yourfounds.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,9 @@ import java.util.List;
 @Controller
 @RequestMapping("category")
 public class CategoryController {
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private CategoryService categoryService;
@@ -43,9 +49,7 @@ public class CategoryController {
             model.addAttribute("category", category);
             return "category/nameexist";
         }
-        //todo: User is hardcoded. Replace it when implement needed logic.
-        User user = new User();
-        user.setUsername("user1");
+        User user = userService.getUser(Util.getCurrentUser());
         category.setUser(user);
         categoryService.addCategory(category);
         return "success";
@@ -82,6 +86,9 @@ public class CategoryController {
 
     @RequestMapping("updateprocess")
     public String updateProcess(@ModelAttribute("category") Category category){
+        //when update category User for some reason null
+        //todo: rework this
+        category.setUser(userService.getUser(Util.getCurrentUser()));
         categoryService.updateCategory(category);
         return "redirect:all";
     }

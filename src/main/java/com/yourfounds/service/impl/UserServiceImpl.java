@@ -29,13 +29,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User getUser(int id) {
+    public User getUser(String id) {
         return userDao.get(id);
     }
 
     @Override
     @Transactional
-    public void deleteUserById(int id) {
+    public void deleteUserById(String id) {
         userDao.delete(id);
     }
 

@@ -2,10 +2,13 @@ package com.yourfounds.dao.impl;
 
 import com.yourfounds.dao.AccountDao;
 import com.yourfounds.entity.Account;
+import com.yourfounds.util.Util;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,11 +16,13 @@ import java.util.List;
 @Repository
 public class AccountDaoImpl implements AccountDao {
 
+
+
     @Autowired
     private SessionFactory sessionFactory;
 
     @Override
-    public Account get(int id) {
+    public Account get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Account account = session.get(Account.class, id);
         return account;
@@ -26,7 +31,8 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public List<Account> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        Query<Account> query = session.createQuery("FROM Account", Account.class);
+        Query<Account> query = session.createQuery("from Account where username = :param", Account.class);
+        query.setParameter("param", Util.getCurrentUser());
         return query.getResultList();
     }
 
@@ -43,14 +49,14 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Account account = session.get(Account.class, id);
         session.delete(account);
     }
 
     @Override
-    public boolean isAccountHaveRelations(int id) {
+    public boolean isAccountHaveRelations(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Account account = get(id);
         Query query = session.createQuery("FROM Expense E WHERE E.account = :obj");
@@ -59,7 +65,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public int replaceAccountInAllExpenses(int fromAccountId, int toAccountId){
+    public int replaceAccountInAllExpenses(Integer fromAccountId, Integer toAccountId){
         Session session = sessionFactory.getCurrentSession();
 
         Account fromAccount = get(fromAccountId);

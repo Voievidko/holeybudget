@@ -1,56 +1,102 @@
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
-<%@include file="../head.jsp" %>
-<body>
-<header>
-    <h2>YourFounds</h2>
-</header>
 
-<section>
-    <%@include file="../navigation.jsp" %>
+<head>
 
-    <article>
-        <h1>Can't delete</h1>
-        <table>
-            <tr>
-                <p>Account <b>${accountToDelete.type}</b> can't be deleted because it's used by some of your expenses.<br>
-                    Anyway, if you want to delete it. You can reassign all your expenses to other account</p>
-            </tr>
-            <tr>
-                Assign all wastes from <b>${categoryToDelete.name}</b> to <br>
-            </tr>
-            <tr>
-                <td>
-                    to existing account
-                </td>
-            </tr>
-            <tr>
-                <td>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-                    <form action="transferToExistAccount">
-                        <select name="accountId">
-                            <c:forEach var="tempAccount" items="${accounts}">
-                                <option value=${tempAccount.accountId}>${tempAccount.type}</option>
-                            </c:forEach>
-                        </select>
-                        <br>
-                        <input type="submit" value="Submit">
+  <title>SB Admin 2 - Blank</title>
 
-                        <input type="hidden" name="accountToDelete" value=${accountToDelete.accountId} hidden="true">
-                    </form>
-                </td>
-            </tr>
-        </table>
-        <h1></h1>
-    </article>
-</section>
+  <!-- Custom fonts for this template-->
+  <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-<footer>
-    <p></p>
-</footer>
+  <!-- Custom styles for this template-->
+  <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <%@include file="../sidebar.jsp" %>
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+      <!-- Main Content -->
+      <div id="content">
+
+        <%@include file="../topbar.jsp"%>
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+<%--          <!-- Page Heading -->--%>
+<%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
+          <div class="p-5">
+            <div class="text-left">
+              <h1 class="h4 text-gray-900 mb-4">Can't delete category</h1>
+              <p>For delete your account <b>${accountToDelete.type}</b> reassign all your expenses and money on this account to other account.
+              Assign all wastes from <b>${accountToDelete.type}</b> to </p>
+            </div>
+            <div class="form-group row">
+
+              <div class="col-sm-6 mb-3 mb-sm-0">
+                <b>existing account</b><br>
+                  <form action="transferToExistAccount">
+                      <select name="accountId" class="form-control">
+                        <c:forEach var="tempAccount" items="${accounts}">
+                          <option value=${tempAccount.accountId} class="dropdown-item">${tempAccount.type}</option>
+                        </c:forEach>
+                      </select>
+                    <br>
+                    <input type="submit" value="Submit" class="btn btn-primary btn-user btn-block">
+                    <input type="hidden" name="accountToDelete" value=${accountToDelete.accountId} hidden="true">
+                  </form>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <%@include file="../footer.jsp" %>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <%@include file="../logout-modal.jsp" %>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="../vendor/jquery/jquery.min.js"></script>
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="../js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>

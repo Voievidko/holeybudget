@@ -37,14 +37,14 @@ public class User {
     private String surname;
 
     @Column(name = "enabled")
-    private byte enabled;
+    private boolean enabled;
 
     @OneToMany (mappedBy = "user",
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
     private List<Expense> expenses;
 
-    @OneToMany (mappedBy = "user",
+    @OneToMany (mappedBy = "user", fetch = FetchType.EAGER,
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                            CascadeType.DETACH, CascadeType.REFRESH})
     private List<Account> accounts;
@@ -92,11 +92,11 @@ public class User {
         this.surname = surname;
     }
 
-    public byte getEnabled() {
+    public boolean getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(byte enabled) {
+    public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 

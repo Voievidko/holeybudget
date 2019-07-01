@@ -25,7 +25,23 @@ public class CategoryDaoImpl implements CategoryDao {
         Session currentSession = sessionFactory.getCurrentSession();
 
         //create a query
-        Query<Category> query = currentSession.createQuery("FROM Category where username = :param", Category.class);
+        Query<Category> query = currentSession.createQuery("FROM Category WHERE username = :param AND income = 0", Category.class);
+        query.setParameter("param", Util.getCurrentUser());
+
+        //execute query and get a result list
+        List<Category> categories = query.getResultList();
+
+        //return the results
+        return categories;
+    }
+
+    @Override
+    public List<Category> getAllIncome() {
+        //get the current hibernate session
+        Session currentSession = sessionFactory.getCurrentSession();
+
+        //create a query
+        Query<Category> query = currentSession.createQuery("FROM Category WHERE username = :param AND income = 1", Category.class);
         query.setParameter("param", Util.getCurrentUser());
 
         //execute query and get a result list

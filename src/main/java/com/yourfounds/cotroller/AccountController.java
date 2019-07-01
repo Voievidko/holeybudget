@@ -68,23 +68,19 @@ public class AccountController {
 
     @RequestMapping("delete")
     public String deleteAccount(@ModelAttribute("accountId") int accountId, Model model){
-        //check if there is relationship on account
-        if (accountService.isAccountHaveRelations(accountId)){
-            //inform User that account can't be deleted
-            //and propose to transfer expenses to exist account
-            Account accountToDelete = accountService.getAccount(accountId);
-            List<Account> accounts = accountService.getAccounts();
-            accounts.remove(accountToDelete);
 
-            Account account = new Account();
-            model.addAttribute("accountToDelete", accountToDelete);
-            model.addAttribute("accounts", accounts);
-            model.addAttribute("account", account);
-            return "account/cantdelete";
-        } else {
-            accountService.deleteAccountById(accountId);
-            return "success";
-        }
+        //inform User that account can't be deleted
+        //and propose to transfer expenses to exist account
+        Account accountToDelete = accountService.getAccount(accountId);
+        List<Account> accounts = accountService.getAccounts();
+        accounts.remove(accountToDelete);
+
+        Account account = new Account();
+        model.addAttribute("accountToDelete", accountToDelete);
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("account", account);
+        return "account/cantdelete";
+
     }
 
     @RequestMapping("transferToExistAccount")

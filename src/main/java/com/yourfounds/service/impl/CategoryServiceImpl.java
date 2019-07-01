@@ -23,8 +23,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public List<Category> getCategories() {
+    public List<Category> getAllExpenseCategories() {
         return categoryDAO.getAll();
+    }
+
+    @Override
+    @Transactional
+    public List<Category> getAllIncomeCategories() {
+        return categoryDAO.getAllIncome();
     }
 
     @Override

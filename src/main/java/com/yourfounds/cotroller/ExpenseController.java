@@ -1,6 +1,5 @@
 package com.yourfounds.cotroller;
 
-import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Category;
 import com.yourfounds.entity.Expense;
@@ -53,7 +52,7 @@ public class ExpenseController {
     public String addForm(Model model){
         Expense expense = new Expense();
 
-        List<Category> categories = categoryService.getCategories();
+        List<Category> categories = categoryService.getAllExpenseCategories();
         List<Account> accounts = accountService.getAccounts();
 
         //insert today's date
@@ -62,6 +61,7 @@ public class ExpenseController {
         model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);
         model.addAttribute("accounts", accounts);
+        model.addAttribute("type", "Expense");
 
         return "expense/add";
     }
@@ -73,7 +73,12 @@ public class ExpenseController {
                               @ModelAttribute("tempCategory") Category category, @ModelAttribute("tempAccount") Account account,
                               Model model){
         if(bindingResult.hasErrors()){
-            List<Category> categories = categoryService.getCategories();
+            List<Category> categories;
+            if(category.isIncome()){
+                categories = categoryService.getAllIncomeCategories();
+            } else {
+                categories = categoryService.getAllExpenseCategories();
+            }
             List<Account> accounts = accountService.getAccounts();
             expense.setDate(new Date());
             model.addAttribute("categories", categories);
@@ -87,7 +92,30 @@ public class ExpenseController {
         expense.setTime(new Date());
         expense.setUser(user);
         expenseService.addExpense(expense);
-        return "redirect:add";
+        if (expense.getCategory().isIncome()) {
+            return "redirect:/";
+        } else {
+            return "redirect:add";
+        }
+
+    }
+
+    @RequestMapping("income")
+    public String addIncome(Model model){
+        Expense expense = new Expense();
+
+        List<Category> categories = categoryService.getAllIncomeCategories();
+        List<Account> accounts = accountService.getAccounts();
+
+        //insert today's date
+        expense.setDate(new Date());
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("expense", expense);
+        model.addAttribute("accounts", accounts);
+        model.addAttribute("type","Income");
+
+        return "expense/add";
     }
 
     @RequestMapping("delete")

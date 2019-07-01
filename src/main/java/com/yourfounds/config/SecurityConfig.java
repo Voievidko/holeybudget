@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").hasRole("USER")
                 .antMatchers("/user/all").hasRole("ADMIN")
                 .and()
-                    .formLogin() // Customize for for login
+                    .formLogin() // Customize for login
                     .loginPage("/login")
                     // No controller request mapping for this
                     .loginProcessingUrl("/authenticate") // Login form should POST data to this URL

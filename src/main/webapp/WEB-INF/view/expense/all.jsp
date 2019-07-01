@@ -49,7 +49,7 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Expenses during all time</h1>
+          <h1 class="h3 mb-2 text-gray-800">${expenseName}</h1>
           <p class="mb-4">View or delete your expenses.</p>
 
           <!-- DataTales Example -->
@@ -93,7 +93,7 @@
                       <td>${tempExpense.account.type}</td>
                       <td>${tempExpense.comment}</td>
                       <td>
-                        <a href="${deleteLink}" data-toggle="modal" data-target="#deleteModal">Delete</a>
+                        <a href="${deleteLink}" data-toggle="modal" data-target="#deleteModal" onclick="window.id=${tempExpense.expenseId}">Delete</a>
                       </td>
                     </tr>
                     </c:forEach>
@@ -111,10 +111,7 @@
                         <div class="modal-body">Expense will be deleted</div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-<%--                          <form:form method="post">--%>
-<%--                            <input type="submit" value="Delete" class="btn btn-primary">--%>
-<%--                          </form:form>--%>
-                          <a class="btn btn-primary" href="${deleteLink}">Delete</a>
+                          <a class="btn btn-primary" href="#" onclick="location.href='/expense/delete?expenseId='+window.id">Delete</a>
                         </div>
                       </div>
                     </div>

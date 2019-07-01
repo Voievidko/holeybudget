@@ -64,7 +64,7 @@
               </div>
               Sum to transfer
               <div class="form-group">
-                <input type="text" name="sum" class="form-control">
+                <input type="text" name="sum" class="form-control" placeholder="Enter summary">
               </div>
 
                 <input type="submit" value="Transfer" class="btn btn-primary btn-user btn-block"/>

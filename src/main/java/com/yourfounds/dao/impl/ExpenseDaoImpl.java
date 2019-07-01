@@ -27,7 +27,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        Query<Expense> query = session.createQuery("FROM Expense where username = :param", Expense.class);
+        Query<Expense> query = session.createQuery("FROM Expense WHERE username = :param", Expense.class);
         query.setParameter("param", Util.getCurrentUser());
         return query.getResultList();
     }

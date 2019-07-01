@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,9 +19,6 @@
 
   <!-- Custom styles for this template-->
   <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-  <style>
-
-  </style>
 
 </head>
 
@@ -40,30 +38,32 @@
         <%@include file="../topbar.jsp"%>
 
         <!-- Begin Page Content -->
-        <div class="container-fluid add-user">
+        <div class="container-fluid">
 
 <%--          <!-- Page Heading -->--%>
 <%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
           <div class="p-5">
-            <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Add category</h1>
+            <div class="text-left">
+              <h1 class="h4 text-gray-900 mb-4">Can't delete category</h1>
+              <p>For delete your account <b>${accountToDelete.type}</b> reassign all your expenses and money on this account to other account.
+              Assign all wastes from <b>${accountToDelete.type}</b> to </p>
             </div>
+            <div class="form-group row">
 
-            <form:form action="addProcess" modelAttribute="category">
-            <div class="form-group">
-              <form:input path="name" cssClass="form-control" placeholder="Category name"/>
+              <div class="col-sm-6 mb-3 mb-sm-0">
+                <b>existing account</b><br>
+                  <form action="transferToExistAccount">
+                      <select name="accountId" class="form-control">
+                        <c:forEach var="tempAccount" items="${accounts}">
+                          <option value=${tempAccount.accountId} class="dropdown-item">${tempAccount.type}</option>
+                        </c:forEach>
+                      </select>
+                    <br>
+                    <input type="submit" value="Submit" class="btn btn-primary btn-user btn-block">
+                    <input type="hidden" name="accountToDelete" value=${accountToDelete.accountId} hidden="true">
+                  </form>
+              </div>
             </div>
-            <div class="form-group">
-              <form:input path="description" cssClass="form-control" placeholder="Description"/>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="income">
-                <label class="form-check-label" for="exampleCheck1">Income category</label>
-            </div>
-              <input type="submit" value="Add" class="btn btn-primary btn-user btn-block"/>
-            </form:form>
-
-            <hr>
           </div>
 
         </div>
@@ -96,6 +96,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../js/sb-admin-2.min.js"></script>
+
 </body>
 
 </html>

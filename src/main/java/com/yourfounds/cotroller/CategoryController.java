@@ -1,6 +1,5 @@
 package com.yourfounds.cotroller;
 
-import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Category;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.CategoryService;
@@ -25,13 +24,21 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("all")
-    public String listCategories (Model model){
-        // get categories from DAO
-        List<Category> categories = categoryService.getCategories();
+    @GetMapping("allexpense")
+    public String listExpenseCategories (Model model){
+        List<Category> categories = categoryService.getAllExpenseCategories();
 
-        // add customers to the model
         model.addAttribute("categories", categories);
+        model.addAttribute("categoryType", "expense");
+        return "category/all";
+    }
+
+    @GetMapping("allincome")
+    public String listIncomeCategories (Model model){
+        List<Category> categories = categoryService.getAllIncomeCategories();
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("categoryType", "income");
         return "category/all";
     }
 
@@ -63,7 +70,7 @@ public class CategoryController {
             //and propose to create new category
             //or transfer expenses to exist category
             Category categoryToDelete = categoryService.getCategory(categoryId);
-            List<Category> categories = categoryService.getCategories();
+            List<Category> categories = categoryService.getAllExpenseCategories();
             categories.remove(categoryToDelete);
 
             Category category = new Category();
@@ -101,6 +108,8 @@ public class CategoryController {
 
     @RequestMapping("transferToNewCategory")
     public String transferToNewCategoryAndDelete(@ModelAttribute("newCategory") Category category, @ModelAttribute("categoryToDelete") int fromCategoryId, Model model){
+        String username = Util.getCurrentUser();
+        category.setUser(userService.getUser(username));
         categoryService.addCategory(category);
         categoryService.replaceCategoryInAllExpenses(fromCategoryId, category.getCategoryId());
         return "success";

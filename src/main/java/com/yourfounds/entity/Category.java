@@ -23,6 +23,9 @@ public class Category {
     @JoinColumn(name = "username")
     private User user;
 
+    @Column(name = "income")
+    private boolean income;
+
     public Category() {
     }
 
@@ -58,6 +61,13 @@ public class Category {
         this.user = user;
     }
 
+    public boolean isIncome() {
+        return income;
+    }
+
+    public void setIncome(boolean income) {
+        this.income = income;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -67,11 +77,12 @@ public class Category {
         return getCategoryId() == category.getCategoryId() &&
                 Objects.equals(getName(), category.getName()) &&
                 Objects.equals(getDescription(), category.getDescription()) &&
+                Objects.equals(isIncome(), category.isIncome()) &&
                 Objects.equals(getUser().getUsername(), category.getUser().getUsername());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getCategoryId(), getName(), getDescription(), getUser());
+        return Objects.hash(getCategoryId(), isIncome(), getName(), getDescription(), getUser());
     }
 }

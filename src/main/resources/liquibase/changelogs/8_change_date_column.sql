@@ -1,0 +1,1 @@
+ALTER TABLE expense MODIFY COLUMN `date` DATETIME;

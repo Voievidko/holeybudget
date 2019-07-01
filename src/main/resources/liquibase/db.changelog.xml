@@ -26,4 +26,10 @@
     <changeSet id="7" author="voievidko">
         <sqlFile path="src/main/resources/liquibase/changelogs/7_create_authority_table.sql"></sqlFile>
     </changeSet>
+    <changeSet id="8" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/8_change_date_column.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="8" author="voievidko">
+        <sqlFile path="src/main/resources/liquibase/changelogs/9_add_income_boolean_to_category_table.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

@@ -89,7 +89,7 @@
                       <td>${tempAccount.description}</td>
                       <td>
                         <a href="${updateLink}">Update</a>
-                        <a href="${deleteLink}" data-toggle="modal" data-target="#deleteModal">Delete</a>
+                        <a href="${deleteLink}" data-toggle="modal" data-target="#deleteModal" onclick="window.id=${tempAccount.accountId}">Delete</a>
                       </td>
                     </tr>
                     </c:forEach>
@@ -107,9 +107,7 @@
                         <div class="modal-body">Account <b>${tempAccount.type}</b> will be deleted</div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <form:form action="${deleteLink}" method="post">
-                            <input type="submit" value="Delete" class="btn btn-primary">
-                          </form:form>
+                          <a class="btn btn-primary" href="#" onclick="location.href='/account/delete?accountId='+window.id">Delete</a>
                         </div>
                       </div>
                     </div>

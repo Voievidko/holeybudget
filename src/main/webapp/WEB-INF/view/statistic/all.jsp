@@ -18,9 +18,6 @@
 
   <!-- Custom styles for this template-->
   <link href="../css/sb-admin-2.min.css" rel="stylesheet">
-  <style>
-
-  </style>
 
 </head>
 
@@ -40,30 +37,12 @@
         <%@include file="../topbar.jsp"%>
 
         <!-- Begin Page Content -->
-        <div class="container-fluid add-user">
+        <div class="container-fluid">
 
-<%--          <!-- Page Heading -->--%>
-<%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
           <div class="p-5">
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Add category</h1>
+              <h1 class="h4 text-gray-900 mb-4">Statistic will be soon</h1>
             </div>
-
-            <form:form action="addProcess" modelAttribute="category">
-            <div class="form-group">
-              <form:input path="name" cssClass="form-control" placeholder="Category name"/>
-            </div>
-            <div class="form-group">
-              <form:input path="description" cssClass="form-control" placeholder="Description"/>
-            </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1" name="income">
-                <label class="form-check-label" for="exampleCheck1">Income category</label>
-            </div>
-              <input type="submit" value="Add" class="btn btn-primary btn-user btn-block"/>
-            </form:form>
-
-            <hr>
           </div>
 
         </div>
@@ -96,6 +75,7 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../js/sb-admin-2.min.js"></script>
+
 </body>
 
 </html>

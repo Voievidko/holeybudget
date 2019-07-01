@@ -42,7 +42,7 @@
 
           <div class="p-5">
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Add expense</h1>
+              <h1 class="h4 text-gray-900 mb-4">Add ${type}</h1>
             </div>
 
             <form:form action="addProcess" modelAttribute="expense">
@@ -50,7 +50,7 @@
               <div class="form-group">
                 <form:input path="sum" cssClass="form-control" placeholder="Expense sum"/>
 <%--                <div class="alert alert-danger" role="alert">--%>
-<%--                  <form:errors path="sum"/>--%>
+                  <form:errors path="sum" cssClass="alert"/>
 <%--                </div>--%>
               </div>
 

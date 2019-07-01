@@ -5,6 +5,7 @@ import com.yourfounds.dao.ExpenseDao;
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Expense;
 import com.yourfounds.service.ExpenseService;
+import com.yourfounds.util.Calculation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +25,12 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Transactional
     public void addExpense(Expense expense) {
         Account account = expense.getAccount();
-        account.substract(expense.getSum());
+        if (expense.getCategory().isIncome()){
+            account.plus(expense.getSum());
+        } else {
+            account.substract(expense.getSum());
+        }
+
         accountDao.update(account);
         expenseDao.save(expense);
     }
@@ -46,7 +52,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getExpensesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getAllBetweenDates(getFirstDayOfCurrentMonth(), getLastDayOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getAllBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -72,15 +78,17 @@ public class ExpenseServiceImpl implements ExpenseService {
         return Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
     }
 
-    private Date getFirstDayOfCurrentMonth(){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return cal.getTime();
-    }
-
-    private Date getLastDayOfCurrentMonth(){
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return cal.getTime();
-    }
+//    private Date getFirstDayOfCurrentMonth(){
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
+//        System.out.println(cal.toString());
+//        return cal.getTime();
+//    }
+//
+//    private Date getLastDayOfCurrentMonth(){
+//        Calendar cal = Calendar.getInstance();
+//        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+//        System.out.println(cal.toString());
+//        return cal.getTime();
+//    }
 }

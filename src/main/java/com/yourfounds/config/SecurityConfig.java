@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(new BCryptPasswordEncoder());
     }
 
+    /*
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests() // Restrict access based on HttpServletRequest
@@ -51,5 +53,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .logout().permitAll() // Allow everyone to logout
                 .and()
                     .exceptionHandling().accessDeniedPage("/access-denied");
+    }
+    */
+    @Override
+    protected void configure(HttpSecurity http) throws Exception{
+        http
+            .authorizeRequests()
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/user/forgetpassword").permitAll()
+                .antMatchers("/user/register").permitAll()
+                .antMatchers("/css/**").permitAll()
+                .antMatchers("/img/**").permitAll()
+                .antMatchers("/js/**").permitAll()
+                .antMatchers("/vendor/**").permitAll()
+                .antMatchers("/vendor/**").permitAll()
+                .antMatchers("/user/all").hasRole("ADMIN")
+                .antMatchers("/**").hasRole("USER")
+                .anyRequest().authenticated()
+            .and()
+            .formLogin() //granting access to all users to login page
+                .loginPage("/login")
+                .loginProcessingUrl("/authenticate")
+                .permitAll()
+            .and()
+            .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .permitAll()
+            .and()
+            .httpBasic();
+
     }
 }

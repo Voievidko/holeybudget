@@ -5,6 +5,8 @@ import com.yourfounds.entity.User;
 import com.yourfounds.service.AuthorityService;
 import com.yourfounds.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +34,11 @@ public class UserController {
 
     @RequestMapping("register")
     public String register(Model model){
+        //logout if user login
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.isAuthenticated()){
+            authentication.setAuthenticated(false);
+        }
 
         User user = new User();
         model.addAttribute("user", user);
@@ -55,7 +62,7 @@ public class UserController {
         authority.setAuthority("ROLE_USER");
         authority.setUsername(user);
         authorityService.saveAuthority(authority);
-        return "success";
+        return "/login";
     }
 
     @RequestMapping("forgetpassword")

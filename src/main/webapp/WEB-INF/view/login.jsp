@@ -44,9 +44,16 @@
                     <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                   </div>
 
-                  <c:if test="${param.error != null}">
-                    <i>Sorry! You entered invalid username or password</i>
-                  </c:if>
+                    <c:if test="${param.error != null}">
+                        <p>
+                            Invalid username or password.
+                        </p>
+                    </c:if>
+                    <c:if test="${param.logout != null}">
+                        <p>
+                            You have been logged out.
+                        </p>
+                    </c:if>
 
 <%--                  <form class="user">--%>
                   <form:form action="/authenticate" method="post">

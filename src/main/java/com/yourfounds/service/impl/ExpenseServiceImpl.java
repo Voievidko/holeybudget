@@ -52,7 +52,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getExpensesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getAllBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getAllExpenseBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }

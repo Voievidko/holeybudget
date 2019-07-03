@@ -74,6 +74,18 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    @Transactional
+    public Double getSumOfExpenseForCurrentMonth(){
+        return expenseDao.getSumExpensesBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
+    }
+
+    @Override
+    @Transactional
+    public Double getSumIncomeBetweenDates() {
+        return expenseDao.getSumIncomeBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
+    }
+
+    @Override
     public String getCurrentMonthName() {
         return Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
     }

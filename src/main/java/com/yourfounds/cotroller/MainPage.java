@@ -2,6 +2,7 @@ package com.yourfounds.cotroller;
 
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.User;
+import com.yourfounds.service.ExpenseService;
 import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
 import com.yourfounds.util.Util;
@@ -26,6 +27,9 @@ public class MainPage {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ExpenseService expenseService;
+
     @RequestMapping(value = "/")
     public String getMainPage(HttpServletRequest request){
         String username = Util.getCurrentUser();
@@ -33,6 +37,8 @@ public class MainPage {
         List<Account> accountList = user.getAccounts();
         request.getSession().setAttribute("username", username);
         request.getSession().setAttribute("totalSum", Calculation.accountSum(accountList));
+        request.getSession().setAttribute("spendCurrentMonth", expenseService.getSumOfExpenseForCurrentMonth());
+        request.getSession().setAttribute("earnCurrentMonth", expenseService.getSumIncomeBetweenDates());
         return "index";
     }
 }

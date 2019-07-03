@@ -62,4 +62,31 @@ public class ExpenseDaoImpl implements ExpenseDao {
                 .list();
         return expenses;
     }
+
+    @Override
+    public Double getSumExpensesBetweenDates(Date dateFrom, Date dateTo){
+        Session session = sessionFactory.getCurrentSession();
+        // select c.customerName, c.customerCity, i.itemName,i.price from Customer c left join c.items i
+        Double result = (Double)session.createQuery("SELECT SUM(e.sum) FROM Expense e LEFT JOIN e.category " +
+                "WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
+                .setParameter("stDate", dateFrom)
+                .setParameter("edDate", dateTo)
+                .setParameter("param", Util.getCurrentUser()) // AND e.user = :param
+                .getSingleResult();
+        if (result == null) return 0d;
+        return result;
+    }
+
+    @Override
+    public Double getSumIncomeBetweenDates(Date dateFrom, Date dateTo){
+        Session session = sessionFactory.getCurrentSession();
+        Double result = (Double)session.createQuery("SELECT SUM(e.sum) FROM Expense e LEFT JOIN e.category " +
+                "WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
+                .setParameter("stDate", dateFrom)
+                .setParameter("edDate", dateTo)
+                .setParameter("param", Util.getCurrentUser())
+                .getSingleResult();
+        if (result == null) return 0d;
+        return result;
+    }
 }

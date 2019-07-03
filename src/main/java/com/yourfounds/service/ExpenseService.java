@@ -2,6 +2,7 @@ package com.yourfounds.service;
 
 import com.yourfounds.entity.Expense;
 
+import java.util.Date;
 import java.util.List;
 
 public interface ExpenseService {
@@ -13,4 +14,6 @@ public interface ExpenseService {
     void deleteExpenseById(int id);
 
     String getCurrentMonthName();
+    Double getSumOfExpenseForCurrentMonth();
+    Double getSumIncomeBetweenDates();
 }

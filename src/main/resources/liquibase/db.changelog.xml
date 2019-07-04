@@ -6,30 +6,30 @@
     http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="1" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/1_initial_script.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/1_initial_script.sql"></sqlFile>
     </changeSet>
     <changeSet id="2" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/2_rename_description_column.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/2_rename_description_column.sql"></sqlFile>
     </changeSet>
     <changeSet id="3" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/3_change_table_relationships.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/3_change_table_relationships.sql"></sqlFile>
     </changeSet>
     <changeSet id="4" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/4_add_account_to_expense_table.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/4_add_account_to_expense_table.sql"></sqlFile>
     </changeSet>
     <changeSet id="5" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/5_add_user_to_category_table.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/5_add_user_to_category_table.sql"></sqlFile>
     </changeSet>
     <changeSet id="6" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/6_change_user_table.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/6_change_user_table.sql"></sqlFile>
     </changeSet>
     <changeSet id="7" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/7_create_authority_table.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/7_create_authority_table.sql"></sqlFile>
     </changeSet>
     <changeSet id="8" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/8_change_date_column.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/8_change_date_column.sql"></sqlFile>
     </changeSet>
-    <changeSet id="8" author="voievidko">
-        <sqlFile path="src/main/resources/liquibase/changelogs/9_add_income_boolean_to_category_table.sql"></sqlFile>
+    <changeSet id="9" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/9_add_income_boolean_to_category_table.sql"></sqlFile>
     </changeSet>
 </databaseChangeLog>

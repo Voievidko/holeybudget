@@ -30,14 +30,14 @@ public class AppConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 
-    @Bean
-    public MessageSource messageSource() {
-        var messageSource = new ResourceBundleMessageSource();
-        messageSource.setBasenames("resources/messages");
-        messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setUseCodeAsDefaultMessage(true);
-        return messageSource;
-    }
+//    @Bean
+//    public MessageSource messageSource() {
+//        var messageSource = new ResourceBundleMessageSource();
+//        messageSource.setBasenames("resources/messages");
+//        messageSource.setDefaultEncoding("UTF-8");
+//        messageSource.setUseCodeAsDefaultMessage(true);
+//        return messageSource;
+//    }
 
     // equivalents for <mvc:resources/> tags
     @Override
@@ -45,6 +45,7 @@ public class AppConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(31556926);
         registry.addResourceHandler("/img/**").addResourceLocations("/img/").setCachePeriod(31556926);
         registry.addResourceHandler("/js/**").addResourceLocations("/js/").setCachePeriod(31556926);
+        registry.addResourceHandler("/webapp/**").addResourceLocations("/webapp/");
     }
 
     // equivalent for <mvc:default-servlet-handler/> tag

@@ -10,15 +10,16 @@
     <packaging>war</packaging>
     <properties>
         <java.version>11</java.version>
-        <mysql.driver.version>8.0.11</mysql.driver.version>
+        <mysql.driver.version>8.0.16</mysql.driver.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
-        <liquibase.driver.version>3.6.1</liquibase.driver.version>
+        <liquibase.driver.version>3.6.3</liquibase.driver.version>
         <liquibase.plugin.version>3.6.3</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
         <spring.framework.version>5.1.6.RELEASE</spring.framework.version>
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
+        <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
         <junit.version>5.4.0</junit.version>
@@ -102,6 +103,31 @@
             <version>${spring.security.version}</version>
         </dependency>
 
+        <!--Spring boot-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
         <!--For Hibernate in Java 10-->
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
@@ -170,6 +196,7 @@
                 <version>${liquibase.plugin.version}</version>
                 <configuration>
                     <propertyFile>src/main/resources/liquibase/liquibase.properties</propertyFile>
+                    <changeLogFile>src/main/resources/liquibase/db.changelog.xml</changeLogFile>
                 </configuration>
                 <executions>
                     <execution>

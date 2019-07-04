@@ -15,11 +15,11 @@
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
         <liquibase.driver.version>3.6.3</liquibase.driver.version>
         <liquibase.plugin.version>3.6.3</liquibase.plugin.version>
-        <hibernate.entitymanager.version>5.3.1.Final</hibernate.entitymanager.version>
+        <hibernate.entitymanager.version>5.4.3.Final</hibernate.entitymanager.version>
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
-        <spring.framework.version>5.1.6.RELEASE</spring.framework.version>
+        <spring.framework.version>5.1.8.RELEASE</spring.framework.version>
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
-        <spring.boot.version>2.1.6.RELEASE</spring.boot.version>
+        <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
         <junit.version>5.4.0</junit.version>
@@ -126,6 +126,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring.boot.version}</version>
+        </dependency>
+
+        <!--This solves problem with Spring boot and JSP files-->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+            <version>9.0.21</version>
         </dependency>
 
         <!--For Hibernate in Java 10-->

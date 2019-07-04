@@ -7,7 +7,6 @@
     <groupId>com.yourfounds</groupId>
     <artifactId>yourfounds</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <packaging>war</packaging>
     <properties>
         <java.version>11</java.version>
         <mysql.driver.version>8.0.16</mysql.driver.version>

@@ -32,4 +32,7 @@
     <changeSet id="9" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/9_add_income_boolean_to_category_table.sql"></sqlFile>
     </changeSet>
+    <changeSet id="10" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/10_change_type_for_date_column_in_expense.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

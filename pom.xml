@@ -20,8 +20,8 @@
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
         <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
-        <junit.version>5.4.0</junit.version>
     </properties>
 
     <dependencies>
@@ -37,6 +37,17 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>${javax.servlet.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <!--If you need for loop and prefix 'c' in JSP files-->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${javax.servlet.jstl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>${javax.servlet.jsp.version}</version>
         </dependency>
 
         <!--Databases-->
@@ -103,24 +114,16 @@
         </dependency>
 
         <!--Spring boot-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-parent</artifactId>-->
-<!--            <version>${spring.boot.version}</version>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -142,12 +145,7 @@
         </dependency>
 
         <!--Testing-->
-        <!--<dependency>-->
-            <!--<groupId>org.junit</groupId>-->
-            <!--<artifactId>junit-bom</artifactId>-->
-            <!--<version>${junit.version}</version>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
+        <!--Soon-->
 
         <!--From SDK 9, for JAXB to work for web services it's needed-->
         <!--to have the following dependencies, since they are not part of the SDK.-->
@@ -166,32 +164,11 @@
             <artifactId>activation</artifactId>
             <version>1.1.1</version>
         </dependency>
-
-        <!--If you need for loop and prefix 'c' in JSP files-->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>${javax.servlet.jsp.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
         <finalName>YourFounds</finalName>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <executable>true</executable>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -203,42 +180,6 @@
                     <compilerVersion>${java.version}</compilerVersion>
                 </configuration>
             </plugin>
-            <!--Need to customize maven build. Since we're not using web.xml-->
-<!--            <plugin>-->
-<!--                <artifactId>maven-war-plugin</artifactId>-->
-<!--                <version>${maven.war.plugin.version}</version>-->
-<!--                <configuration>-->
-<!--                    <failOnMissingWebXml>false</failOnMissingWebXml>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                &lt;!&ndash; Build an executable JAR &ndash;&gt;-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-jar-plugin</artifactId>-->
-<!--                <version>3.1.2</version>-->
-<!--                <configuration>-->
-<!--                    <archive>-->
-<!--                        <manifest>-->
-<!--                            <addClasspath>true</addClasspath>-->
-<!--                            <classpathPrefix>lib/</classpathPrefix>-->
-<!--                            <mainClass>com.yourfounds.Application</mainClass>-->
-<!--                        </manifest>-->
-<!--                    </archive>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-<!--            <plugin>-->
-<!--                <artifactId>maven-assembly-plugin</artifactId>-->
-<!--                <configuration>-->
-<!--                    <archive>-->
-<!--                        <manifest>-->
-<!--                            <mainClass>com.yourfounds.Application</mainClass>-->
-<!--                        </manifest>-->
-<!--                    </archive>-->
-<!--                    <descriptorRefs>-->
-<!--                        <descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--                    </descriptorRefs>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -52,7 +53,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getExpensesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getAllExpenseBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getAllExpenseBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -76,31 +77,29 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public Double getSumOfExpenseForCurrentMonth(){
-        return expenseDao.getSumExpensesBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
+        return expenseDao.getSumExpensesBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
     }
 
     @Override
     @Transactional
-    public Double getSumIncomeBetweenDates() {
-        return expenseDao.getSumIncomeBetweenDates(Calculation.getStartOfCurrentMonth(), Calculation.getEndOfCurrentMonth());
+    public Double getSumOfIncomeBetweenDates() {
+        return expenseDao.getSumIncomeBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+    }
+
+    @Override
+    @Transactional
+    public List<Expense> getAllIncomeDuringYear() {
+        LocalDate today = LocalDate.now();
+        LocalDate dateFrom = LocalDate
+                .now()
+                .minusYears(1)
+                .minusDays(today.getDayOfMonth() - 1)
+                .plusMonths(1);
+        return expenseDao.getAllIncomeBetweenDates(dateFrom, today);
     }
 
     @Override
     public String getCurrentMonthName() {
         return Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
     }
-
-//    private Date getFirstDayOfCurrentMonth(){
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMinimum(Calendar.DAY_OF_MONTH));
-//        System.out.println(cal.toString());
-//        return cal.getTime();
-//    }
-//
-//    private Date getLastDayOfCurrentMonth(){
-//        Calendar cal = Calendar.getInstance();
-//        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-//        System.out.println(cal.toString());
-//        return cal.getTime();
-//    }
 }

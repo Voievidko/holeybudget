@@ -7,10 +7,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="YourFounds - it's about money">
+  <meta name="author" content="Roman Voievidko">
 
-  <title>SB Admin 2 - Blank</title>
+  <title>YourFounds - it's about money</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -44,14 +44,14 @@
 
 <%--          <!-- Page Heading -->--%>
 <%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
-          <div class="p-5">
+          <div class="p-1">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Add category</h1>
             </div>
 
             <form:form action="addProcess" modelAttribute="category">
             <div class="form-group">
-              <form:input path="name" cssClass="form-control" placeholder="Category name"/>
+              <form:input path="name" cssClass="form-control" placeholder="Category name"  autofocus="autofocus"/>
             </div>
             <div class="form-group">
               <form:input path="description" cssClass="form-control" placeholder="Description"/>

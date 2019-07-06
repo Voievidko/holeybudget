@@ -100,7 +100,7 @@ public class AccountController {
     @RequestMapping("transferProcess")
     public String transferMoneyBetweenAccountsProcess(@ModelAttribute("accountFrom") int accountFrom,
                                                       @ModelAttribute("accountTo") int accountTo,
-                                                      @ModelAttribute("sum") double sum){
+                                                      @ModelAttribute("sum") Double sum){
         accountService.transferMoneyBetweenAccounts(accountFrom, accountTo, sum);
         return "success";
     }

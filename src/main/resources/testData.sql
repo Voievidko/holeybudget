@@ -13,7 +13,7 @@ insert into `authority` (`username`, `authority`) values ("user1", "ROLE_USER");
 insert into `authority` (`username`, `authority`) values ("user2", "ROLE_USER");
 
 insert into expense (`expense_id`, `sum`, `category_id`, `date`, `time`, `comment`, `username`, `account_id`)
-values (10, 200.2, 8, '2019-6-30', '2019-6-30 13:59:59.999999', "some comment", "user1", 1);
+values (9, 200.2, 2, '2019-6-30', '13:59:59.999999', 'some comment', 'user1', 1);
 
 # delete all data
 delete from `expense` where expense_id > 0;

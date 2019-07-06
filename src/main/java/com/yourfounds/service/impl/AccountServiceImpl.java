@@ -66,7 +66,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public boolean transferMoneyBetweenAccounts(int fromAccountId, int toAccountId, double sum) {
+    public boolean transferMoneyBetweenAccounts(int fromAccountId, int toAccountId, Double sum) {
         Account accountFrom = accountDao.get(fromAccountId);
         Account accountTo = accountDao.get(toAccountId);
         accountFrom.substract(sum);

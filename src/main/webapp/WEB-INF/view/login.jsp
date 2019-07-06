@@ -10,10 +10,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="YourFounds - it's about money">
+  <meta name="author" content="Roman Voievidko">
 
-  <title>SB Admin 2 - Login</title>
+  <title>YourFounds - it's about money</title>
 
   <!-- Custom fonts for this template-->
   <link href="../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -58,7 +58,7 @@
 <%--                  <form class="user">--%>
                   <form:form action="/authenticate" method="post">
                     <div class="form-group">
-                      <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username">
+                      <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username" autofocus="autofocus">
                     </div>
                     <div class="form-group">
                       <input type="password"  name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">

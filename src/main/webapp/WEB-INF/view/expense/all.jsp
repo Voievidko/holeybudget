@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib  prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,10 +12,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="YourFounds - it's about money">
+  <meta name="author" content="Roman Voievidko">
 
-  <title>SB Admin 2 - Tables</title>
+  <title>YourFounds - it's about money</title>
 
   <!-- Custom fonts for this template -->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -86,7 +87,8 @@
                     </c:url>
                     <tr>
                       <td>
-                        <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />
+<%--                        <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />--%>
+                        <javatime:parseLocalDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />
                       </td>
                       <td>${tempExpense.sum}</td>
                       <td>${tempExpense.category.name}</td>

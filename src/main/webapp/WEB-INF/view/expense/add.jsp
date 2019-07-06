@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,10 +9,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="YourFounds - it's about money">
+  <meta name="author" content="Roman Voievidko">
 
-  <title>SB Admin 2 - Blank</title>
+  <title>YourFounds - it's about money</title>
 
   <!-- Custom fonts for this template-->
   <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -40,7 +41,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <div class="p-5">
+          <div class="p-1">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Add ${type}</h1>
             </div>
@@ -48,10 +49,8 @@
             <form:form action="addProcess" modelAttribute="expense">
 
               <div class="form-group">
-                <form:input path="sum" cssClass="form-control" placeholder="Expense sum"/>
-<%--                <div class="alert alert-danger" role="alert">--%>
-                  <form:errors path="sum" cssClass="alert"/>
-<%--                </div>--%>
+                <form:input path="sum" cssClass="form-control" placeholder="Summary of your expense" type="number" step="any" autofocus="autofocus"/>
+                <form:errors path="sum" cssClass="alert"/>
               </div>
 
               <div class="form-group">

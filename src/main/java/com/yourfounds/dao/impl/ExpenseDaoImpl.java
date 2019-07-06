@@ -10,7 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -55,9 +55,9 @@ public class ExpenseDaoImpl implements ExpenseDao {
     }
 
     @Override
-    public List<Expense> getAllExpenseBetweenDates(Date dateFrom, Date dateTo) {
+    public List<Expense> getAllExpenseBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category where e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
+        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
                 .setParameter("param", Util.getCurrentUser())
@@ -66,7 +66,18 @@ public class ExpenseDaoImpl implements ExpenseDao {
     }
 
     @Override
-    public Double getSumExpensesBetweenDates(Date dateFrom, Date dateTo){
+    public List<Expense> getAllIncomeBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
+        Session session = sessionFactory.getCurrentSession();
+        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
+                .setParameter("stDate", dateFrom)
+                .setParameter("edDate", dateTo)
+                .setParameter("param", Util.getCurrentUser())
+                .list();
+        return expenses;
+    }
+
+    @Override
+    public Double getSumExpensesBetweenDates(LocalDate dateFrom, LocalDate dateTo){
         Session session = sessionFactory.getCurrentSession();
         // select c.customerName, c.customerCity, i.itemName,i.price from Customer c left join c.items i
         Double result = (Double)session.createQuery("SELECT SUM(e.sum) FROM Expense e LEFT JOIN e.category " +
@@ -80,7 +91,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     }
 
     @Override
-    public Double getSumIncomeBetweenDates(Date dateFrom, Date dateTo){
+    public Double getSumIncomeBetweenDates(LocalDate dateFrom, LocalDate dateTo){
         Session session = sessionFactory.getCurrentSession();
         Double result = (Double)session.createQuery("SELECT SUM(e.sum) FROM Expense e LEFT JOIN e.category " +
                 "WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")

@@ -10,7 +10,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema yourfoundsdb
 -- -----------------------------------------------------
-
+CREATE DATABASE  IF NOT EXISTS `yourfoundsdb`
+  CHARACTER SET utf8
+  COLLATE utf8_general_ci;
 -- -----------------------------------------------------
 -- Table `yourfoundsdb`.`category`
 -- -----------------------------------------------------
@@ -19,7 +21,7 @@ CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`category` (
   `name` VARCHAR(50) NOT NULL,
   `desciption` VARCHAR(50) NULL,
   PRIMARY KEY (`category_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -39,7 +41,7 @@ CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`expense` (
     REFERENCES `yourfoundsdb`.`category` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -51,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`account` (
   `summary` DECIMAL(18,2) NOT NULL,
   `description` VARCHAR(300) NOT NULL,
   PRIMARY KEY (`account_id`))
-ENGINE = InnoDB;
+ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 -- -----------------------------------------------------
@@ -78,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `yourfoundsdb`.`user` (
     REFERENCES `yourfoundsdb`.`account` (`account_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

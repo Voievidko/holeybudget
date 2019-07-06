@@ -23,7 +23,7 @@ public class Expense implements Comparable<Expense>{
     @Column(name = "sum")
     @NotNull(message = "is required")
     @Min(value = 0, message = "Sum can't have minus value")
-    private double sum;
+    private Double sum;
 
     @Column(name = "date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -61,11 +61,11 @@ public class Expense implements Comparable<Expense>{
         this.expenseId = expenseId;
     }
 
-    public double getSum() {
+    public Double getSum() {
         return sum;
     }
 
-    public void setSum(double sum) {
+    public void setSum(Double sum) {
         this.sum = sum;
     }
 

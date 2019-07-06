@@ -49,10 +49,8 @@
             <form:form action="addProcess" modelAttribute="expense">
 
               <div class="form-group">
-                <form:input path="sum" cssClass="form-control" placeholder="Expense sum"/>
-<%--                <div class="alert alert-danger" role="alert">--%>
-                  <form:errors path="sum" cssClass="alert"/>
-<%--                </div>--%>
+                <form:input path="sum" cssClass="form-control" placeholder="Summary of your expense" type="number" step="any" autofocus="autofocus"/>
+                <form:errors path="sum" cssClass="alert"/>
               </div>
 
               <div class="form-group">

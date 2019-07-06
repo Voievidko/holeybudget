@@ -46,10 +46,10 @@
 
             <form:form action="addProcess" modelAttribute="account">
             <div class="form-group">
-              <form:input path="type" cssClass="form-control" placeholder="Type of account"/>
+              <form:input path="type" cssClass="form-control" placeholder="Type of account"  autofocus="autofocus"/>
             </div>
             <div class="form-group">
-              <form:input path="summary" cssClass="form-control" placeholder="Started summary"/>
+              <form:input path="summary" cssClass="form-control" placeholder="Started summary" type="number" step="any"/>
             </div>
             <div class="form-group">
               <form:input path="description" cssClass="form-control" placeholder="Description"/>

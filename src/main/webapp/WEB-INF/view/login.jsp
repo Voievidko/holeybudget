@@ -58,7 +58,7 @@
 <%--                  <form class="user">--%>
                   <form:form action="/authenticate" method="post">
                     <div class="form-group">
-                      <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username">
+                      <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username" autofocus="autofocus">
                     </div>
                     <div class="form-group">
                       <input type="password"  name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">

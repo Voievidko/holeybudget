@@ -29,13 +29,13 @@
 
     <li class="nav-item">
         <a class="nav-link" href="/expense/add">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-minus"></i>
             <span>Expense</span></a>
     </li>
 
     <li class="nav-item">
         <a class="nav-link" href="/expense/income">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-plus"></i>
             <span>Income</span></a>
     </li>
 

@@ -16,7 +16,7 @@ public class Account {
     private String type;
 
     @Column(name = "summary")
-    private double summary;
+    private Double summary;
 
     @Column(name = "description")
     private String description;
@@ -45,11 +45,11 @@ public class Account {
         this.type = type;
     }
 
-    public double getSummary() {
+    public Double getSummary() {
         return summary;
     }
 
-    public void setSummary(double summary) {
+    public void setSummary(Double summary) {
         this.summary = summary;
     }
 
@@ -69,11 +69,11 @@ public class Account {
         this.user = user;
     }
 
-    public void substract(double sum){
+    public void substract(Double sum){
         this.summary = this.summary - sum;
     }
 
-    public void plus(double sum){
+    public void plus(Double sum){
         this.summary = this.summary + sum;
     }
 

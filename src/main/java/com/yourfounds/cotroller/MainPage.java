@@ -56,7 +56,7 @@ public class MainPage {
         List<String> monthNames = new ArrayList<>();
         int monthFrom = LocalDate.now().getMonthValue() + 1;
         for (int i = monthFrom; i < monthFrom + 12; i++) {
-            double monthSum = 0d;
+            Double monthSum = 0d;
             int currentMonthNumber = i > 12 ? i % 12 : i;
             for (Expense expense : incomeDuringLastYear) {
                 if ((expense.getDate().getMonthValue()) == currentMonthNumber) {
@@ -78,7 +78,7 @@ public class MainPage {
         List<Double> expenseSumForEachDay = new ArrayList<>();
         List<String> dayNames = new ArrayList<>();
         for (int i = 1; i <= LocalDate.now().lengthOfMonth(); i++){
-            double daySum = 0d;
+            Double daySum = 0d;
             for (Expense expense : expensesThisMonth) {
                 if ((expense.getDate().getDayOfMonth()) == i) {
                     daySum += expense.getSum();
@@ -98,7 +98,7 @@ public class MainPage {
         List<Double> expenseSumForEachCategory = new ArrayList<>();
         List<String> categoryNames = new ArrayList<>();
         for(Category category : categories){
-            double sumByCategory = 0d;
+            Double sumByCategory = 0d;
             for(Expense expense : expensesThisMonth){
                 if(expense.getCategory().getName().equals(category.getName())){
                     sumByCategory += expense.getSum();

@@ -2,6 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib  prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -86,7 +87,8 @@
                     </c:url>
                     <tr>
                       <td>
-                        <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />
+<%--                        <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />--%>
+                        <javatime:parseLocalDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />
                       </td>
                       <td>${tempExpense.sum}</td>
                       <td>${tempExpense.category.name}</td>

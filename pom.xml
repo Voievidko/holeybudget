@@ -44,6 +44,12 @@
             <artifactId>jstl</artifactId>
             <version>${javax.servlet.jstl.version}</version>
         </dependency>
+        <!--Support java.time for JSP-->
+        <dependency>
+            <groupId>net.sargue</groupId>
+            <artifactId>java-time-jsptags</artifactId>
+            <version>1.1.4</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>

@@ -22,7 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Controller
@@ -41,12 +42,12 @@ public class ExpenseController {
     @Autowired
     private UserService userService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        dateFormat.setLenient(false);
-        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
-    }
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        dateFormat.setLenient(false);
+//        binder.registerCustomEditor(LocalDate.class, new CustomDateEditor(dateFormat, false));
+//    }
 
     @RequestMapping("add")
     public String addForm(Model model){
@@ -56,7 +57,7 @@ public class ExpenseController {
         List<Account> accounts = accountService.getAccounts();
 
         //insert today's date
-        expense.setDate(new Date());
+        expense.setDate(LocalDate.now());
 
         model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);
@@ -80,7 +81,7 @@ public class ExpenseController {
                 categories = categoryService.getAllExpenseCategories();
             }
             List<Account> accounts = accountService.getAccounts();
-            expense.setDate(new Date());
+            expense.setDate(LocalDate.now());
             model.addAttribute("categories", categories);
             model.addAttribute("accounts", accounts);
             return "expense/add";
@@ -89,7 +90,7 @@ public class ExpenseController {
         User user = userService.getUser(Util.getCurrentUser());
         expense.setCategory(categoryService.getCategory(category.getCategoryId()));
         expense.setAccount(accountService.getAccount(account.getAccountId()));
-        expense.setTime(new Date());
+        expense.setTime(LocalTime.now());
         expense.setUser(user);
         expenseService.addExpense(expense);
         if (expense.getCategory().isIncome()) {
@@ -108,7 +109,7 @@ public class ExpenseController {
         List<Account> accounts = accountService.getAccounts();
 
         //insert today's date
-        expense.setDate(new Date());
+        expense.setDate(LocalDate.now());
 
         model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);

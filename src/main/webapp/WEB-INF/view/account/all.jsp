@@ -60,6 +60,7 @@
                     <tr>
                       <th>Type</th>
                       <th>Summary</th>
+                      <th>Currency</th>
                       <th>Description</th>
                       <th>Action</th>
                     </tr>
@@ -68,6 +69,7 @@
                     <tr>
                       <th>Type</th>
                       <th>Summary</th>
+                      <th>Currency</th>
                       <th>Description</th>
                       <th>Action</th>
                     </tr>
@@ -86,6 +88,7 @@
                     <tr>
                       <td>${tempAccount.type}</td>
                       <td>${tempAccount.summary}</td>
+                      <td>${tempAccount.currency.getCode()}</td>
                       <td>${tempAccount.description}</td>
                       <td>
                         <a href="${updateLink}">Update</a>
@@ -101,7 +104,7 @@
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabelForDelete">Delete account?</h5>
                           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">x</span>
                           </button>
                         </div>
                         <div class="modal-body">Account <b>${tempAccount.type}</b> will be deleted</div>

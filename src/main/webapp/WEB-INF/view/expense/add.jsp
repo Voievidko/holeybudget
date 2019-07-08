@@ -49,8 +49,16 @@
             <form:form action="addProcess" modelAttribute="expense">
 
               <div class="form-group">
-                <form:input path="sum" cssClass="form-control" placeholder="Summary of your expense" type="number" step="any" autofocus="autofocus"/>
+                <form:input path="sum" cssClass="form-control" placeholder="Summary of your ${type}" type="number" step="any" autofocus="autofocus"/>
                 <form:errors path="sum" cssClass="alert"/>
+              </div>
+
+              <div class="form-group">
+                <select name="code" class="form-control">
+                  <c:forEach var="tempCurrency" items="${currencies}">
+                    <option value=${tempCurrency.code} class="dropdown-item">${tempCurrency.code}</option>
+                  </c:forEach>
+                </select>
               </div>
 
               <div class="form-group">

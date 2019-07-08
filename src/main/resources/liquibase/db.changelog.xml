@@ -35,4 +35,10 @@
     <changeSet id="10" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/10_change_type_for_date_column_in_expense.sql"></sqlFile>
     </changeSet>
+    <changeSet id="11" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/11_add_currency_logic.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="12" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/12_add_currency_to_expense_and_account.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

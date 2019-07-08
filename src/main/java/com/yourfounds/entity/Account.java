@@ -26,6 +26,11 @@ public class Account {
     @JoinColumn(name = "username")
     private User user;
 
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="currency_code")
+    private Currency currency;
+
     public Account() {
     }
 
@@ -67,6 +72,14 @@ public class Account {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public void substract(Double sum){

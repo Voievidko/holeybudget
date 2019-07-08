@@ -112,6 +112,19 @@
         </div>
     </li>
 
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesCurrency" aria-expanded="true" aria-controls="collapsePage">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Currency</span>
+        </a>
+        <div id="collapsePagesCurrency" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/currency/all">Show all</a>
+            </div>
+        </div>
+    </li>
+
     <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="/statistic/all">

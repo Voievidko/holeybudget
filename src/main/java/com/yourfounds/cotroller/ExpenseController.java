@@ -1,13 +1,7 @@
 package com.yourfounds.cotroller;
 
-import com.yourfounds.entity.Account;
-import com.yourfounds.entity.Category;
-import com.yourfounds.entity.Expense;
-import com.yourfounds.entity.User;
-import com.yourfounds.service.AccountService;
-import com.yourfounds.service.CategoryService;
-import com.yourfounds.service.ExpenseService;
-import com.yourfounds.service.UserService;
+import com.yourfounds.entity.*;
+import com.yourfounds.service.*;
 import com.yourfounds.util.Calculation;
 import com.yourfounds.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +34,9 @@ public class ExpenseController {
     private AccountService accountService;
 
     @Autowired
+    private CurrencyService currencyService;
+
+    @Autowired
     private UserService userService;
 
 //    @InitBinder
@@ -59,6 +56,9 @@ public class ExpenseController {
         //insert today's date
         expense.setDate(LocalDate.now());
 
+        List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();
+
+        model.addAttribute("currencies", currencies);
         model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);
         model.addAttribute("accounts", accounts);
@@ -72,7 +72,7 @@ public class ExpenseController {
     @RequestMapping("addProcess")
     public String processForm(@Valid @ModelAttribute("expense") Expense expense, BindingResult bindingResult,
                               @ModelAttribute("tempCategory") Category category, @ModelAttribute("tempAccount") Account account,
-                              Model model){
+                              @ModelAttribute("tempCurrency") Currency currency, Model model){
         if(bindingResult.hasErrors()){
             List<Category> categories;
             if(category.isIncome()){
@@ -88,6 +88,7 @@ public class ExpenseController {
         }
 
         User user = userService.getUser(Util.getCurrentUser());
+        expense.setCurrency(currencyService.get(currency.getCode()));
         expense.setCategory(categoryService.getCategory(category.getCategoryId()));
         expense.setAccount(accountService.getAccount(account.getAccountId()));
         expense.setTime(LocalTime.now());
@@ -110,11 +111,13 @@ public class ExpenseController {
 
         //insert today's date
         expense.setDate(LocalDate.now());
+        List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();
 
+        model.addAttribute("currencies", currencies);
         model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);
         model.addAttribute("accounts", accounts);
-        model.addAttribute("type","Income");
+        model.addAttribute("type","income");
 
         return "expense/add";
     }

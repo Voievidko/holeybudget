@@ -98,7 +98,7 @@
                         <div class="modal-header">
                           <h5 class="modal-title" id="exampleModalLabelForDelete">Delete category?</h5>
                           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
+                            <span aria-hidden="true">x</span>
                           </button>
                         </div>
                         <div class="modal-body">Category <b>${tempCategory.name}</b> will be deleted</div>

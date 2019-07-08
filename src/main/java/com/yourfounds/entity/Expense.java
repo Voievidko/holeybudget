@@ -35,12 +35,12 @@ public class Expense implements Comparable<Expense>{
     @Column(name = "comment")
     private String comment;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
                          CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "account_id")
     private Account account;
@@ -49,6 +49,11 @@ public class Expense implements Comparable<Expense>{
                            CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name="username") //username is a field in expense table
     private User user;
+
+    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name="currency_code")
+    private Currency currency;
 
     public Expense() {
     }
@@ -115,6 +120,14 @@ public class Expense implements Comparable<Expense>{
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     @Override

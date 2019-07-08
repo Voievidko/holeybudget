@@ -1,8 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib  prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,8 +48,8 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">${expenseName}</h1>
-          <p class="mb-4">View or delete your expenses.</p>
+          <h1 class="h3 mb-2 text-gray-800">All currencies</h1>
+          <p class="mb-4">View, change and delete currencies assigned to your account</p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -60,68 +58,55 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Date</th>
-                      <th>Sum</th>
-                      <th>Currency</th>
-                      <th>Category</th>
-                      <th>Account</th>
-                      <th>Comment</th>
+                      <th>Name</th>
+                      <th>Code</th>
+                      <th>Symbol</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Date</th>
-                      <th>Sum</th>
-                      <th>Currency</th>
-                      <th>Category</th>
-                      <th>Account</th>
-                      <th>Comment</th>
+                      <th>Name</th>
+                      <th>Code</th>
+                      <th>Symbol</th>
                       <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                    <c:forEach var="tempExpense" items="${expenses}">
+                    <c:forEach var="tempCurrency" items="${currencies}">
 
                     <!-- construct an "delete" link with customer id -->
-                    <c:url var="deleteLink" value="/expense/delete">
-                      <c:param name="expenseId" value="${tempExpense.expenseId}" />
+                    <c:url var="deleteLink" value="/currency/delete">
+                      <c:param name="currencyId" value="${tempCurrency.code}" />
                     </c:url>
                     <tr>
+                      <td>${tempCurrency.name}</td>
+                      <td>${tempCurrency.code}</td>
+                      <td>${tempCurrency.symbol}</td>
                       <td>
-<%--                        <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />--%>
-                        <javatime:parseLocalDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />
-                      </td>
-                      <td>${tempExpense.sum}</td>
-                      <td>${tempExpense.currency.getCode()}</td>
-                      <td>${tempExpense.category.name}</td>
-                      <td>${tempExpense.account.type}</td>
-                      <td>${tempExpense.comment}</td>
-                      <td>
-                        <a href="${deleteLink}" data-toggle="modal" data-target="#deleteModal" onclick="window.id=${tempExpense.expenseId}">Delete</a>
+                        <a href="#" data-toggle="modal" data-target="#deleteModal" onclick="window.id=${tempCurrency.code}">Delete</a>
                       </td>
                     </tr>
                     </c:forEach>
-                  </tbody>
 
+                  </tbody>
                   <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabelForDelete">Delete expense?</h5>
+                          <h5 class="modal-title" id="exampleModalLabelForDelete">Delete category?</h5>
                           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">x</span>
                           </button>
                         </div>
-                        <div class="modal-body">Expense will be deleted</div>
+                        <div class="modal-body">Currency <b>${tempCurrency.code}</b> will be deleted</div>
                         <div class="modal-footer">
                           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                          <a class="btn btn-primary" href="#" onclick="location.href='/expense/delete?expenseId='+window.id">Delete</a>
+                          <a class="btn btn-primary" href="#" onclick="location.href='/category/delete?categoryId='+window.id">Delete</a>
                         </div>
                       </div>
                     </div>
                   </div>
-
                 </table>
               </div>
             </div>

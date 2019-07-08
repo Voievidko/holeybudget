@@ -2,8 +2,10 @@ package com.yourfounds.cotroller;
 
 import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Account;
+import com.yourfounds.entity.Currency;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.AccountService;
+import com.yourfounds.service.CurrencyService;
 import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
 import com.yourfounds.util.Util;
@@ -26,17 +28,23 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private CurrencyService currencyService;
+
     @RequestMapping("add")
     public String addAccount(Model model){
         Account account = new Account();
+        List<Currency> currencies = currencyService.getAll();
         model.addAttribute("account", account);
+        model.addAttribute("currencies", currencies);
         return "account/add";
     }
 
     @RequestMapping("addProcess")
-    public String processAddAccountForm(@ModelAttribute("account") Account account, Model model){
+    public String processAddAccountForm(@ModelAttribute("account") Account account, @ModelAttribute("tempCurrency") Currency currency, Model model){
         User user = userService.getUser(Util.getCurrentUser());
         account.setUser(user);
+        account.setCurrency(currencyService.get(currency.getCode()));
         accountService.addAccount(account);
         return "success";
     }

@@ -1,6 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,6 +19,9 @@
 
   <!-- Custom styles for this template-->
   <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+  <style>
+
+  </style>
 
 </head>
 
@@ -39,30 +41,25 @@
         <%@include file="../topbar.jsp"%>
 
         <!-- Begin Page Content -->
-        <div class="container-fluid">
+        <div class="container-fluid add-user">
 
+<%--          <!-- Page Heading -->--%>
+<%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
           <div class="p-1">
             <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Add account</h1>
+              <h1 class="h4 text-gray-900 mb-4">Add currency to account</h1>
             </div>
 
-            <form:form action="addProcess" modelAttribute="account">
-            <div class="form-group">
-              <form:input path="type" cssClass="form-control" placeholder="Type of account"  autofocus="autofocus"/>
-            </div>
-            <div class="form-group">
-              <form:input path="summary" cssClass="form-control" placeholder="Started summary" type="number" step="any"/>
-            </div>
-            <div class="form-group">
-              <select name="code" class="form-control">
-                <c:forEach var="tempCurrency" items="${currencies}">
-                  <option value=${tempCurrency.code} class="dropdown-item">${tempCurrency.code}</option>
-                </c:forEach>
-              </select>
-            </div>
-            <div class="form-group">
-              <form:input path="description" cssClass="form-control" placeholder="Description"/>
-            </div>
+
+
+            <form:form action="addProcess">
+              <div class="form-group">
+                <select name="currency" class="form-control">
+                  <c:forEach var="tempCurrency" items="${currencies}">
+                    <option value=${tempCurrency.code} class="dropdown-item">${tempCurrency.code}</option>
+                  </c:forEach>
+                </select>
+              </div>
               <input type="submit" value="Add" class="btn btn-primary btn-user btn-block"/>
             </form:form>
 
@@ -99,7 +96,6 @@
 
   <!-- Custom scripts for all pages-->
   <script src="../js/sb-admin-2.min.js"></script>
-
 </body>
 
 </html>

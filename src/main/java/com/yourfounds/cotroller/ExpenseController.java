@@ -75,15 +75,19 @@ public class ExpenseController {
                               @ModelAttribute("tempCurrency") Currency currency, Model model){
         if(bindingResult.hasErrors()){
             List<Category> categories;
+            List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();;
             if(category.isIncome()){
                 categories = categoryService.getAllIncomeCategories();
             } else {
                 categories = categoryService.getAllExpenseCategories();
+
             }
             List<Account> accounts = accountService.getAccounts();
             expense.setDate(LocalDate.now());
+
             model.addAttribute("categories", categories);
             model.addAttribute("accounts", accounts);
+            model.addAttribute("currencies", currencies);
             return "expense/add";
         }
 
@@ -93,13 +97,52 @@ public class ExpenseController {
         expense.setAccount(accountService.getAccount(account.getAccountId()));
         expense.setTime(LocalTime.now());
         expense.setUser(user);
+
+        if(expense.getCurrency().equals(expense.getAccount().getCurrency())){
+            expenseService.addExpense(expense);
+            if (expense.getCategory().isIncome()) {
+                return "redirect:/";
+            } else {
+                return "redirect:add";
+            }
+        } else {
+            model.addAttribute("expense", expense);
+            return "expense/setcurrency";
+        }
+    }
+
+    @RequestMapping("currencyProcess")
+    public String currencyProcess(@ModelAttribute("currency") Double currency,
+                                  @ModelAttribute("expenseSum") String expenseSum,
+                                  @ModelAttribute("expenseDate") String expenseDate,
+                                  @ModelAttribute("expenseTime") String expenseTime,
+                                  @ModelAttribute("expenseComment") String expenseComment,
+                                  @ModelAttribute("expenseCategory") String expenseCategory,
+                                  @ModelAttribute("expenseAccount") String expenseAccount,
+                                  @ModelAttribute("expenseCurrency") String expenseCurrency,
+                                  Model model){
+        Expense expense = new Expense();
+        expense.setDate(LocalDate.parse(expenseDate));
+        expense.setTime(LocalTime.now());
+        expense.setComment(expenseComment);
+        Category category = categoryService.getCategory(Integer.parseInt(expenseCategory));
+        Account account = accountService.getAccount(Integer.parseInt(expenseAccount));
+        String username = Util.getCurrentUser();
+        User user = userService.getUser(username);
+
+        expense.setCategory(category);
+        expense.setAccount(account);
+        expense.setUser(user);
+        expense.setCurrency(account.getCurrency());
+        expense.setSum(currency);
+
         expenseService.addExpense(expense);
+
         if (expense.getCategory().isIncome()) {
             return "redirect:/";
         } else {
             return "redirect:add";
         }
-
     }
 
     @RequestMapping("income")
@@ -155,5 +198,4 @@ public class ExpenseController {
         model.addAttribute("allMoneySummary", Calculation.accountSum(accounts));
         return "expense/all";
     }
-
 }

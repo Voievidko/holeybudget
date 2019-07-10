@@ -18,7 +18,7 @@ public class Expense implements Comparable<Expense>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "expense_id")
-    private int expenseId;
+    private Integer expenseId;
 
     @Column(name = "sum")
     @NotNull(message = "is required")
@@ -58,11 +58,11 @@ public class Expense implements Comparable<Expense>{
     public Expense() {
     }
 
-    public int getExpenseId() {
+    public Integer getExpenseId() {
         return expenseId;
     }
 
-    public void setExpenseId(int expenseId) {
+    public void setExpenseId(Integer expenseId) {
         this.expenseId = expenseId;
     }
 

@@ -15,4 +15,5 @@ public interface AccountService {
     boolean isAccountHaveRelations(int id);
     int replaceAccountInAllExpenses(int fromAccountId, int toAccountId);
     boolean transferMoneyBetweenAccounts(int fromAccountId, int toAccountId, Double sum);
+    boolean transferMoneyBetweenAccountsWithDifferentCurrency(int fromAccountId, int toAccountId, Double from, Double to);
 }

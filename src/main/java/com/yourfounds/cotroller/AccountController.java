@@ -106,10 +106,31 @@ public class AccountController {
     }
 
     @RequestMapping("transferProcess")
-    public String transferMoneyBetweenAccountsProcess(@ModelAttribute("accountFrom") int accountFrom,
-                                                      @ModelAttribute("accountTo") int accountTo,
-                                                      @ModelAttribute("sum") Double sum){
-        accountService.transferMoneyBetweenAccounts(accountFrom, accountTo, sum);
+    public String transferMoneyBetweenAccountsProcess(@ModelAttribute("accountFrom") int accountFromId,
+                                                      @ModelAttribute("accountTo") int accountToId,
+                                                      @ModelAttribute("sum") Double sum,
+                                                      Model model){
+        Account accountFrom = accountService.getAccount(accountFromId);
+        Account accountTo = accountService.getAccount(accountToId);
+        if (accountFrom.getCurrency().equals(accountTo.getCurrency())){
+            accountService.transferMoneyBetweenAccounts(accountFromId, accountToId, sum);
+            return "success";
+        } else {
+            model.addAttribute("account", accountFrom);
+            model.addAttribute("accountFrom", accountFrom);
+            model.addAttribute("accountTo", accountTo);
+            model.addAttribute("sum", sum);
+            return "account/setcurrency";
+        }
+    }
+
+    @RequestMapping("currencyProcess")
+    public String transferMoneyBetweenAccountsWithDifferentCurrencyProcess(@ModelAttribute("accountFromId") int accountFromId,
+                                                      @ModelAttribute("accountToId") int accountToId,
+                                                      @ModelAttribute("sum") Double sum,
+                                                      @ModelAttribute("currency") Double currency,
+                                                      Model model){
+        accountService.transferMoneyBetweenAccountsWithDifferentCurrency(accountFromId, accountToId, sum, currency);
         return "success";
     }
 }

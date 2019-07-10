@@ -75,4 +75,16 @@ public class AccountServiceImpl implements AccountService {
         accountDao.update(accountTo);
         return true;
     }
+
+    @Override
+    @Transactional
+    public boolean transferMoneyBetweenAccountsWithDifferentCurrency(int fromAccountId, int toAccountId, Double from, Double to) {
+        Account accountFrom = accountDao.get(fromAccountId);
+        Account accountTo = accountDao.get(toAccountId);
+        accountFrom.substract(from);
+        accountTo.plus(to);
+        accountDao.update(accountFrom);
+        accountDao.update(accountTo);
+        return true;
+    }
 }

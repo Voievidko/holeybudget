@@ -44,7 +44,7 @@
 <%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
           <div class="p-5">
             <div class="text-left">
-              <h1 class="h4 text-gray-900 mb-4">Can't delete category</h1>
+              <h1 class="h4 text-gray-900 mb-4">Can't delete account</h1>
               <p>For delete your account <b>${accountToDelete.type}</b> reassign all your expenses and money on this account to other account.
               Assign all wastes from <b>${accountToDelete.type}</b> to </p>
             </div>

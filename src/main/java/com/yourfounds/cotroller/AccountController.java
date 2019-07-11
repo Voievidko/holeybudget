@@ -93,8 +93,20 @@ public class AccountController {
 
     @RequestMapping("transferToExistAccount")
     public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId, @ModelAttribute("accountToDelete") int fromAccountId, Model model){
-        accountService.replaceAccountInAllExpenses(fromAccountId, toAccountId);
-        return "success";
+        Account accountFrom = accountService.getAccount(fromAccountId);
+        Account accountTo = accountService.getAccount(toAccountId);
+
+        if (accountFrom.getCurrency().equals(accountTo.getCurrency())){
+            accountService.replaceAccountInAllExpenses(fromAccountId, toAccountId);
+            return "success";
+        } else {
+            model.addAttribute("account", accountFrom);
+            model.addAttribute("accountFrom", accountFrom);
+            model.addAttribute("accountTo", accountTo);
+            model.addAttribute("sum", accountFrom.getSummary());
+            model.addAttribute("delete", true);
+            return "account/setcurrency";
+        }
     }
 
     @RequestMapping("transfer")
@@ -120,6 +132,7 @@ public class AccountController {
             model.addAttribute("accountFrom", accountFrom);
             model.addAttribute("accountTo", accountTo);
             model.addAttribute("sum", sum);
+            model.addAttribute("delete", false);
             return "account/setcurrency";
         }
     }
@@ -129,8 +142,12 @@ public class AccountController {
                                                       @ModelAttribute("accountToId") int accountToId,
                                                       @ModelAttribute("sum") Double sum,
                                                       @ModelAttribute("currency") Double currency,
+                                                      @ModelAttribute("delete") Boolean deleteAccount,
                                                       Model model){
         accountService.transferMoneyBetweenAccountsWithDifferentCurrency(accountFromId, accountToId, sum, currency);
+        if (deleteAccount){
+            accountService.replaceAccountInAllExpenses(accountFromId, accountToId);
+        }
         return "success";
     }
 }

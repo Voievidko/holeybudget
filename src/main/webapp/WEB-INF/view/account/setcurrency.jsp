@@ -68,6 +68,7 @@
               <input type="hidden" name="accountFromId" value="${accountFrom.accountId}" />
               <input type="hidden" name="accountToId" value="${accountTo.accountId}" />
               <input type="hidden" name="sum" value="${sum}" />
+              <input type="hidden" name="delete" value="${delete}" />
               <input type="submit" value="Add" class="btn btn-primary btn-user btn-block"/>
             </form:form>
 

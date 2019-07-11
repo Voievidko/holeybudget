@@ -10,10 +10,11 @@ public interface ExpenseService {
     void updateExpense(Expense expense);
     List<Expense> getAllExpenses();
     List<Expense> getExpensesDuringCurrentMonth();
+    List<Expense> getIncomesDuringCurrentMonth();
     void deleteExpenseById(int id);
 
     String getCurrentMonthName();
     Double getSumOfExpenseForCurrentMonth();
-    Double getSumOfIncomeBetweenDates();
+    Double getSumOfIncomeForCurrentMonth();
     List<Expense> getAllIncomeDuringYear();
 }

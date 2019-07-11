@@ -399,10 +399,23 @@
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-area pt-4 pb-2">
+                    <table class="table">
 
-
-
-
+                      <thead>
+                      <tr>
+                        <th scope="col">Currency code</th>
+                        <th scope="col">Value</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <c:forEach items="${currencyValues}" var="entry">
+                      <tr>
+                        <td>${entry.key}</td>
+                        <td>${entry.value}</td>
+                      </tr>
+                      </c:forEach>
+                      </tbody>
+                    </table>
 
 
 

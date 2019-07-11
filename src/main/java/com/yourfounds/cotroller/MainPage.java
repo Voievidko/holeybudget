@@ -2,6 +2,7 @@ package com.yourfounds.cotroller;
 
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Category;
+import com.yourfounds.entity.Currency;
 import com.yourfounds.entity.Expense;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.CategoryService;
@@ -9,17 +10,16 @@ import com.yourfounds.service.ExpenseService;
 import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
 import com.yourfounds.util.Util;
+import com.yourfounds.util.currency.CurrencyProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.DateFormatSymbols;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class MainPage {
@@ -46,9 +46,13 @@ public class MainPage {
         User user = userService.getUser(username);
         List<Account> accountList = user.getAccounts();
         request.getSession().setAttribute("username", username);
-        request.getSession().setAttribute("totalSum", Calculation.accountSum(accountList));
-        request.getSession().setAttribute("spendCurrentMonth", expenseService.getSumOfExpenseForCurrentMonth());
-        request.getSession().setAttribute("earnCurrentMonth", expenseService.getSumOfIncomeBetweenDates());
+        request.getSession().setAttribute("totalSum", String.format("%.2f", Calculation.accountSum(accountList)));
+
+        List<Expense> expenseDuringCurrentMonth = expenseService.getExpensesDuringCurrentMonth();
+        List<Expense> incomeDuringCurrentMonth = expenseService.getIncomesDuringCurrentMonth();
+
+        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", Calculation.exspenseSum(expenseDuringCurrentMonth)));
+        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", Calculation.exspenseSum(incomeDuringCurrentMonth)));
 
         //Data for year income graph
         List<Expense> incomeDuringLastYear = expenseService.getAllIncomeDuringYear();
@@ -60,7 +64,7 @@ public class MainPage {
             int currentMonthNumber = i > 12 ? i % 12 : i;
             for (Expense expense : incomeDuringLastYear) {
                 if ((expense.getDate().getMonthValue()) == currentMonthNumber) {
-                    monthSum += expense.getSum();
+                    monthSum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrency(expense.getCurrency().getCode());
                 }
             }
             incomeSumForEachMonth.add(monthSum);
@@ -81,7 +85,7 @@ public class MainPage {
             Double daySum = 0d;
             for (Expense expense : expensesThisMonth) {
                 if ((expense.getDate().getDayOfMonth()) == i) {
-                    daySum += expense.getSum();
+                    daySum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrency(expense.getCurrency().getCode());
                 }
             }
             expenseSumForEachDay.add(daySum);
@@ -101,7 +105,7 @@ public class MainPage {
             Double sumByCategory = 0d;
             for(Expense expense : expensesThisMonth){
                 if(expense.getCategory().getName().equals(category.getName())){
-                    sumByCategory += expense.getSum();
+                    sumByCategory += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrency(expense.getCurrency().getCode());
                 }
             }
             expenseSumForEachCategory.add(sumByCategory);
@@ -113,6 +117,13 @@ public class MainPage {
 
         request.getSession().setAttribute("expenseSumForEachCategory", expenseSumForEachCategoryStr);
         request.getSession().setAttribute("categoryNames", categoryNamesStr);
+
+        Map<String,Double> currencyValues = accountList.stream()
+                .map(Account::getCurrency)
+                .distinct()
+                .collect(Collectors.toMap(Currency::getCode, b -> CurrencyProcessor.getCurrency(b.getCode())));
+
+        request.getSession().setAttribute("currencyValues", currencyValues);
         return "index";
     }
 }

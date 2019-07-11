@@ -141,6 +141,18 @@
             <version>${spring.boot.version}</version>
         </dependency>
 
+        <!--Data Mapping-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.9</version>
+        </dependency>
+
         <!--This solves problem with Spring boot and JSP files-->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>

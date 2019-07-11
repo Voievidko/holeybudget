@@ -60,6 +60,14 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @Transactional
+    public List<Expense> getIncomesDuringCurrentMonth() {
+        List <Expense> expenses = expenseDao.getAllIncomeBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        Collections.sort(expenses);
+        return expenses;
+    }
+
+    @Override
+    @Transactional
     public void updateExpense(Expense expense) {
         expenseDao.update(expense);
     }
@@ -82,7 +90,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @Transactional
-    public Double getSumOfIncomeBetweenDates() {
+    public Double getSumOfIncomeForCurrentMonth() {
         return expenseDao.getSumIncomeBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
     }
 

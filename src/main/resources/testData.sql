@@ -20,7 +20,6 @@ delete from `expense` where expense_id > 0;
 delete from `account` where account_id > 0;
 delete from `category` where category_id > 0;
 
-delete from `currency` where code != NULL;
 delete from `user` where username != NULL;
 delete from `authority` where username != NULL;
 
@@ -29,7 +28,6 @@ drop table `expense`;
 drop table `account`;
 drop table `category`;
 drop table `authority`;
-drop table `currency`;
 drop table `user`;
 DROP TABLE `yourfoundsdb`.`databasechangelog`;
 DROP TABLE `yourfoundsdb`.`databasechangeloglock`;

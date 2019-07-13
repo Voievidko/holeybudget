@@ -54,16 +54,6 @@
             <div class="form-group">
               <form:input path="currency" cssClass="form-control" placeholder="Currency value" type="number" step="any"/>
             </div>
-<%--            <div class="form-group">--%>
-<%--              <select name="code" class="form-control">--%>
-<%--                <c:forEach var="tempCurrency" items="${currencies}">--%>
-<%--                  <option value=${tempCurrency.code} class="dropdown-item">${tempCurrency.code}</option>--%>
-<%--                </c:forEach>--%>
-<%--              </select>--%>
-<%--            </div>--%>
-<%--            <div class="form-group">--%>
-<%--              <form:input path="description" cssClass="form-control" placeholder="Description"/>--%>
-<%--            </div>--%>
               <input type="hidden" name="expenseSum" value="${expense.sum}" />
               <input type="hidden" name="expenseDate" value="${expense.date}" />
               <input type="hidden" name="expenseTime" value="${expense.time}" />

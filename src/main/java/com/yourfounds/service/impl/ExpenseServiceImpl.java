@@ -53,7 +53,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getExpensesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getAllExpenseBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getExpensesBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -61,7 +61,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getIncomesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getAllIncomeBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getIncomesBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -103,7 +103,7 @@ public class ExpenseServiceImpl implements ExpenseService {
                 .minusYears(1)
                 .minusDays(today.getDayOfMonth() - 1)
                 .plusMonths(1);
-        return expenseDao.getAllIncomeBetweenDates(dateFrom, today);
+        return expenseDao.getIncomesBetweenDates(dateFrom, today);
     }
 
     @Override

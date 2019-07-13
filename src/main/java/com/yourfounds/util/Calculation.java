@@ -2,21 +2,18 @@ package com.yourfounds.util;
 
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Expense;
-import com.yourfounds.util.currency.CurrencyProcessor;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Calculation {
-    public static Double exspenseSum (List<Expense> expenses){
+    public static Double expenseSum(List<Expense> expenses){
         Double sum = 0D;
         for (Expense expense : expenses){
             String currencyCode = expense.getCurrency().getCode();
             //TODO: replace hardcoded currency
             if (!currencyCode.equals("UAH")){
-                Double currencyRate = CurrencyProcessor.getCurrency(currencyCode);
+                Double currencyRate = CurrencyProcessor.getCurrencyRateToUah(currencyCode);
                 sum = sum + expense.getSum() * currencyRate;
             } else {
                 sum += expense.getSum();
@@ -31,7 +28,7 @@ public class Calculation {
             String currencyCode = account.getCurrency().getCode();
             //TODO: replace hardcoded currency
             if (!currencyCode.equals("UAH")){
-                Double currencyRate = CurrencyProcessor.getCurrency(currencyCode);
+                Double currencyRate = CurrencyProcessor.getCurrencyRateToUah(currencyCode);
                 sum = sum + account.getSummary() * currencyRate;
             } else {
                 sum += account.getSummary();

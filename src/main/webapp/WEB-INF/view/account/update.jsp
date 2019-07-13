@@ -39,8 +39,6 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-<%--          <!-- Page Heading -->--%>
-<%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
           <div class="p-5">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Update account</h1>

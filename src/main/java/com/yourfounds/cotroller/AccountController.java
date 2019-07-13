@@ -1,6 +1,5 @@
 package com.yourfounds.cotroller;
 
-import com.yourfounds.dao.UserDao;
 import com.yourfounds.entity.Account;
 import com.yourfounds.entity.Currency;
 import com.yourfounds.entity.User;
@@ -8,7 +7,7 @@ import com.yourfounds.service.AccountService;
 import com.yourfounds.service.CurrencyService;
 import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
-import com.yourfounds.util.Util;
+import com.yourfounds.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,7 +33,7 @@ public class AccountController {
     @RequestMapping("add")
     public String addAccount(Model model){
         Account account = new Account();
-        List<Currency> currencies = currencyService.getAll();
+        List<Currency> currencies = currencyService.getAllCurrencies();
         model.addAttribute("account", account);
         model.addAttribute("currencies", currencies);
         return "account/add";
@@ -42,9 +41,9 @@ public class AccountController {
 
     @RequestMapping("addProcess")
     public String processAddAccountForm(@ModelAttribute("account") Account account, @ModelAttribute("tempCurrency") Currency currency, Model model){
-        User user = userService.getUser(Util.getCurrentUser());
+        User user = userService.getUser(SecurityUserHandler.getCurrentUser());
         account.setUser(user);
-        account.setCurrency(currencyService.get(currency.getCode()));
+        account.setCurrency(currencyService.getCurrencyByCode(currency.getCode()));
         accountService.addAccount(account);
         return "success";
     }

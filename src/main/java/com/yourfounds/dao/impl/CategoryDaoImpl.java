@@ -2,13 +2,11 @@ package com.yourfounds.dao.impl;
 
 import com.yourfounds.dao.CategoryDao;
 import com.yourfounds.entity.Category;
-import com.yourfounds.util.Util;
+import com.yourfounds.util.SecurityUserHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,50 +19,30 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public List<Category> getAll() {
-        //get the current hibernate session
-        Session currentSession = sessionFactory.getCurrentSession();
-
-        //create a query
-        Query<Category> query = currentSession.createQuery("FROM Category WHERE username = :param AND income = 0", Category.class);
-        query.setParameter("param", Util.getCurrentUser());
-
-        //execute query and get a result list
-        List<Category> categories = query.getResultList();
-
-        //return the results
-        return categories;
+        Session session = sessionFactory.getCurrentSession();
+        Query<Category> query = session.createQuery("FROM Category WHERE username = :param AND income = 0", Category.class);
+        query.setParameter("param", SecurityUserHandler.getCurrentUser());
+        return query.getResultList();
     }
 
     @Override
     public List<Category> getAllIncome() {
-        //get the current hibernate session
-        Session currentSession = sessionFactory.getCurrentSession();
-
-        //create a query
-        Query<Category> query = currentSession.createQuery("FROM Category WHERE username = :param AND income = 1", Category.class);
-        query.setParameter("param", Util.getCurrentUser());
-
-        //execute query and get a result list
-        List<Category> categories = query.getResultList();
-
-        //return the results
-        return categories;
+        Session session = sessionFactory.getCurrentSession();
+        Query<Category> query = session.createQuery("FROM Category WHERE username = :param AND income = 1", Category.class);
+        query.setParameter("param", SecurityUserHandler.getCurrentUser());
+        return query.getResultList();
     }
 
     @Override
     public void save(Category category) {
-        //get the current hibernate session
-        Session currentSession = sessionFactory.getCurrentSession();
-
-        //save new category
-        currentSession.save(category);
+        Session session = sessionFactory.getCurrentSession();
+        session.save(category);
     }
 
     @Override
     public Category get(Integer id) {
-        Session currentSession = sessionFactory.getCurrentSession();
-        Category category = currentSession.get(Category.class, id);
-        return category;
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Category.class, id);
     }
 
     @Override

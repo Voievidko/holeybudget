@@ -9,8 +9,8 @@ import com.yourfounds.service.CategoryService;
 import com.yourfounds.service.ExpenseService;
 import com.yourfounds.service.UserService;
 import com.yourfounds.util.Calculation;
-import com.yourfounds.util.Util;
-import com.yourfounds.util.currency.CurrencyProcessor;
+import com.yourfounds.util.SecurityUserHandler;
+import com.yourfounds.util.CurrencyProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,13 +24,6 @@ import java.util.stream.Collectors;
 @Controller
 public class MainPage {
 
-//    @RequestMapping(value = "/")
-//    public String getMainPage(HttpServletRequest request, Model model){
-//        String username = Util.getCurrentUser();
-//        model.addAttribute("username",username);
-//        return "index";
-//    }
-
     @Autowired
     private UserService userService;
 
@@ -42,7 +35,7 @@ public class MainPage {
 
     @RequestMapping(value = "/")
     public String getMainPage(HttpServletRequest request){
-        String username = Util.getCurrentUser();
+        String username = SecurityUserHandler.getCurrentUser();
         User user = userService.getUser(username);
         List<Account> accountList = user.getAccounts();
         request.getSession().setAttribute("username", username);
@@ -51,8 +44,8 @@ public class MainPage {
         List<Expense> expenseDuringCurrentMonth = expenseService.getExpensesDuringCurrentMonth();
         List<Expense> incomeDuringCurrentMonth = expenseService.getIncomesDuringCurrentMonth();
 
-        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", Calculation.exspenseSum(expenseDuringCurrentMonth)));
-        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", Calculation.exspenseSum(incomeDuringCurrentMonth)));
+        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", Calculation.expenseSum(expenseDuringCurrentMonth)));
+        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", Calculation.expenseSum(incomeDuringCurrentMonth)));
 
         //Data for year income graph
         List<Expense> incomeDuringLastYear = expenseService.getAllIncomeDuringYear();
@@ -64,7 +57,7 @@ public class MainPage {
             int currentMonthNumber = i > 12 ? i % 12 : i;
             for (Expense expense : incomeDuringLastYear) {
                 if ((expense.getDate().getMonthValue()) == currentMonthNumber) {
-                    monthSum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrency(expense.getCurrency().getCode());
+                    monthSum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
                 }
             }
             incomeSumForEachMonth.add(monthSum);
@@ -85,7 +78,7 @@ public class MainPage {
             Double daySum = 0d;
             for (Expense expense : expensesThisMonth) {
                 if ((expense.getDate().getDayOfMonth()) == i) {
-                    daySum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrency(expense.getCurrency().getCode());
+                    daySum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
                 }
             }
             expenseSumForEachDay.add(daySum);
@@ -105,7 +98,7 @@ public class MainPage {
             Double sumByCategory = 0d;
             for(Expense expense : expensesThisMonth){
                 if(expense.getCategory().getName().equals(category.getName())){
-                    sumByCategory += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrency(expense.getCurrency().getCode());
+                    sumByCategory += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
                 }
             }
             expenseSumForEachCategory.add(sumByCategory);
@@ -121,7 +114,7 @@ public class MainPage {
         Map<String,Double> currencyValues = accountList.stream()
                 .map(Account::getCurrency)
                 .distinct()
-                .collect(Collectors.toMap(Currency::getCode, b -> CurrencyProcessor.getCurrency(b.getCode())));
+                .collect(Collectors.toMap(Currency::getCode, b -> CurrencyProcessor.getCurrencyRateToUah(b.getCode())));
 
         request.getSession().setAttribute("currencyValues", currencyValues);
         return "index";

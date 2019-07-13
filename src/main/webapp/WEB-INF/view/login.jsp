@@ -49,13 +49,13 @@
                             Invalid username or password.
                         </p>
                     </c:if>
+
                     <c:if test="${param.logout != null}">
                         <p>
                             You have been logged out.
                         </p>
                     </c:if>
 
-<%--                  <form class="user">--%>
                   <form:form action="/authenticate" method="post">
                     <div class="form-group">
                       <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Username" autofocus="autofocus">
@@ -63,18 +63,9 @@
                     <div class="form-group">
                       <input type="password"  name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
                     </div>
-<%--                    <div class="form-group">--%>
-<%--                      <div class="custom-control custom-checkbox small">--%>
-<%--                        <input type="checkbox" class="custom-control-input" id="customCheck">--%>
-<%--                        <label class="custom-control-label" for="customCheck">Remember Me</label>--%>
-<%--                      </div>--%>
-<%--                    </div>--%>
-<%--                    <a href="index.jsp" class="btn btn-primary btn-user btn-block">--%>
-<%--                      Login--%>
-<%--                    </a>--%>
                     <input type="submit" value="Login" class="btn btn-primary btn-user btn-block"/>
                   </form:form>
-<%--                  </form>--%>
+
                   <hr>
                   <div class="text-center">
                     <a class="small" href="user/forgetpassword">Forgot Password?</a>

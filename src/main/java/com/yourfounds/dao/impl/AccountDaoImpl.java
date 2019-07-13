@@ -2,13 +2,11 @@ package com.yourfounds.dao.impl;
 
 import com.yourfounds.dao.AccountDao;
 import com.yourfounds.entity.Account;
-import com.yourfounds.util.Util;
+import com.yourfounds.util.SecurityUserHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,7 +30,7 @@ public class AccountDaoImpl implements AccountDao {
     public List<Account> getAll() {
         Session session = sessionFactory.getCurrentSession();
         Query<Account> query = session.createQuery("from Account where username = :param", Account.class);
-        query.setParameter("param", Util.getCurrentUser());
+        query.setParameter("param", SecurityUserHandler.getCurrentUser());
         return query.getResultList();
     }
 

@@ -1,10 +1,8 @@
 package com.yourfounds;
 
 import com.yourfounds.config.AppConfig;
-import com.yourfounds.config.HibernateConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Import;
 

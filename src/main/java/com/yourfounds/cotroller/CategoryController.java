@@ -4,7 +4,7 @@ import com.yourfounds.entity.Category;
 import com.yourfounds.entity.User;
 import com.yourfounds.service.CategoryService;
 import com.yourfounds.service.UserService;
-import com.yourfounds.util.Util;
+import com.yourfounds.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,7 +56,7 @@ public class CategoryController {
             model.addAttribute("category", category);
             return "category/nameexist";
         }
-        User user = userService.getUser(Util.getCurrentUser());
+        User user = userService.getUser(SecurityUserHandler.getCurrentUser());
         category.setUser(user);
         categoryService.addCategory(category);
         return "success";
@@ -95,7 +95,7 @@ public class CategoryController {
     public String updateProcess(@ModelAttribute("category") Category category){
         //when update category User for some reason null
         //todo: rework this
-        category.setUser(userService.getUser(Util.getCurrentUser()));
+        category.setUser(userService.getUser(SecurityUserHandler.getCurrentUser()));
         categoryService.updateCategory(category);
         return "redirect:all";
     }
@@ -108,7 +108,7 @@ public class CategoryController {
 
     @RequestMapping("transferToNewCategory")
     public String transferToNewCategoryAndDelete(@ModelAttribute("newCategory") Category category, @ModelAttribute("categoryToDelete") int fromCategoryId, Model model){
-        String username = Util.getCurrentUser();
+        String username = SecurityUserHandler.getCurrentUser();
         category.setUser(userService.getUser(username));
         categoryService.addCategory(category);
         categoryService.replaceCategoryInAllExpenses(fromCategoryId, category.getCategoryId());

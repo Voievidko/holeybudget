@@ -42,8 +42,6 @@
         <!-- Begin Page Content -->
         <div class="container-fluid add-user">
 
-<%--          <!-- Page Heading -->--%>
-<%--          <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>--%>
           <div class="p-1">
             <div class="text-center">
               <h1 class="h4 text-gray-900 mb-4">Add category</h1>

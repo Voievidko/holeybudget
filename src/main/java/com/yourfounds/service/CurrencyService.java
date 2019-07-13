@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CurrencyService {
 
-    Currency get(String code);
-    List<Currency> getAll();
+    Currency getCurrencyByCode(String code);
+    List<Currency> getAllCurrencies();
     List<Currency> getAllCurrenciesAssignedToUser();
 }

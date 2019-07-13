@@ -3,19 +3,15 @@ package com.yourfounds.cotroller;
 import com.yourfounds.entity.*;
 import com.yourfounds.service.*;
 import com.yourfounds.util.Calculation;
-import com.yourfounds.util.Util;
+import com.yourfounds.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -38,13 +34,6 @@ public class ExpenseController {
 
     @Autowired
     private UserService userService;
-
-//    @InitBinder
-//    public void initBinder(WebDataBinder binder) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        dateFormat.setLenient(false);
-//        binder.registerCustomEditor(LocalDate.class, new CustomDateEditor(dateFormat, false));
-//    }
 
     @RequestMapping("add")
     public String addForm(Model model){
@@ -91,8 +80,8 @@ public class ExpenseController {
             return "expense/add";
         }
 
-        User user = userService.getUser(Util.getCurrentUser());
-        expense.setCurrency(currencyService.get(currency.getCode()));
+        User user = userService.getUser(SecurityUserHandler.getCurrentUser());
+        expense.setCurrency(currencyService.getCurrencyByCode(currency.getCode()));
         expense.setCategory(categoryService.getCategory(category.getCategoryId()));
         expense.setAccount(accountService.getAccount(account.getAccountId()));
         expense.setTime(LocalTime.now());
@@ -127,7 +116,7 @@ public class ExpenseController {
         expense.setComment(expenseComment);
         Category category = categoryService.getCategory(Integer.parseInt(expenseCategory));
         Account account = accountService.getAccount(Integer.parseInt(expenseAccount));
-        String username = Util.getCurrentUser();
+        String username = SecurityUserHandler.getCurrentUser();
         User user = userService.getUser(username);
 
         expense.setCategory(category);
@@ -176,7 +165,7 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getAllExpenses();
         model.addAttribute("expenseName", "Expenses during all time");
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", Calculation.exspenseSum(expenses));
+        model.addAttribute("totalSum", Calculation.expenseSum(expenses));
 
         //for sums
         List<Account> accounts = accountService.getAccounts();
@@ -190,7 +179,7 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getExpensesDuringCurrentMonth();
         model.addAttribute("expenseName", "Expenses during " + expenseService.getCurrentMonthName());
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", Calculation.exspenseSum(expenses));
+        model.addAttribute("totalSum", Calculation.expenseSum(expenses));
 
         //for sums
         List<Account> accounts = accountService.getAccounts();

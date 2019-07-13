@@ -1,12 +1,10 @@
 package com.yourfounds.dao.impl;
 
 import com.yourfounds.dao.ExpenseDao;
-import com.yourfounds.entity.Category;
 import com.yourfounds.entity.Expense;
-import com.yourfounds.util.Util;
+import com.yourfounds.util.SecurityUserHandler;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -29,7 +27,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     public List<Expense> getAll() {
         Session session = sessionFactory.getCurrentSession();
         List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category where e.category.income = FALSE AND e.user.username = :param")
-                .setParameter("param", Util.getCurrentUser())
+                .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .list();
         return expenses;
     }
@@ -55,23 +53,23 @@ public class ExpenseDaoImpl implements ExpenseDao {
     }
 
     @Override
-    public List<Expense> getAllExpenseBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
+    public List<Expense> getExpensesBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
         List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
-                .setParameter("param", Util.getCurrentUser())
+                .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .list();
         return expenses;
     }
 
     @Override
-    public List<Expense> getAllIncomeBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
+    public List<Expense> getIncomesBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
         List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
-                .setParameter("param", Util.getCurrentUser())
+                .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .list();
         return expenses;
     }
@@ -79,12 +77,11 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public Double getSumExpensesBetweenDates(LocalDate dateFrom, LocalDate dateTo){
         Session session = sessionFactory.getCurrentSession();
-        // select c.customerName, c.customerCity, i.itemName,i.price from Customer c left join c.items i
         Double result = (Double)session.createQuery("SELECT SUM(e.sum) FROM Expense e LEFT JOIN e.category " +
                 "WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
-                .setParameter("param", Util.getCurrentUser()) // AND e.user = :param
+                .setParameter("param", SecurityUserHandler.getCurrentUser()) // AND e.user = :param
                 .getSingleResult();
         if (result == null) return 0d;
         return result;
@@ -97,7 +94,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
                 "WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
-                .setParameter("param", Util.getCurrentUser())
+                .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .getSingleResult();
         if (result == null) return 0d;
         return result;

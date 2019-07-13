@@ -5,7 +5,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.servlet.http.HttpSession;
 
-public class Util {
+public class SecurityUserHandler {
+    private SecurityUserHandler(){}
+
     public static String getCurrentUser(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {

@@ -29,5 +29,5 @@ drop table `account`;
 drop table `category`;
 drop table `authority`;
 drop table `user`;
-DROP TABLE `yourfoundsdb`.`databasechangelog`;
-DROP TABLE `yourfoundsdb`.`databasechangeloglock`;
+DROP TABLE `notspenddb`.`databasechangelog`;
+DROP TABLE `notspenddb`.`databasechangeloglock`;

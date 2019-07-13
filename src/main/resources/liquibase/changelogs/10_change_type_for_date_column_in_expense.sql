@@ -1,1 +1,1 @@
-ALTER TABLE yourfoundsdb.expense MODIFY COLUMN `date` DATE;
+ALTER TABLE notspenddb.expense MODIFY COLUMN `date` DATE;

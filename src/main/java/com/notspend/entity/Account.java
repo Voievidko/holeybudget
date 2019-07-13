@@ -1,6 +1,8 @@
 package com.notspend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -13,9 +15,12 @@ public class Account {
     private int accountId;
 
     @Column(name = "type")
+    @NotNull(message = "Name of your account is required")
+    @NotEmpty(message = "Name of your account is required")
     private String type;
 
     @Column(name = "summary")
+    @NotNull(message = "Started sum of your account is required. Can be 0 or minus")
     private Double summary;
 
     @Column(name = "description")

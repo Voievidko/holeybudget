@@ -64,7 +64,7 @@ public class ExpenseController {
                               @ModelAttribute("tempCurrency") Currency currency, Model model){
         if(bindingResult.hasErrors()){
             List<Category> categories;
-            List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();;
+            List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();
             if(category.isIncome()){
                 categories = categoryService.getAllIncomeCategories();
             } else {

@@ -3,6 +3,7 @@ package com.notspend.entity;
 import com.notspend.validation.ValidEmail;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
@@ -13,26 +14,24 @@ import java.util.List;
 public class User {
 
     @Id
-    @NotNull(message = "is required")
+    @NotEmpty(message = "Username is required")
     @Column(name = "username")
     private String username;
 
     @Column(name = "email")
-    @NotNull(message = "is required")
+    @NotEmpty(message = "Email is required")
     @ValidEmail
     private String email;
 
     @Column(name = "password")
-    @NotNull(message = "is required")
+    @NotEmpty(message = "Password is required")
     private String password;
 
     @Column(name = "name")
-    @NotNull(message = "is required")
-    @Pattern(regexp = "[a-zA-Z]*")
+    @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
     private String name;
 
     @Column(name = "surname")
-    @NotNull(message = "is required")
     @Pattern(regexp = "[a-zA-Z]*", message = "Only letters")
     private String surname;
 

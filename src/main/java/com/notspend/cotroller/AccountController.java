@@ -11,14 +11,16 @@ import com.notspend.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping(value = "account")
+@RequestMapping("account")
 public class AccountController {
 
     @Autowired
@@ -40,7 +42,12 @@ public class AccountController {
     }
 
     @RequestMapping("addProcess")
-    public String processAddAccountForm(@ModelAttribute("account") Account account, @ModelAttribute("tempCurrency") Currency currency, Model model){
+    public String processAddAccountForm(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult, @ModelAttribute("tempCurrency") Currency currency, Model model){
+        if (bindingResult.hasErrors()){
+            List<Currency> currencies = currencyService.getAllCurrencies();
+            model.addAttribute("currencies", currencies);
+            return "account/add";
+        }
         User user = userService.getUser(SecurityUserHandler.getCurrentUser());
         account.setUser(user);
         account.setCurrency(currencyService.getCurrencyByCode(currency.getCode()));

@@ -10,9 +10,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -46,9 +49,15 @@ public class UserController {
     }
 
     @RequestMapping("registerprocess")
-    public String registerProcess(@ModelAttribute("user") User user, @ModelAttribute("passwordSecondTime") String passwordSecondTime){
-        // todo: very primitive for now
-        // todo: check Security
+    public String registerProcess(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
+                                  @ModelAttribute("passwordSecondTime") String passwordSecondTime, Model model){
+        if (bindingResult.hasErrors()){
+            return "user/register";
+        }
+        if (userService.getUser(user.getUsername()) != null){
+            model.addAttribute("userexist", "User with username " + user.getUsername() + " is already register");
+            return "user/register";
+        }
         if (!user.getPassword().equals(passwordSecondTime)){
             return "redirect:register";
         }

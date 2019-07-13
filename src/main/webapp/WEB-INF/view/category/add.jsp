@@ -50,6 +50,7 @@
             <form:form action="addProcess" modelAttribute="category">
             <div class="form-group">
               <form:input path="name" cssClass="form-control" placeholder="Category name"  autofocus="autofocus"/>
+              <form:errors path="summary" cssClass="alert"/>
             </div>
             <div class="form-group">
               <form:input path="description" cssClass="form-control" placeholder="Description"/>

@@ -49,9 +49,11 @@
             <form:form action="addProcess" modelAttribute="account">
             <div class="form-group">
               <form:input path="type" cssClass="form-control" placeholder="Type of account"  autofocus="autofocus"/>
+              <form:errors path="type" cssClass="alert"/>
             </div>
             <div class="form-group">
               <form:input path="summary" cssClass="form-control" placeholder="Started summary" type="number" step="any"/>
+              <form:errors path="summary" cssClass="alert"/>
             </div>
             <div class="form-group">
               <select name="code" class="form-control">

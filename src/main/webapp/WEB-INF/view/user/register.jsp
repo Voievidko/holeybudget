@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -39,21 +40,30 @@
               <form:form action="registerprocess" modelAttribute="user">
                 <div class="form-group">
                   <form:input path="username" cssClass="form-control" placeholder="Username"/>
+                  <form:errors path="username" cssClass="alert"/>
+                  <c:if test="${not empty userexist}">
+                    <c:out value="${userexist}"/>
+                  </c:if>
                 </div>
+
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <form:input path="name" cssClass="form-control" placeholder="First Name"/>
+                    <form:errors path="name" cssClass="alert"/>
                   </div>
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <form:input path="surname" cssClass="form-control" placeholder="Last Name"/>
+                    <form:errors path="surname" cssClass="alert"/>
                   </div>
                 </div>
                 <div class="form-group">
                   <form:input path="email" cssClass="form-control" placeholder="Email Address"/>
+                  <form:errors path="email" cssClass="alert"/>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <form:input path="password" type="password" cssClass="form-control" placeholder="Password"/>
+                    <form:errors path="password" cssClass="alert"/>
                   </div>
                   <div class="col-sm-6 mb-3 mb-sm-0">
                     <input type="password" name="passwordSecondTime" class="form-control" placeholder="Repeat password">

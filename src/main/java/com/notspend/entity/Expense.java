@@ -21,7 +21,7 @@ public class Expense implements Comparable<Expense>{
     private Integer expenseId;
 
     @Column(name = "sum")
-    @NotNull(message = "is required")
+    @NotNull(message = "Sum of your expense is required")
     @Min(value = 0, message = "Sum can't have minus value")
     private Double sum;
 

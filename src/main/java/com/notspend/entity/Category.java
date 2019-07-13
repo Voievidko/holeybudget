@@ -1,6 +1,8 @@
 package com.notspend.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -13,6 +15,7 @@ public class Category {
     private int categoryId;
 
     @Column(name = "name")
+    @NotEmpty(message = "Category name is required")
     private String name;
 
     @Column(name = "description")

@@ -82,11 +82,16 @@ public class AccountController {
 
     @RequestMapping("delete")
     public String deleteAccount(@ModelAttribute("accountId") int accountId, Model model){
+        List<Account> accounts = accountService.getAccounts();
+
+        //Check if this account is not last account
+        if (accounts.size() <= 1){
+            return "account/cantdeletelastaccount";
+        }
 
         //inform User that account can't be deleted
         //and propose to transfer expenses to exist account
         Account accountToDelete = accountService.getAccount(accountId);
-        List<Account> accounts = accountService.getAccounts();
         accounts.remove(accountToDelete);
 
         Account account = new Account();

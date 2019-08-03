@@ -70,6 +70,17 @@ public class CategoryController {
 
     @RequestMapping("delete")
     public String deleteCategory(@ModelAttribute("categoryId") int categoryId, Model model){
+        //Category for deleting
+        Category category = categoryService.getCategory(categoryId);
+        boolean isIncomeCategory = category.isIncome();
+
+        //check if this category is not last expense or income category
+        if (isIncomeCategory && categoryService.getAllIncomeCategories().size() <= 1){
+            return "category/cantdeletelastcategory";
+        } else if (categoryService.getAllExpenseCategories().size() <= 1){
+            return "category/cantdeletelastcategory";
+        }
+
         //check if there is relationship on category
         if (categoryService.isCategoryHaveRelations(categoryId)){
             //inform User that category can't be deleted
@@ -79,10 +90,10 @@ public class CategoryController {
             List<Category> categories = categoryService.getAllExpenseCategories();
             categories.remove(categoryToDelete);
 
-            Category category = new Category();
+            Category categoryToReplace = new Category();
             model.addAttribute("categoryToDelete", categoryToDelete);
             model.addAttribute("categories", categories);
-            model.addAttribute("category", category);
+            model.addAttribute("category", categoryToReplace);
             return "category/cantdelete";
         } else {
             categoryService.deleteCategoryById(categoryId);

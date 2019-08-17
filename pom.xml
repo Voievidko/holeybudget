@@ -140,6 +140,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
+        <!--Add support for automatic reloads when server is running-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
 
         <!--Data Mapping-->
         <dependency>

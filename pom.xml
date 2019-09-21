@@ -19,6 +19,8 @@
         <spring.framework.version>5.1.8.RELEASE</spring.framework.version>
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
+        <jackson.databind.version>2.9.9.2</jackson.databind.version>
+        <httpclient.version>4.5.9</httpclient.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
         <javax.servlet.jsp.version>2.3.1</javax.servlet.jsp.version>
@@ -140,17 +142,23 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring.boot.version}</version>
         </dependency>
+        <!--Add support for automatic reloads when server is running-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
 
         <!--Data Mapping-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.9.9.1</version>
+            <version>${jackson.databind.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.9</version>
+            <version>${httpclient.version}</version>
         </dependency>
 
         <!--This solves problem with Spring boot and JSP files-->

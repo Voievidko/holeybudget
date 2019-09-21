@@ -1,6 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,34 +40,11 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <div class="p-1">
-            <div class="text-center">
-              <h1 class="h4 text-gray-900 mb-4">Add account</h1>
+          <div class="p-5">
+            <div class="text-left">
+              <h1 class="h4 text-gray-900 mb-4">Can't delete last category.</h1>
+              <p class="mb-4"> You should have at least one</p>
             </div>
-
-            <form:form action="addProcess" modelAttribute="account">
-            <div class="form-group">
-              <form:input path="type" cssClass="form-control" placeholder="Type of account"  autofocus="autofocus"/>
-              <form:errors path="type" cssClass="alert"/>
-            </div>
-            <div class="form-group">
-              <form:input path="summary" cssClass="form-control" placeholder="Started summary" type="number" step="any"/>
-              <form:errors path="summary" cssClass="alert"/>
-            </div>
-            <div class="form-group">
-              <select name="code" class="form-control">
-                <c:forEach var="tempCurrency" items="${currencies}">
-                  <option value=${tempCurrency.code} class="dropdown-item">${tempCurrency.code}</option>
-                </c:forEach>
-              </select>
-            </div>
-            <div class="form-group">
-              <form:input path="description" cssClass="form-control" placeholder="Description"/>
-            </div>
-              <input type="submit" value="Add" class="btn btn-primary btn-user btn-block"/>
-            </form:form>
-
-            <hr>
           </div>
 
         </div>
@@ -93,14 +69,14 @@
   <%@include file="../logout-modal.jsp" %>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="../vendor/jquery/jquery.min.js"></script>
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../vendor/jquery/jquery.min.js"></script>
+  <script src="../../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../../../vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="../js/sb-admin-2.min.js"></script>
+  <script src="../../../js/sb-admin-2.min.js"></script>
 
 </body>
 

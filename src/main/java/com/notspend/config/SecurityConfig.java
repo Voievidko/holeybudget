@@ -53,6 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .permitAll()
             .and()
-            .httpBasic();
+            .httpBasic()
+            .and()
+            .rememberMe()
+                .tokenValiditySeconds(2419200) // four weeks
+                .key("notspendkey");
     }
 }

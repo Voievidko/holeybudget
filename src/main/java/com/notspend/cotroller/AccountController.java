@@ -42,7 +42,9 @@ public class AccountController {
     }
 
     @RequestMapping("addProcess")
-    public String processAddAccountForm(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult, @ModelAttribute("tempCurrency") Currency currency, Model model){
+    public String processAddAccountForm(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult,
+                                        @ModelAttribute("tempCurrency") Currency currency,
+                                        Model model){
         if (bindingResult.hasErrors()){
             List<Currency> currencies = currencyService.getAllCurrencies();
             model.addAttribute("currencies", currencies);
@@ -82,11 +84,16 @@ public class AccountController {
 
     @RequestMapping("delete")
     public String deleteAccount(@ModelAttribute("accountId") int accountId, Model model){
+        List<Account> accounts = accountService.getAccounts();
+
+        //Check if this account is not last account
+        if (accounts.size() <= 1){
+            return "account/cantdeletelastaccount";
+        }
 
         //inform User that account can't be deleted
         //and propose to transfer expenses to exist account
         Account accountToDelete = accountService.getAccount(accountId);
-        List<Account> accounts = accountService.getAccounts();
         accounts.remove(accountToDelete);
 
         Account account = new Account();
@@ -98,7 +105,9 @@ public class AccountController {
     }
 
     @RequestMapping("transferToExistAccount")
-    public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId, @ModelAttribute("accountToDelete") int fromAccountId, Model model){
+    public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId,
+                                                  @ModelAttribute("accountToDelete") int fromAccountId,
+                                                  Model model){
         Account accountFrom = accountService.getAccount(fromAccountId);
         Account accountTo = accountService.getAccount(toAccountId);
 

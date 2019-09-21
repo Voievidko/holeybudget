@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -39,20 +40,25 @@ public class ExpenseController {
     public String addForm(Model model){
         Expense expense = new Expense();
 
-        List<Category> categories = categoryService.getAllExpenseCategories();
-        List<Account> accounts = accountService.getAccounts();
+        if (!model.containsAttribute("categories")){
+            List<Category> categories = categoryService.getAllExpenseCategories();
+            model.addAttribute("categories", categories);
+        }
+
+        if (!model.containsAttribute("accounts")){
+            List<Account> accounts = accountService.getAccounts();
+            model.addAttribute("accounts", accounts);
+        }
+
+        if (!model.containsAttribute("currencies")){
+            List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();
+            model.addAttribute("currencies", currencies);
+        }
 
         //insert today's date
         expense.setDate(LocalDate.now());
-
-        List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();
-
-        model.addAttribute("currencies", currencies);
-        model.addAttribute("categories", categories);
         model.addAttribute("expense", expense);
-        model.addAttribute("accounts", accounts);
         model.addAttribute("type", "Expense");
-
         return "expense/add";
     }
 
@@ -60,8 +66,11 @@ public class ExpenseController {
     //Validation annotation should be in POJO class like @NotNull, @Min
     @RequestMapping("addProcess")
     public String processForm(@Valid @ModelAttribute("expense") Expense expense, BindingResult bindingResult,
-                              @ModelAttribute("tempCategory") Category category, @ModelAttribute("tempAccount") Account account,
-                              @ModelAttribute("tempCurrency") Currency currency, Model model){
+                              @ModelAttribute("tempCategory") Category category,
+                              @ModelAttribute("tempAccount") Account account,
+                              @ModelAttribute("tempCurrency") Currency currency,
+                              RedirectAttributes redirectAttributes,
+                              Model model){
         if(bindingResult.hasErrors()){
             List<Category> categories;
             List<Currency> currencies = currencyService.getAllCurrenciesAssignedToUser();
@@ -73,7 +82,6 @@ public class ExpenseController {
             }
             List<Account> accounts = accountService.getAccounts();
             expense.setDate(LocalDate.now());
-
             model.addAttribute("categories", categories);
             model.addAttribute("accounts", accounts);
             model.addAttribute("currencies", currencies);
@@ -81,9 +89,13 @@ public class ExpenseController {
         }
 
         User user = userService.getUser(SecurityUserHandler.getCurrentUser());
-        expense.setCurrency(currencyService.getCurrencyByCode(currency.getCode()));
-        expense.setCategory(categoryService.getCategory(category.getCategoryId()));
-        expense.setAccount(accountService.getAccount(account.getAccountId()));
+        Category selectedCategory = categoryService.getCategory(category.getCategoryId());
+        Currency selectedCurrency = currencyService.getCurrencyByCode(currency.getCode());
+        Account selectedAccount = accountService.getAccount(account.getAccountId());
+
+        expense.setCurrency(selectedCurrency);
+        expense.setCategory(selectedCategory);
+        expense.setAccount(selectedAccount);
         expense.setTime(LocalTime.now());
         expense.setUser(user);
 
@@ -92,6 +104,23 @@ public class ExpenseController {
             if (expense.getCategory().isIncome()) {
                 return "redirect:/";
             } else {
+                List<Category> categoriesForRedirection = categoryService.getAllExpenseCategories();
+                List<Currency> currenciesForRedirection = currencyService.getAllCurrenciesAssignedToUser();
+                List<Account> accountsForRedirection = accountService.getAccounts();
+
+                //Make selected element first in list
+                categoriesForRedirection.remove(selectedCategory);
+                categoriesForRedirection.add(0, selectedCategory);
+
+                currenciesForRedirection.remove(selectedCurrency);
+                currenciesForRedirection.add(0, selectedCurrency);
+
+                accountsForRedirection.remove(selectedAccount);
+                accountsForRedirection.add(0, selectedAccount);
+
+                redirectAttributes.addFlashAttribute("categories", categoriesForRedirection);
+                redirectAttributes.addFlashAttribute("accounts", accountsForRedirection);
+                redirectAttributes.addFlashAttribute("currencies", currenciesForRedirection);
                 return "redirect:add";
             }
         } else {

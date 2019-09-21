@@ -42,7 +42,6 @@ public class UserController {
         if (authentication.isAuthenticated()){
             authentication.setAuthenticated(false);
         }
-
         User user = new User();
         model.addAttribute("user", user);
         return "user/register";
@@ -50,7 +49,8 @@ public class UserController {
 
     @RequestMapping("registerprocess")
     public String registerProcess(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
-                                  @ModelAttribute("passwordSecondTime") String passwordSecondTime, Model model){
+                                  @ModelAttribute("passwordSecondTime") String passwordSecondTime,
+                                  Model model){
         if (bindingResult.hasErrors()){
             return "user/register";
         }

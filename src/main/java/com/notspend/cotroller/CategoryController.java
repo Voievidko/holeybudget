@@ -29,7 +29,6 @@ public class CategoryController {
     @GetMapping("allexpense")
     public String listExpenseCategories (Model model){
         List<Category> categories = categoryService.getAllExpenseCategories();
-
         model.addAttribute("categories", categories);
         model.addAttribute("categoryType", "expense");
         return "category/all";
@@ -38,7 +37,6 @@ public class CategoryController {
     @GetMapping("allincome")
     public String listIncomeCategories (Model model){
         List<Category> categories = categoryService.getAllIncomeCategories();
-
         model.addAttribute("categories", categories);
         model.addAttribute("categoryType", "income");
         return "category/all";
@@ -47,14 +45,14 @@ public class CategoryController {
     @RequestMapping("add")
     public String addCategory(Model model){
         Category category = new Category();
-
         model.addAttribute("category", category);
         return "category/add";
     }
 
     @RequestMapping("addProcess")
     public String processAddCategoryForm(@Valid @ModelAttribute("category") Category category,
-                                         BindingResult bindingResult, Model model){
+                                         BindingResult bindingResult,
+                                         Model model){
         if (bindingResult.hasErrors()){
             return "category/add";
         }
@@ -118,13 +116,17 @@ public class CategoryController {
     }
 
     @RequestMapping("transferToExistCategory")
-    public String transferToOtherCategoryAndDelete(@ModelAttribute("categoryId") int toCategoryId, @ModelAttribute("categoryToDelete") int fromCategoryId, Model model){
+    public String transferToOtherCategoryAndDelete(@ModelAttribute("categoryId") int toCategoryId,
+                                                   @ModelAttribute("categoryToDelete") int fromCategoryId,
+                                                   Model model){
         categoryService.replaceCategoryInAllExpenses(fromCategoryId, toCategoryId);
         return "success";
     }
 
     @RequestMapping("transferToNewCategory")
-    public String transferToNewCategoryAndDelete(@ModelAttribute("newCategory") Category category, @ModelAttribute("categoryToDelete") int fromCategoryId, Model model){
+    public String transferToNewCategoryAndDelete(@ModelAttribute("newCategory") Category category,
+                                                 @ModelAttribute("categoryToDelete") int fromCategoryId,
+                                                 Model model){
         String username = SecurityUserHandler.getCurrentUser();
         category.setUser(userService.getUser(username));
         categoryService.addCategory(category);

@@ -42,7 +42,9 @@ public class AccountController {
     }
 
     @RequestMapping("addProcess")
-    public String processAddAccountForm(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult, @ModelAttribute("tempCurrency") Currency currency, Model model){
+    public String processAddAccountForm(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult,
+                                        @ModelAttribute("tempCurrency") Currency currency,
+                                        Model model){
         if (bindingResult.hasErrors()){
             List<Currency> currencies = currencyService.getAllCurrencies();
             model.addAttribute("currencies", currencies);
@@ -103,7 +105,9 @@ public class AccountController {
     }
 
     @RequestMapping("transferToExistAccount")
-    public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId, @ModelAttribute("accountToDelete") int fromAccountId, Model model){
+    public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId,
+                                                  @ModelAttribute("accountToDelete") int fromAccountId,
+                                                  Model model){
         Account accountFrom = accountService.getAccount(fromAccountId);
         Account accountTo = accountService.getAccount(toAccountId);
 

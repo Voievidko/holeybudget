@@ -26,10 +26,9 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getAll() {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category where e.category.income = FALSE AND e.user.username = :param")
+       return session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category where e.category.income = FALSE AND e.user.username = :param ORDER BY e.date DESC")
                 .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .list();
-        return expenses;
     }
 
     @Override
@@ -55,7 +54,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getExpensesBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
+        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param ORDER BY e.date DESC")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
                 .setParameter("param", SecurityUserHandler.getCurrentUser())
@@ -66,7 +65,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getIncomesBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param")
+        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param ORDER BY e.date DESC")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
                 .setParameter("param", SecurityUserHandler.getCurrentUser())

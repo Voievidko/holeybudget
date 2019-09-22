@@ -3,10 +3,9 @@ package com.notspend.util;
 import com.notspend.entity.Account;
 import com.notspend.entity.Expense;
 
-import java.time.LocalDate;
 import java.util.List;
 
-public class Calculation {
+public class CalculationHelper {
     public static Double expenseSum(List<Expense> expenses){
         Double sum = 0D;
         for (Expense expense : expenses){
@@ -35,15 +34,5 @@ public class Calculation {
             }
         }
         return sum;
-//        return account.stream().map(a -> a.getSummary()).reduce(0d, (a, b) -> a + b);
-    }
-
-    public static LocalDate getFirstDayOfCurrentMonth() {
-        return LocalDate.now().withDayOfMonth(1);
-    }
-
-    public static LocalDate getLastDayOfCurrentMonth() {
-        LocalDate today = LocalDate.now();
-        return today.withDayOfMonth(today.lengthOfMonth());
     }
 }

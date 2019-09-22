@@ -6,7 +6,7 @@ import com.notspend.entity.User;
 import com.notspend.service.AccountService;
 import com.notspend.service.CurrencyService;
 import com.notspend.service.UserService;
-import com.notspend.util.Calculation;
+import com.notspend.util.CalculationHelper;
 import com.notspend.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -128,7 +128,7 @@ public class AccountController {
     public String transferMoneyBetweenAccounts(Model model){
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
-        model.addAttribute("allMoneySummary", Calculation.accountSum(accounts));
+        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
         return "account/transfer";
     }
 

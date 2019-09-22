@@ -8,7 +8,7 @@ import com.notspend.entity.User;
 import com.notspend.service.CategoryService;
 import com.notspend.service.ExpenseService;
 import com.notspend.service.UserService;
-import com.notspend.util.Calculation;
+import com.notspend.util.CalculationHelper;
 import com.notspend.util.SecurityUserHandler;
 import com.notspend.util.CurrencyProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +39,13 @@ public class MainPage {
         User user = userService.getUser(username);
         List<Account> accountList = user.getAccounts();
         request.getSession().setAttribute("username", username);
-        request.getSession().setAttribute("totalSum", String.format("%.2f", Calculation.accountSum(accountList)));
+        request.getSession().setAttribute("totalSum", String.format("%.2f", CalculationHelper.accountSum(accountList)));
 
         List<Expense> expenseDuringCurrentMonth = expenseService.getExpensesDuringCurrentMonth();
         List<Expense> incomeDuringCurrentMonth = expenseService.getIncomesDuringCurrentMonth();
 
-        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", Calculation.expenseSum(expenseDuringCurrentMonth)));
-        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", Calculation.expenseSum(incomeDuringCurrentMonth)));
+        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", CalculationHelper.expenseSum(expenseDuringCurrentMonth)));
+        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", CalculationHelper.expenseSum(incomeDuringCurrentMonth)));
 
         //Data for year income graph
         List<Expense> incomeDuringLastYear = expenseService.getAllIncomeDuringYear();

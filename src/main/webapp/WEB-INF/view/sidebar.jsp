@@ -89,6 +89,21 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesIncome" aria-expanded="true" aria-controls="collapsePage">
+            <i class="fas fa-fw fa-folder"></i>
+            <span>Income</span>
+        </a>
+        <div id="collapsePagesIncome" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="/expense/income">Add</a>
+                <a class="collapse-item" href="/income/currentmonth">This month</a>
+                <a class="collapse-item" href="/income/year">Last year</a>
+            </div>
+        </div>
+    </li>
+
+    <!-- Nav Item - Pages Collapse Menu -->
+    <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePagesCurrency" aria-expanded="true" aria-controls="collapsePage">
             <i class="fas fa-fw fa-folder"></i>
             <span>Currency</span>

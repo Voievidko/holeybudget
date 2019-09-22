@@ -2,7 +2,8 @@ package com.notspend.cotroller;
 
 import com.notspend.entity.*;
 import com.notspend.service.*;
-import com.notspend.util.Calculation;
+import com.notspend.util.CalculationHelper;
+import com.notspend.util.DateHelper;
 import com.notspend.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -194,12 +195,12 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getAllExpenses();
         model.addAttribute("expenseName", "Expenses during all time");
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", Calculation.expenseSum(expenses));
+        model.addAttribute("totalSum", CalculationHelper.expenseSum(expenses));
 
         //for sums
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
-        model.addAttribute("allMoneySummary", Calculation.accountSum(accounts));
+        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
         return "expense/all";
     }
 
@@ -208,12 +209,12 @@ public class ExpenseController {
         List<Expense> expenses = expenseService.getExpensesDuringCurrentMonth();
         model.addAttribute("expenseName", "Expenses during " + expenseService.getCurrentMonthName());
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", Calculation.expenseSum(expenses));
+        model.addAttribute("totalSum", CalculationHelper.expenseSum(expenses));
 
         //for sums
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
-        model.addAttribute("allMoneySummary", Calculation.accountSum(accounts));
+        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
         return "expense/all";
     }
 }

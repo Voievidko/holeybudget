@@ -5,7 +5,8 @@ import com.notspend.dao.ExpenseDao;
 import com.notspend.entity.Account;
 import com.notspend.entity.Expense;
 import com.notspend.service.ExpenseService;
-import com.notspend.util.Calculation;
+import com.notspend.util.CalculationHelper;
+import com.notspend.util.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,7 +54,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getExpensesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getExpensesBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getExpensesBetweenDates(DateHelper.getFirstDayOfCurrentMonth(), DateHelper.getLastDayOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -61,7 +62,7 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public List<Expense> getIncomesDuringCurrentMonth() {
-        List <Expense> expenses = expenseDao.getIncomesBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        List <Expense> expenses = expenseDao.getIncomesBetweenDates(DateHelper.getFirstDayOfCurrentMonth(), DateHelper.getLastDayOfCurrentMonth());
         Collections.sort(expenses);
         return expenses;
     }
@@ -85,13 +86,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     @Transactional
     public Double getSumOfExpenseForCurrentMonth(){
-        return expenseDao.getSumExpensesBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        return expenseDao.getSumExpensesBetweenDates(DateHelper.getFirstDayOfCurrentMonth(), DateHelper.getLastDayOfCurrentMonth());
     }
 
     @Override
     @Transactional
     public Double getSumOfIncomeForCurrentMonth() {
-        return expenseDao.getSumIncomeBetweenDates(Calculation.getFirstDayOfCurrentMonth(), Calculation.getLastDayOfCurrentMonth());
+        return expenseDao.getSumIncomeBetweenDates(DateHelper.getFirstDayOfCurrentMonth(), DateHelper.getLastDayOfCurrentMonth());
     }
 
     @Override

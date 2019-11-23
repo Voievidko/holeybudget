@@ -99,7 +99,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("update")
+    @RequestMapping("update")
     public String updateCategory(@ModelAttribute("categoryId") int categoryId, Model model){
         Category category = categoryService.getCategory(categoryId);
         model.addAttribute("category", category);
@@ -112,7 +112,11 @@ public class CategoryController {
         //todo: rework this
         category.setUser(userService.getUser(SecurityUserHandler.getCurrentUser()));
         categoryService.updateCategory(category);
-        return "redirect:all";
+        if (category.isIncome()){
+            return "redirect:allincome";
+        } else {
+            return "redirect:allexpense";
+        }
     }
 
     @RequestMapping("transferToExistCategory")

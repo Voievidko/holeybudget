@@ -46,6 +46,7 @@
 
             <form:form action="updateprocess" modelAttribute="category" cssClass="user" method="post">
               <form:hidden path="categoryId"/>
+              <form:hidden path="income"/>
               <div class="form-group">
               <form:input path="name" cssClass="form-control" placeholder="Category name"/>
               </div>

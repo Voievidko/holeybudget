@@ -54,7 +54,7 @@ public class MainPage {
         int monthFrom = LocalDate.now().getMonthValue() + 1;
         for (int i = monthFrom; i < monthFrom + 12; i++) {
             Double monthSum = 0d;
-            int currentMonthNumber = i > 12 ? i % 12 : i;
+            int currentMonthNumber = getRightMonthOrder(i);
             for (Expense expense : incomeDuringLastYear) {
                 if ((expense.getDate().getMonthValue()) == currentMonthNumber) {
                     monthSum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
@@ -118,5 +118,10 @@ public class MainPage {
 
         request.getSession().setAttribute("currencyValues", currencyValues);
         return "index";
+    }
+
+    private int getRightMonthOrder(int monthNumber){
+        int month = monthNumber % 12;
+        return month == 0 ? 12 : month;
     }
 }

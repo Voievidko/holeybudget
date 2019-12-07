@@ -6,7 +6,7 @@
 
     <groupId>com.notspend</groupId>
     <artifactId>notspend</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <properties>
         <java.version>11</java.version>
         <mysql.driver.version>8.0.16</mysql.driver.version>

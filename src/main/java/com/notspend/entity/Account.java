@@ -36,6 +36,12 @@ public class Account {
     @JoinColumn(name="currency_code")
     private Currency currency;
 
+    @Column(name = "synchronization_token")
+    private String token;
+
+    @Column(name = "synchronization_id")
+    private String synchronizationId;
+
     public Account() {
     }
 
@@ -81,6 +87,22 @@ public class Account {
 
     public Currency getCurrency() {
         return currency;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getSynchronizationId() {
+        return synchronizationId;
+    }
+
+    public void setSynchronizationId(String synchronizationId) {
+        this.synchronizationId = synchronizationId;
     }
 
     public void setCurrency(Currency currency) {

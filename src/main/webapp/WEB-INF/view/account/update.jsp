@@ -50,6 +50,9 @@
               <form:input path="type" cssClass="form-control form-control-user" placeholder="Account type"/>
               </div>
               <div class="form-group">
+                <form:input path="token" cssClass="form-control form-control-user" placeholder="Token"/>
+              </div>
+              <div class="form-group">
               <form:input path="description" cssClass="form-control form-control-user" placeholder="Description"/>
               </div>
               <input type="submit" value="Update" class="btn btn-primary btn-user btn-block"/>

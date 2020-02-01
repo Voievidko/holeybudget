@@ -56,6 +56,9 @@
               <form:errors path="summary" cssClass="alert"/>
             </div>
             <div class="form-group">
+              <form:input path="token" cssClass="form-control" placeholder="Token for sync"/>
+            </div>
+            <div class="form-group">
               <select name="code" class="form-control">
                 <c:forEach var="tempCurrency" items="${currencies}">
                   <option value=${tempCurrency.code} class="dropdown-item">${tempCurrency.code}</option>

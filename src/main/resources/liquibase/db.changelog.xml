@@ -41,4 +41,7 @@
     <changeSet id="12" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/12_add_currency_to_expense_and_account.sql"></sqlFile>
     </changeSet>
+    <changeSet id="13" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/13_add_token_to_account.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

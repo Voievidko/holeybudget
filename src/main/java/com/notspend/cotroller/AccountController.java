@@ -78,6 +78,7 @@ public class AccountController {
         Account account = accountService.getAccount(updatedAccount.getAccountId());
         account.setType(updatedAccount.getType());
         account.setDescription(updatedAccount.getDescription());
+        account.setToken(updatedAccount.getToken());
         accountService.updateAccount(account);
         return "redirect:all";
     }

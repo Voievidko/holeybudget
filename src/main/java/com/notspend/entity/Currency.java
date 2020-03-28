@@ -17,6 +17,9 @@ public class Currency {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "number")
+    private Integer number;
+
     @Column(name = "symbol")
     private String symbol;
 
@@ -47,18 +50,27 @@ public class Currency {
         this.symbol = symbol;
     }
 
+    public Integer getNumber() {
+        return number;
+    }
+
+    public void setNumber(Integer number) {
+        this.number = number;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Currency)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Currency currency = (Currency) o;
-        return Objects.equals(getName(), currency.getName()) &&
-                Objects.equals(getCode(), currency.getCode()) &&
-                Objects.equals(getSymbol(), currency.getSymbol());
+        return Objects.equals(name, currency.name) &&
+                Objects.equals(code, currency.code) &&
+                Objects.equals(number, currency.number) &&
+                Objects.equals(symbol, currency.symbol);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getCode(), getSymbol());
+        return Objects.hash(name, code, number, symbol);
     }
 }

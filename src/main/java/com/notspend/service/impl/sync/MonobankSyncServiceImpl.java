@@ -137,8 +137,8 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         expense.setUser(account.getUser());
                         expense.setAccount(account);
                         expense.setUser(account.getUser());
-                        //TODO: remove hardcoded UAH
-                        expense.setCurrency(currencyService.getCurrencyByCode("UAH"));
+                        Integer currencyNumber = monobankExpense.getCurrencyCode();
+                        expense.setCurrency(currencyService.getCurrencyByNumber(currencyNumber));
                         expense.setComment(monobankExpense.getDescription());
                         expense.setSum(-(monobankExpense.getAmount() / 100d));
                         expense.setCategory(demoCategory);

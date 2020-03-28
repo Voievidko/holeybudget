@@ -26,6 +26,14 @@ public class CurrencyDaoImpl implements CurrencyDao {
     }
 
     @Override
+    public Currency get(Integer number) {
+        Session session = sessionFactory.getCurrentSession();
+        Query<Currency> query = session.createQuery("FROM Currency where number = :number", Currency.class);
+        query.setParameter("number", number);
+        return query.list().stream().findFirst().orElseThrow();
+    }
+
+    @Override
     public List<Currency> getAll() {
         Session session = sessionFactory.getCurrentSession();
         Query<Currency> query = session.createQuery("FROM Currency", Currency.class);

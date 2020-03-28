@@ -47,4 +47,7 @@
     <changeSet id="14" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/14_add_sync_time_to_account.sql"></sqlFile>
     </changeSet>
+    <changeSet id="15" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/15_add_iban_currency_code.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

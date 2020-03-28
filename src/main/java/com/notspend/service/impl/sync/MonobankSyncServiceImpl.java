@@ -66,7 +66,8 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
         private static final int DEFAULT_CARD_NUMBER = 0;
 
-        private static final int MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS = 2682000;
+        //Limitation comes from Monobank API
+        private static final int MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS = 2682000; // 1 month
 
         private static final int DELAY_BETWEEN_REQUEST = 70000; // ms
 
@@ -90,6 +91,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 //this mean it's first time sync for this account
                 //so, we can define last sync id and set current time for last sync
                 try {
+                    //TODO: what if we don't have last transaction id?
                     String lastTransactionId = getLastTransactionId();
                     account.setSynchronizationId(lastTransactionId);
                     account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
@@ -103,6 +105,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             long delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
 
             if (delayBetweenSync < 5 * 60){
+                //if last sync was 5 min ago don't need to sync again
                 return;
             }
 
@@ -118,6 +121,8 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
             int monthToUpload = 0;
 
+            String firstSuccessfulSyncId = null;
+
             while (monthToUpload < MAXIMUM_MONTHS_TO_UPLOAD){
 
                 try {
@@ -125,8 +130,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
-                String syncId = monobankStatementAnswers.get(0).getId();
 
                 for (MonobankStatementAnswer monobankExpense : monobankStatementAnswers){
                     if (!monobankExpense.getId().equals(account.getSynchronizationId())){
@@ -146,7 +149,13 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         expense.setTime(LocalTime.now());
 
                         expenseService.addExpense(expense);
+                        if (firstSuccessfulSyncId == null){
+                            firstSuccessfulSyncId = monobankExpense.getId();
+                        }
                     } else {
+                        //we find last sync id
+                        account.setSynchronizationId(firstSuccessfulSyncId);
+                        accountService.updateAccount(account);
                         return;
                     }
                 }

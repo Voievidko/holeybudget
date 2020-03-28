@@ -43,11 +43,14 @@ public class MainPage {
         User user = userService.getUser(username);
         List<Account> accountList = user.getAccounts();
         List<Account> accountsToSync = accountList.stream().filter(a -> a.getToken() != null).collect(Collectors.toList());
-        try {
-            expenseSyncService.syncDataWithBankServer(accountsToSync);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (!accountsToSync.isEmpty()){
+            try {
+                expenseSyncService.syncDataWithBankServer(accountsToSync);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         request.getSession().setAttribute("username", username);
         request.getSession().setAttribute("totalSum", String.format("%.2f", CalculationHelper.accountSum(accountList)));
 

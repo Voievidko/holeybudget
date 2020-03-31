@@ -42,6 +42,9 @@ public class Account {
     @Column(name = "synchronization_id")
     private String synchronizationId;
 
+    @Column(name = "synchronization_time")
+    private Long synchronizationTime;
+
     public Account() {
     }
 
@@ -107,6 +110,14 @@ public class Account {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public Long getSynchronizationTime() {
+        return synchronizationTime;
+    }
+
+    public void setSynchronizationTime(Long synchronizationTime) {
+        this.synchronizationTime = synchronizationTime;
     }
 
     public void substract(Double sum){

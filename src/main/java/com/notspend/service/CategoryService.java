@@ -10,6 +10,7 @@ public interface CategoryService {
     List<Category> getAllExpenseCategories();
     List<Category> getAllIncomeCategories();
     Category getCategory(int id);
+    Category getCategory(String name);
     void deleteCategoryById(int id);
     void updateCategory(Category category);
 

@@ -41,6 +41,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
+    public Category getCategory(String name) {
+        return categoryDAO.get(name);
+    }
+
+    @Override
+    @Transactional
     public void deleteCategoryById(int id) {
         categoryDAO.delete(id);
     }

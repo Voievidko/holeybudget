@@ -7,6 +7,7 @@ import com.notspend.entity.Expense;
 import com.notspend.entity.User;
 import com.notspend.service.CategoryService;
 import com.notspend.service.ExpenseService;
+import com.notspend.service.ExpenseSyncService;
 import com.notspend.service.UserService;
 import com.notspend.util.CalculationHelper;
 import com.notspend.util.SecurityUserHandler;
@@ -33,11 +34,23 @@ public class MainPage {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private ExpenseSyncService expenseSyncService;
+
     @RequestMapping(value = "/")
     public String getMainPage(HttpServletRequest request){
         String username = SecurityUserHandler.getCurrentUser();
         User user = userService.getUser(username);
         List<Account> accountList = user.getAccounts();
+        List<Account> accountsToSync = accountList.stream().filter(a -> a.getToken() != null).collect(Collectors.toList());
+        if (!accountsToSync.isEmpty()){
+            try {
+                expenseSyncService.syncDataWithBankServer(accountsToSync);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         request.getSession().setAttribute("username", username);
         request.getSession().setAttribute("totalSum", String.format("%.2f", CalculationHelper.accountSum(accountList)));
 

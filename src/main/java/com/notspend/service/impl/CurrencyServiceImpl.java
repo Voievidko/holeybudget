@@ -29,6 +29,12 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     @Transactional
+    public Currency getCurrencyByNumber(Integer number) {
+        return currencyDao.get(number);
+    }
+
+    @Override
+    @Transactional
     public List<Currency> getAllCurrencies() {
         return currencyDao.getAll();
     }

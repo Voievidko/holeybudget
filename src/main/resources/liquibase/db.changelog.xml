@@ -44,4 +44,13 @@
     <changeSet id="13" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/13_add_token_to_account.sql"></sqlFile>
     </changeSet>
+    <changeSet id="14" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/14_add_sync_time_to_account.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="15" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/15_add_iban_currency_code.sql"></sqlFile>
+    </changeSet>
+    <changeSet id="16" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/16_add_MCC_codes.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

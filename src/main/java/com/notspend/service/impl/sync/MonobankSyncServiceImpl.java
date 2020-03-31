@@ -2,6 +2,7 @@ package com.notspend.service.impl.sync;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.notspend.dao.MccDao;
 import com.notspend.entity.Account;
 import com.notspend.entity.Category;
 import com.notspend.entity.Currency;
@@ -43,6 +44,9 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
     @Autowired
     private AccountService accountService;
+
+    @Autowired
+    private MccService mccService;
 
     public MonobankSyncServiceImpl() {
     }
@@ -113,11 +117,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             long currentEpochTime = TimeHelper.getCurrentEpochTime();
             long epochTimeFrom = currentEpochTime - MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
 
-//        List<Currency> allCurrencies = currencyService.getAllCurrencies();
-
             List<Category> categories = categoryService.getAllExpenseCategories();
-            //TODO: We need categories
-            Category demoCategory = categories.get(0);
 
             int monthToUpload = 0;
 
@@ -141,7 +141,26 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         expense.setCurrency(currencyService.getCurrencyByNumber(currencyNumber));
                         expense.setComment(monobankExpense.getDescription());
                         expense.setSum(-(monobankExpense.getAmount() / 100d));
-                        expense.setCategory(demoCategory);
+
+                        String mccCategoryName = mccService.getCategoryByMccCode(monobankExpense.getMcc());
+
+                        if (mccCategoryName.isEmpty()) {
+                            continue;
+                        }
+
+                        Category category = categories.stream()
+                                .filter(c -> c.getName().equalsIgnoreCase(mccCategoryName))
+                                .findFirst()
+                                .orElse((new Category()));
+
+                        if (category.getCategoryId() == 0){
+                            category.setUser(account.getUser());
+                            category.setIncome(false);
+                            category.setName(mccCategoryName);
+                            categoryService.addCategory(category);
+                        }
+
+                        expense.setCategory(categoryService.getCategory(category.getName()));
 
                         long epochTime = monobankExpense.getTime();
                         LocalDate date = LocalDate.ofInstant(Instant.ofEpochSecond(epochTime), ZoneId.systemDefault());

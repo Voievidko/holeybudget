@@ -50,4 +50,7 @@
     <changeSet id="15" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/15_add_iban_currency_code.sql"></sqlFile>
     </changeSet>
+    <changeSet id="16" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/16_add_MCC_codes.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

@@ -3,8 +3,10 @@ package com.notspend.dao.impl;
 import com.notspend.dao.CategoryDao;
 import com.notspend.entity.Category;
 import com.notspend.util.SecurityUserHandler;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,6 +48,13 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
+    public Category get(String name) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria criteria = session.createCriteria(Category.class);
+        return (Category) criteria.add(Restrictions.eq("name", name)).uniqueResult();
+    }
+
+    @Override
     public void delete(Integer id) {
         Session session = sessionFactory.getCurrentSession();
         Category category = session.get(Category.class, id);
@@ -74,6 +83,7 @@ public class CategoryDaoImpl implements CategoryDao {
         return !query.list().isEmpty();
     }
 
+    //todo: where user?
     @Override
     public int replaceCategoryInAllExpenses(Integer fromCategoryId, Integer toCategoryId){
         Session session = sessionFactory.getCurrentSession();

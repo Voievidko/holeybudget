@@ -50,8 +50,10 @@ public class CategoryDaoImpl implements CategoryDao {
     @Override
     public Category get(String name) {
         Session session = sessionFactory.getCurrentSession();
-        Criteria criteria = session.createCriteria(Category.class);
-        return (Category) criteria.add(Restrictions.eq("name", name)).uniqueResult();
+        Query query = session.createQuery("FROM Category WHERE name = :name AND username = :username");
+        query.setParameter("name", name);
+        query.setParameter("username", SecurityUserHandler.getCurrentUser());
+        return (Category) query.list().get(0);
     }
 
     @Override

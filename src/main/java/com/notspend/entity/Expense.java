@@ -22,7 +22,6 @@ public class Expense implements Comparable<Expense>{
 
     @Column(name = "sum")
     @NotNull(message = "Sum of your expense is required")
-    @Min(value = 0, message = "Sum can't have minus value")
     private Double sum;
 
     @Column(name = "date")

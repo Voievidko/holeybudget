@@ -91,6 +91,14 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
         @Override
         public void run() {
+            long delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
+
+            if (delayBetweenSync < 10 * 60){
+                //if last sync was 10 min ago don't need to sync again
+                account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
+                return;
+            }
+
             if (account.getSynchronizationTime() == null){
                 //this mean it's first time sync for this account
                 //so, we can define last sync id and set current time for last sync
@@ -106,18 +114,13 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 return;
             }
 
-            long delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
 
-            if (delayBetweenSync < 5 * 60){
-                //if last sync was 5 min ago don't need to sync again
-                return;
-            }
 
             List<MonobankStatementAnswer> monobankStatementAnswers = null;
             long currentEpochTime = TimeHelper.getCurrentEpochTime();
             long epochTimeFrom = currentEpochTime - MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
 
-            List<Category> categories = categoryService.getAllExpenseCategories();
+
 
             int monthToUpload = 0;
 
@@ -133,6 +136,10 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
                 for (MonobankStatementAnswer monobankExpense : monobankStatementAnswers){
                     if (!monobankExpense.getId().equals(account.getSynchronizationId())){
+                        String mccCategoryName = mccService.getCategoryByMccCode(monobankExpense.getMcc());
+                        if (mccCategoryName.isEmpty()) {
+                            continue;
+                        }
                         Expense expense = new Expense();
                         expense.setUser(account.getUser());
                         expense.setAccount(account);
@@ -142,12 +149,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         expense.setComment(monobankExpense.getDescription());
                         expense.setSum(-(monobankExpense.getAmount() / 100d));
 
-                        String mccCategoryName = mccService.getCategoryByMccCode(monobankExpense.getMcc());
-
-                        if (mccCategoryName.isEmpty()) {
-                            continue;
-                        }
-
+                        List<Category> categories = categoryService.getAllExpenseCategories();
                         Category category = categories.stream()
                                 .filter(c -> c.getName().equalsIgnoreCase(mccCategoryName))
                                 .findFirst()
@@ -165,7 +167,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         long epochTime = monobankExpense.getTime();
                         LocalDate date = LocalDate.ofInstant(Instant.ofEpochSecond(epochTime), ZoneId.systemDefault());
                         expense.setDate(date);
-                        expense.setTime(LocalTime.now());
+                        expense.setTime(LocalTime.ofSecondOfDay(epochTime%3600));
 
                         expenseService.addExpense(expense);
                         if (firstSuccessfulSyncId == null){
@@ -173,7 +175,10 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         }
                     } else {
                         //we find last sync id
-                        account.setSynchronizationId(firstSuccessfulSyncId);
+                        if (!(firstSuccessfulSyncId == null)){
+                            account.setSynchronizationId(firstSuccessfulSyncId);
+                        }
+                        account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
                         accountService.updateAccount(account);
                         return;
                     }
@@ -204,9 +209,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 System.out.println("Can't parse answer");
                 return Collections.emptyList();
             }
-            return monobankStatementAnswers.stream()
-                    .filter(a -> a.getMcc() != 4829)
-                    .collect(Collectors.toList());
+            return monobankStatementAnswers;
         }
 
         public Optional<String> getJsonWithStatements(long timeFrom, long timeTo){

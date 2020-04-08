@@ -2,12 +2,16 @@ package com.notspend.service.impl.sync;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.notspend.dao.MccDao;
 import com.notspend.entity.Account;
 import com.notspend.entity.Category;
 import com.notspend.entity.Currency;
 import com.notspend.entity.Expense;
-import com.notspend.service.*;
+import com.notspend.service.AccountService;
+import com.notspend.service.CategoryService;
+import com.notspend.service.CurrencyService;
+import com.notspend.service.ExpenseService;
+import com.notspend.service.ExpenseSyncService;
+import com.notspend.service.MccService;
 import com.notspend.util.TimeHelper;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
@@ -21,14 +25,15 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 @Service
 public class MonobankSyncServiceImpl implements ExpenseSyncService {
@@ -114,19 +119,15 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 return;
             }
 
-
-
             List<MonobankStatementAnswer> monobankStatementAnswers = null;
             long currentEpochTime = TimeHelper.getCurrentEpochTime();
             long epochTimeFrom = currentEpochTime - MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
 
-
-
-            int monthToUpload = 0;
+            int uploadMonthCounter = 0;
 
             String firstSuccessfulSyncId = null;
 
-            while (monthToUpload < MAXIMUM_MONTHS_TO_UPLOAD){
+            while (uploadMonthCounter < MAXIMUM_MONTHS_TO_UPLOAD){
 
                 try {
                     monobankStatementAnswers = getStatements(epochTimeFrom, currentEpochTime);
@@ -185,7 +186,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 }
                 epochTimeFrom -= MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
                 currentEpochTime -= MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
-                monthToUpload++;
+                uploadMonthCounter++;
                 try {
                     Thread.sleep(DELAY_BETWEEN_REQUEST);
                 } catch (InterruptedException e) {

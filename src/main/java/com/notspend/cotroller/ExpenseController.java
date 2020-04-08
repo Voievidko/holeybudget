@@ -234,7 +234,7 @@ public class ExpenseController {
             int year = localDate.getYear();
             int month = localDate.getMonthValue();
             String key = year + "-" + month;
-            map.putIfAbsent(key, 0D);
+            map.putIfAbsent(key, 0.00);
             map.put(key, map.get(key) + expense.getSum());
         }
         return map;

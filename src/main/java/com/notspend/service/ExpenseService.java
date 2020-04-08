@@ -17,4 +17,5 @@ public interface ExpenseService {
     Double getSumOfExpenseForCurrentMonth();
     Double getSumOfIncomeForCurrentMonth();
     List<Expense> getAllIncomeDuringYear();
+    List<Expense> getAllExpenseDuringYear();
 }

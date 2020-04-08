@@ -82,6 +82,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="/expense/add">Add</a>
                 <a class="collapse-item" href="/expense/currentmonth">This month</a>
+                <a class="collapse-item" href="/expense/year">This year</a>
                 <a class="collapse-item" href="/expense/all">Show all</a>
             </div>
         </div>

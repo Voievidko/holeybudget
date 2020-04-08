@@ -16,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("expense")
@@ -216,5 +218,25 @@ public class ExpenseController {
         model.addAttribute("accounts", accounts);
         model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
         return "expense/all";
+    }
+
+    @RequestMapping("year")
+    public String showExpenseForLastYear(Model model){
+        List<Expense> currentYearExpense = expenseService.getAllExpenseDuringYear();
+        model.addAttribute("currentYearExpense", transform(currentYearExpense));
+        return "expense/year";
+    }
+
+    private Map<String, Double> transform(List<Expense> expenses){
+        Map<String, Double> map = new HashMap<>();
+        for(Expense expense : expenses){
+            LocalDate localDate = expense.getDate();
+            int year = localDate.getYear();
+            int month = localDate.getMonthValue();
+            String key = year + "-" + month;
+            map.putIfAbsent(key, 0D);
+            map.put(key, map.get(key) + expense.getSum());
+        }
+        return map;
     }
 }

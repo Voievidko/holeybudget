@@ -108,6 +108,18 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
+    @Transactional
+    public List<Expense> getAllExpenseDuringYear() {
+        LocalDate today = LocalDate.now();
+        LocalDate dateFrom = LocalDate
+                .now()
+                .minusYears(1)
+                .minusDays(today.getDayOfMonth() - 1)
+                .plusMonths(1);
+        return expenseDao.getExpensesBetweenDates(dateFrom, today);
+    }
+
+    @Override
     public String getCurrentMonthName() {
         return Calendar.getInstance().getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
     }

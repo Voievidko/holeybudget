@@ -34,8 +34,7 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public Expense get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        Expense expense = session.get(Expense.class, id);
-        return expense;
+        return session.get(Expense.class, id);
     }
 
     @Override
@@ -54,23 +53,21 @@ public class ExpenseDaoImpl implements ExpenseDao {
     @Override
     public List<Expense> getExpensesBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param ORDER BY e.date DESC")
+        return session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = FALSE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param ORDER BY e.date DESC")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
                 .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .list();
-        return expenses;
     }
 
     @Override
     public List<Expense> getIncomesBetweenDates(LocalDate dateFrom, LocalDate dateTo) {
         Session session = sessionFactory.getCurrentSession();
-        List<Expense> expenses = session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param ORDER BY e.date DESC")
+        return session.createQuery("SELECT e FROM Expense e LEFT JOIN e.category WHERE e.category.income = TRUE AND e.date BETWEEN :stDate AND :edDate AND e.user.username = :param ORDER BY e.date DESC")
                 .setParameter("stDate", dateFrom)
                 .setParameter("edDate", dateTo)
                 .setParameter("param", SecurityUserHandler.getCurrentUser())
                 .list();
-        return expenses;
     }
 
     @Override

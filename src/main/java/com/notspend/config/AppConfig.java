@@ -28,15 +28,6 @@ public class AppConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 
-//    @Bean
-//    public MessageSource messageSource() {
-//        var messageSource = new ResourceBundleMessageSource();
-//        messageSource.setBasenames("resources/messages");
-//        messageSource.setDefaultEncoding("UTF-8");
-//        messageSource.setUseCodeAsDefaultMessage(true);
-//        return messageSource;
-//    }
-
     // equivalents for <mvc:resources/> tags
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

@@ -1,15 +1,24 @@
 package com.notspend.cotroller;
 
-import com.notspend.entity.*;
-import com.notspend.service.*;
+import com.notspend.entity.Account;
+import com.notspend.entity.Category;
+import com.notspend.entity.Currency;
+import com.notspend.entity.Expense;
+import com.notspend.entity.User;
+import com.notspend.service.AccountService;
+import com.notspend.service.CategoryService;
+import com.notspend.service.CurrencyService;
+import com.notspend.service.ExpenseService;
+import com.notspend.service.UserService;
 import com.notspend.util.CalculationHelper;
-import com.notspend.util.DateHelper;
 import com.notspend.util.SecurityUserHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -39,7 +48,7 @@ public class ExpenseController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("add")
+    @GetMapping("add")
     public String addForm(Model model){
         Expense expense = new Expense();
 
@@ -67,7 +76,7 @@ public class ExpenseController {
 
     //Annotation Valid from javax Validation will check data
     //Validation annotation should be in POJO class like @NotNull, @Min
-    @RequestMapping("addProcess")
+    @PostMapping("addProcess")
     public String processForm(@Valid @ModelAttribute("expense") Expense expense, BindingResult bindingResult,
                               @ModelAttribute("tempCategory") Category category,
                               @ModelAttribute("tempAccount") Account account,
@@ -132,7 +141,7 @@ public class ExpenseController {
         }
     }
 
-    @RequestMapping("currencyProcess")
+    @PostMapping("currencyProcess")
     public String currencyProcess(@ModelAttribute("currency") Double currency,
                                   @ModelAttribute("expenseSum") String expenseSum,
                                   @ModelAttribute("expenseDate") String expenseDate,
@@ -166,7 +175,7 @@ public class ExpenseController {
         }
     }
 
-    @RequestMapping("income")
+    @GetMapping("income")
     public String addIncome(Model model){
         Expense expense = new Expense();
 
@@ -186,13 +195,13 @@ public class ExpenseController {
         return "expense/add";
     }
 
-    @RequestMapping("delete")
+    @PostMapping("delete")
     public String deleteExpense(@ModelAttribute("expenseId") int expenseId){
         expenseService.deleteExpenseById(expenseId);
         return "success";
     }
 
-    @RequestMapping("all")
+    @GetMapping("all")
     public String showAll(Model model){
         List<Expense> expenses = expenseService.getAllExpenses();
         model.addAttribute("expenseName", "Expenses during all time");
@@ -206,7 +215,7 @@ public class ExpenseController {
         return "expense/all";
     }
 
-    @RequestMapping("currentmonth")
+    @GetMapping("currentmonth")
     public String showCurrentMonth(Model model){
         List<Expense> expenses = expenseService.getExpensesDuringCurrentMonth();
         model.addAttribute("expenseName", "Expenses during " + expenseService.getCurrentMonthName());
@@ -220,7 +229,7 @@ public class ExpenseController {
         return "expense/all";
     }
 
-    @RequestMapping("year")
+    @GetMapping("year")
     public String showExpenseForLastYear(Model model){
         List<Expense> currentYearExpense = expenseService.getAllExpenseDuringYear();
         model.addAttribute("currentYearExpense", transform(currentYearExpense));

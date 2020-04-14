@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
@@ -28,14 +30,14 @@ public class UserController {
     @Autowired
     private AuthorityService authorityService;
 
-    @RequestMapping("all")
+    @GetMapping("all")
     public String showAll(Model model){
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
         return "user/all";
     }
 
-    @RequestMapping("register")
+    @GetMapping("register")
     public String register(Model model){
         //logout if user login
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +49,7 @@ public class UserController {
         return "user/register";
     }
 
-    @RequestMapping("registerprocess")
+    @PostMapping("registerprocess")
     public String registerProcess(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
                                   @ModelAttribute("passwordSecondTime") String passwordSecondTime,
                                   Model model){
@@ -74,7 +76,7 @@ public class UserController {
         return "/login";
     }
 
-    @RequestMapping("forgetpassword")
+    @GetMapping("forgetpassword")
     public String forgetPassword(){
         return "user/forgetpassword";
     }

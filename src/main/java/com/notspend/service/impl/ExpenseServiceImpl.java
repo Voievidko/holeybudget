@@ -5,14 +5,16 @@ import com.notspend.dao.ExpenseDao;
 import com.notspend.entity.Account;
 import com.notspend.entity.Expense;
 import com.notspend.service.ExpenseService;
-import com.notspend.util.CalculationHelper;
 import com.notspend.util.DateHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
@@ -102,7 +104,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         LocalDate dateFrom = LocalDate
                 .now()
                 .minusYears(1)
-                .minusDays(today.getDayOfMonth() - 1)
+                .minusDays(today.getDayOfMonth() - 1L)
                 .plusMonths(1);
         return expenseDao.getIncomesBetweenDates(dateFrom, today);
     }
@@ -114,7 +116,7 @@ public class ExpenseServiceImpl implements ExpenseService {
         LocalDate dateFrom = LocalDate
                 .now()
                 .minusYears(1)
-                .minusDays(today.getDayOfMonth() - 1)
+                .minusDays(today.getDayOfMonth() - 1L)
                 .plusMonths(1);
         return expenseDao.getExpensesBetweenDates(dateFrom, today);
     }

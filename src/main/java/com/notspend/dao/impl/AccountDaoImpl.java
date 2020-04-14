@@ -22,8 +22,7 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public Account get(Integer id) {
         Session session = sessionFactory.getCurrentSession();
-        Account account = session.get(Account.class, id);
-        return account;
+        return session.get(Account.class, id);
     }
 
     @Override

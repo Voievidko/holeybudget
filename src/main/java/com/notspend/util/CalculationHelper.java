@@ -6,6 +6,10 @@ import com.notspend.entity.Expense;
 import java.util.List;
 
 public class CalculationHelper {
+
+    private CalculationHelper() {
+    }
+
     public static Double expenseSum(List<Expense> expenses){
         Double sum = 0D;
         for (Expense expense : expenses){

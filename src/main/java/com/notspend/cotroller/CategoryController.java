@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
@@ -42,14 +43,14 @@ public class CategoryController {
         return "category/all";
     }
 
-    @RequestMapping("add")
+    @GetMapping("add")
     public String addCategory(Model model){
         Category category = new Category();
         model.addAttribute("category", category);
         return "category/add";
     }
 
-    @RequestMapping("addProcess")
+    @PostMapping("addProcess")
     public String processAddCategoryForm(@Valid @ModelAttribute("category") Category category,
                                          BindingResult bindingResult,
                                          Model model){
@@ -66,7 +67,7 @@ public class CategoryController {
         return "success";
     }
 
-    @RequestMapping("delete")
+    @PostMapping("delete")
     public String deleteCategory(@ModelAttribute("categoryId") int categoryId, Model model){
         //Category for deleting
         Category category = categoryService.getCategory(categoryId);
@@ -99,14 +100,14 @@ public class CategoryController {
         }
     }
 
-    @RequestMapping("update")
+    @GetMapping("update")
     public String updateCategory(@ModelAttribute("categoryId") int categoryId, Model model){
         Category category = categoryService.getCategory(categoryId);
         model.addAttribute("category", category);
         return "category/update";
     }
 
-    @RequestMapping("updateprocess")
+    @PostMapping("updateprocess")
     public String updateProcess(@ModelAttribute("category") Category category){
         //when update category User for some reason null
         //todo: rework this
@@ -119,7 +120,7 @@ public class CategoryController {
         }
     }
 
-    @RequestMapping("transferToExistCategory")
+    @PostMapping("transferToExistCategory")
     public String transferToOtherCategoryAndDelete(@ModelAttribute("categoryId") int toCategoryId,
                                                    @ModelAttribute("categoryToDelete") int fromCategoryId,
                                                    Model model){
@@ -127,7 +128,7 @@ public class CategoryController {
         return "success";
     }
 
-    @RequestMapping("transferToNewCategory")
+    @PostMapping("transferToNewCategory")
     public String transferToNewCategoryAndDelete(@ModelAttribute("newCategory") Category category,
                                                  @ModelAttribute("categoryToDelete") int fromCategoryId,
                                                  Model model){

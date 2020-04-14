@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
 import java.time.LocalDateTime;
@@ -24,8 +24,7 @@ public class CurrencyProcessor {
     }
 
     private static String getCurrencies(){
-        try {
-            HttpClient client = HttpClients.createDefault();
+        try (CloseableHttpClient client = HttpClients.createDefault()){
             HttpGet httpGet = new HttpGet(API_LINK_NBU);
 
             HttpResponse response = client.execute(httpGet);

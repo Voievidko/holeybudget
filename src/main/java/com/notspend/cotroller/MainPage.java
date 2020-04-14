@@ -14,6 +14,7 @@ import com.notspend.util.SecurityUserHandler;
 import com.notspend.util.CurrencyProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +38,7 @@ public class MainPage {
     @Autowired
     private ExpenseSyncService expenseSyncService;
 
-    @RequestMapping(value = "/")
+    @GetMapping(value = "/")
     public String getMainPage(HttpServletRequest request){
         String username = SecurityUserHandler.getCurrentUser();
         User user = userService.getUser(username);

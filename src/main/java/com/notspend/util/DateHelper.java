@@ -1,13 +1,15 @@
 package com.notspend.util;
 
-import com.notspend.entity.Expense;
-
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DateHelper {
+
+    private DateHelper() {
+    }
+
     public static LocalDate getFirstDayOfCurrentMonth() {
         return LocalDate.now().withDayOfMonth(1);
     }

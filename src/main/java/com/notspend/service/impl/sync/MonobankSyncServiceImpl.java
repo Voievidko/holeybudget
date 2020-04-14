@@ -18,6 +18,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.concurrent.DelegatingSecurityContextRunnable;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -46,6 +47,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
     private final MccService mccService;
 
+    @Autowired
     public MonobankSyncServiceImpl(ExpenseService expenseService, CurrencyService currencyService,
                                    CategoryService categoryService, AccountService accountService,
                                    MccService mccService) {

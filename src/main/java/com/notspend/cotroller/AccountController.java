@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.validation.Valid;
@@ -32,7 +33,7 @@ public class AccountController {
     @Autowired
     private CurrencyService currencyService;
 
-    @RequestMapping("add")
+    @GetMapping("add")
     public String addAccount(Model model){
         Account account = new Account();
         List<Currency> currencies = currencyService.getAllCurrencies();
@@ -41,7 +42,7 @@ public class AccountController {
         return "account/add";
     }
 
-    @RequestMapping("addProcess")
+    @PostMapping("addProcess")
     public String processAddAccountForm(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult,
                                         @ModelAttribute("tempCurrency") Currency currency,
                                         Model model){
@@ -72,7 +73,7 @@ public class AccountController {
         return "account/update";
     }
 
-    @RequestMapping("updateprocess")
+    @PostMapping("updateprocess")
     public String updateProcess(@ModelAttribute("account") Account updatedAccount){
         //todo: rework this solution
         Account account = accountService.getAccount(updatedAccount.getAccountId());
@@ -83,7 +84,7 @@ public class AccountController {
         return "redirect:all";
     }
 
-    @RequestMapping("delete")
+    @PostMapping("delete")
     public String deleteAccount(@ModelAttribute("accountId") int accountId, Model model){
         List<Account> accounts = accountService.getAccounts();
 
@@ -105,7 +106,7 @@ public class AccountController {
 
     }
 
-    @RequestMapping("transferToExistAccount")
+    @PostMapping("transferToExistAccount")
     public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId,
                                                   @ModelAttribute("accountToDelete") int fromAccountId,
                                                   Model model){
@@ -125,7 +126,7 @@ public class AccountController {
         }
     }
 
-    @RequestMapping("transfer")
+    @GetMapping("transfer")
     public String transferMoneyBetweenAccounts(Model model){
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
@@ -133,7 +134,7 @@ public class AccountController {
         return "account/transfer";
     }
 
-    @RequestMapping("transferProcess")
+    @PostMapping("transferProcess")
     public String transferMoneyBetweenAccountsProcess(@ModelAttribute("accountFrom") int accountFromId,
                                                       @ModelAttribute("accountTo") int accountToId,
                                                       @ModelAttribute("sum") Double sum,
@@ -153,12 +154,12 @@ public class AccountController {
         }
     }
 
-    @RequestMapping("currencyProcess")
+    @PostMapping("currencyProcess")
     public String transferMoneyBetweenAccountsWithDifferentCurrencyProcess(@ModelAttribute("accountFromId") int accountFromId,
                                                       @ModelAttribute("accountToId") int accountToId,
                                                       @ModelAttribute("sum") Double sum,
                                                       @ModelAttribute("currency") Double currency,
-                                                      @ModelAttribute("delete") Boolean deleteAccount,
+                                                      @ModelAttribute("delete") boolean deleteAccount,
                                                       Model model){
         accountService.transferMoneyBetweenAccountsWithDifferentCurrency(accountFromId, accountToId, sum, currency);
         if (deleteAccount){

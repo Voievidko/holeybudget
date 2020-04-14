@@ -3,7 +3,6 @@ package com.notspend.service.impl;
 import com.notspend.dao.AccountDao;
 import com.notspend.entity.Account;
 import com.notspend.service.AccountService;
-import com.notspend.service.ExpenseSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

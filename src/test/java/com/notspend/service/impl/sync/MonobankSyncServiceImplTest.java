@@ -4,17 +4,14 @@ import com.notspend.entity.Account;
 import com.notspend.entity.Category;
 import com.notspend.entity.User;
 import com.notspend.service.CategoryService;
-import com.notspend.service.ExpenseSyncService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +30,7 @@ class MonobankSyncServiceImplTest {
     private CategoryService categoryService;
 
     @Mock
-    private MonobankSyncServiceImpl.OneThread oneThreadMock;
+    private MonobankSyncServiceImpl.RunnableMono runnableMonoMock;
 
     @BeforeAll
     void prepareData(){
@@ -65,8 +62,8 @@ class MonobankSyncServiceImplTest {
     void syncDataWithBankServer() throws Exception {
 
 //        when(categoryService.getAllExpenseCategories()).thenReturn(categories);
-        when(oneThreadMock.getJsonWithStatements(anyLong(), anyLong())).thenReturn(Optional.of("{}"));
-        verify(oneThreadMock, times(1)).getJsonWithStatements(anyLong(), anyLong());
+        when(runnableMonoMock.getJsonWithStatements(anyLong(), anyLong())).thenReturn(Optional.of("{}"));
+        verify(runnableMonoMock, times(1)).getJsonWithStatements(anyLong(), anyLong());
 
     }
 }

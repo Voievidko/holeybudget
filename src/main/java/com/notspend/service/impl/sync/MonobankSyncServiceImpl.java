@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notspend.entity.Account;
 import com.notspend.entity.Category;
-import com.notspend.entity.Currency;
 import com.notspend.entity.Expense;
 import com.notspend.service.AccountService;
 import com.notspend.service.CategoryService;
@@ -19,7 +18,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.concurrent.DelegatingSecurityContextRunnable;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -38,22 +36,24 @@ import java.util.Optional;
 @Service
 public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
-    @Autowired
-    private ExpenseService expenseService;
+    private final ExpenseService expenseService;
 
-    @Autowired
-    private CurrencyService currencyService;
+    private final CurrencyService currencyService;
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
-    @Autowired
-    private AccountService accountService;
+    private final AccountService accountService;
 
-    @Autowired
-    private MccService mccService;
+    private final MccService mccService;
 
-    public MonobankSyncServiceImpl() {
+    public MonobankSyncServiceImpl(ExpenseService expenseService, CurrencyService currencyService,
+                                   CategoryService categoryService, AccountService accountService,
+                                   MccService mccService) {
+        this.expenseService = expenseService;
+        this.currencyService = currencyService;
+        this.categoryService = categoryService;
+        this.accountService = accountService;
+        this.mccService = mccService;
     }
 
     @Override
@@ -68,15 +68,21 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 .orElseThrow(() -> new IllegalArgumentException("Can't sync account. Sync token is empty or null"));
 
         //We have at least one synchronization token and can start sync for each account.
-        accounts.forEach(OneThread::new);
+        for (Account account : accounts){
+            RunnableMono runnableMono = new RunnableMono(account);
+            SecurityContext context = SecurityContextHolder.getContext();
+            var wrappedRunnable = new DelegatingSecurityContextRunnable(runnableMono, context);
+            Thread thread = new Thread(wrappedRunnable, account.getType());
+            thread.start();
+        }
     }
 
-    class OneThread implements Runnable {
+    class RunnableMono implements Runnable {
 
         private static final int DEFAULT_CARD_NUMBER = 0;
 
         //Limitation comes from Monobank API
-        private static final int MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS = 2682000; // 1 month
+        private static final int MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS = 2682000; // s (1 month)
 
         private static final int DELAY_BETWEEN_REQUEST = 70000; // ms
 
@@ -86,12 +92,8 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
         private Account account;
 
-        OneThread(Account account) {
+        RunnableMono(Account account) {
             this.account = account;
-            SecurityContext context = SecurityContextHolder.getContext();
-            DelegatingSecurityContextRunnable wrappedRunnable = new DelegatingSecurityContextRunnable(this, context);
-            Thread thread = new Thread(wrappedRunnable, "MONOBANK");
-            thread.start();
         }
 
         @Override
@@ -108,7 +110,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 //this mean it's first time sync for this account
                 //so, we can define last sync id and set current time for last sync
                 try {
-                    //TODO: what if we don't have last transaction id?
                     String lastTransactionId = getLastTransactionId();
                     account.setSynchronizationId(lastTransactionId);
                     account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
@@ -168,7 +169,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         long epochTime = monobankExpense.getTime();
                         LocalDate date = LocalDate.ofInstant(Instant.ofEpochSecond(epochTime), ZoneId.systemDefault());
                         expense.setDate(date);
-                        expense.setTime(LocalTime.ofSecondOfDay(epochTime%3600));
+                        expense.setTime(LocalTime.ofSecondOfDay(epochTime % 3600));
 
                         expenseService.addExpense(expense);
                         if (firstSuccessfulSyncId == null){
@@ -176,7 +177,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         }
                     } else {
                         //we find last sync id
-                        if (!(firstSuccessfulSyncId == null)){
+                        if (firstSuccessfulSyncId != null){
                             account.setSynchronizationId(firstSuccessfulSyncId);
                         }
                         account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
@@ -195,10 +196,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             }
         }
 
-        private Currency getCurrencyByCode(List<Currency> currencyList, int code){
-            return currencyList.stream().filter(a -> a.getCode().equals(String.valueOf(code))).findFirst().orElseThrow();
-        }
-
         private List<MonobankStatementAnswer> getStatements(long timeFrom, long timeTo) throws Exception{
             ObjectMapper mapper = new ObjectMapper();
             List<MonobankStatementAnswer> monobankStatementAnswers;
@@ -206,7 +203,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 String jsonResponse = getJsonWithStatements(timeFrom,timeTo).orElseThrow();
                 monobankStatementAnswers = mapper.readValue(jsonResponse, new TypeReference<List<MonobankStatementAnswer>>(){});
             } catch (Exception e) {
-                //TODO: Log error here
                 System.out.println("Can't parse answer");
                 return Collections.emptyList();
             }
@@ -222,7 +218,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 return Optional.of(handler.handleResponse(response));
             } catch (Exception e) {
-                //TODO: log it
                 System.out.println("Monobank server is down or some problem with Monobank API");
                 return Optional.empty();
             }

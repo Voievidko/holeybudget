@@ -195,7 +195,7 @@ public class ExpenseController {
         return "expense/add";
     }
 
-    @PostMapping("delete")
+    @GetMapping("delete")
     public String deleteExpense(@ModelAttribute("expenseId") int expenseId){
         expenseService.deleteExpenseById(expenseId);
         return "success";

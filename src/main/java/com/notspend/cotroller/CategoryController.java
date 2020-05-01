@@ -67,7 +67,7 @@ public class CategoryController {
         return "success";
     }
 
-    @PostMapping("delete")
+    @GetMapping("delete")
     public String deleteCategory(@ModelAttribute("categoryId") int categoryId, Model model){
         //Category for deleting
         Category category = categoryService.getCategory(categoryId);

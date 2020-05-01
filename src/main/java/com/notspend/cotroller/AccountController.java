@@ -84,7 +84,7 @@ public class AccountController {
         return "redirect:all";
     }
 
-    @PostMapping("delete")
+    @GetMapping("delete")
     public String deleteAccount(@ModelAttribute("accountId") int accountId, Model model){
         List<Account> accounts = accountService.getAccounts();
 

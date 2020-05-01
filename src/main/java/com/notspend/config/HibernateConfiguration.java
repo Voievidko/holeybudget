@@ -22,10 +22,13 @@ public class HibernateConfiguration {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private DataSource dataSource;
+
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan("com.notspend.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;

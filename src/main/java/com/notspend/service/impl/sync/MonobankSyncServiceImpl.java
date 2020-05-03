@@ -37,6 +37,8 @@ import java.util.Optional;
 @Service
 public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
+    private static final int TEN_MINUTES = 10 * 60;
+
     private final ExpenseService expenseService;
 
     private final CurrencyService currencyService;
@@ -102,7 +104,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         public void run() {
             long delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
 
-            if (delayBetweenSync < 10 * 60){
+            if (delayBetweenSync < TEN_MINUTES){
                 //if last sync was 10 min ago don't need to sync again
                 account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
                 return;
@@ -198,7 +200,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             }
         }
 
-        private List<MonobankStatementAnswer> getStatements(long timeFrom, long timeTo) throws Exception{
+        private synchronized List<MonobankStatementAnswer> getStatements(long timeFrom, long timeTo) throws Exception{
             ObjectMapper mapper = new ObjectMapper();
             List<MonobankStatementAnswer> monobankStatementAnswers;
             try {
@@ -211,7 +213,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             return monobankStatementAnswers;
         }
 
-        public Optional<String> getJsonWithStatements(long timeFrom, long timeTo){
+        private synchronized Optional<String> getJsonWithStatements(long timeFrom, long timeTo){
             try (CloseableHttpClient client = HttpClients.createDefault()){
                 HttpGet httpGet = new HttpGet(MONOBANK_API_ENDPOINT + "personal/statement/" + DEFAULT_CARD_NUMBER + "/" + timeFrom + "/" + timeTo);
                 httpGet.setHeader("X-Token", account.getToken());
@@ -225,7 +227,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             }
         }
 
-        public String getLastTransactionId() throws Exception {
+        private synchronized String getLastTransactionId() throws Exception {
             LocalDateTime currentTime = LocalDateTime.now();
             ZoneId zoneId = ZoneId.systemDefault();
             long epochTimeTo = currentTime.atZone(zoneId).toEpochSecond();

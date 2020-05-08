@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.notspend.entity.Account;
 import com.notspend.entity.Category;
 import com.notspend.entity.Expense;
+import com.notspend.exception.AccountSyncFailedException;
 import com.notspend.service.AccountService;
 import com.notspend.service.CategoryService;
 import com.notspend.service.CurrencyService;
@@ -12,6 +13,7 @@ import com.notspend.service.ExpenseService;
 import com.notspend.service.ExpenseSyncService;
 import com.notspend.service.MccService;
 import com.notspend.util.TimeHelper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
     private static final int TEN_MINUTES = 10 * 60;
@@ -61,15 +64,15 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
     }
 
     @Override
-    public void syncDataWithBankServer(List<Account> accounts) throws Exception {
+    public void syncDataWithBankServer(List<Account> accounts) throws AccountSyncFailedException {
         if (accounts == null || accounts.isEmpty()){
-            throw new IllegalArgumentException("Can't synchronize accounts");
+            throw new AccountSyncFailedException("List with accounts are empty or null");
         }
         accounts.stream()
                 .map(Account::getToken)
                 .filter(token -> token!=null && !token.isEmpty())
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Can't sync account. Sync token is empty or null"));
+                .orElseThrow(() -> new AccountSyncFailedException("Sync token is empty or null"));
 
         //We have at least one synchronization token and can start sync for each account.
         for (Account account : accounts){
@@ -113,14 +116,15 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             if (account.getSynchronizationTime() == null){
                 //this mean it's first time sync for this account
                 //so, we can define last sync id and set current time for last sync
+                String lastTransactionId = null;
                 try {
-                    String lastTransactionId = getLastTransactionId();
+                    lastTransactionId = getLastTransactionId();
+                } catch (Exception e) {
+                    log.warn("Can't get last transaction id" + e);
+                }
                     account.setSynchronizationId(lastTransactionId);
                     account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
                     accountService.updateAccount(account);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 return;
             }
 
@@ -137,7 +141,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 try {
                     monobankStatementAnswers = getStatements(epochTimeFrom, currentEpochTime);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    log.error("Can't retrieve statements.", e);
                 }
 
                 for (MonobankStatementAnswer monobankExpense : monobankStatementAnswers){
@@ -195,19 +199,20 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 try {
                     Thread.sleep(DELAY_BETWEEN_REQUEST);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    log.warn("Interrupted", e);
+                    Thread.currentThread().interrupt();
                 }
             }
         }
 
-        private synchronized List<MonobankStatementAnswer> getStatements(long timeFrom, long timeTo) throws Exception{
+        private synchronized List<MonobankStatementAnswer> getStatements(long timeFrom, long timeTo){
             ObjectMapper mapper = new ObjectMapper();
             List<MonobankStatementAnswer> monobankStatementAnswers;
             try {
                 String jsonResponse = getJsonWithStatements(timeFrom,timeTo).orElseThrow();
                 monobankStatementAnswers = mapper.readValue(jsonResponse, new TypeReference<List<MonobankStatementAnswer>>(){});
             } catch (Exception e) {
-                System.out.println("Can't parse answer");
+                log.error("Can't parse answer." + e);
                 return Collections.emptyList();
             }
             return monobankStatementAnswers;
@@ -222,12 +227,12 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 ResponseHandler<String> handler = new BasicResponseHandler();
                 return Optional.of(handler.handleResponse(response));
             } catch (Exception e) {
-                System.out.println("Monobank server is down or some problem with Monobank API");
+                log.error("Monobank server is down or some problem with Monobank API");
                 return Optional.empty();
             }
         }
 
-        private synchronized String getLastTransactionId() throws Exception {
+        private synchronized String getLastTransactionId(){
             LocalDateTime currentTime = LocalDateTime.now();
             ZoneId zoneId = ZoneId.systemDefault();
             long epochTimeTo = currentTime.atZone(zoneId).toEpochSecond();

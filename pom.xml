@@ -12,6 +12,7 @@
         <java.version>11</java.version>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.source>11</maven.compiler.source>
+        <lombok.version>1.18.12</lombok.version>
         <mysql.driver.version>8.0.16</mysql.driver.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
@@ -36,6 +37,12 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven.compiler.plugin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!--Servlet-->

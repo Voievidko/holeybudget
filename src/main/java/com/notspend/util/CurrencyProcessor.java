@@ -3,6 +3,7 @@ package com.notspend.util;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -13,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+@Slf4j
 public class CurrencyProcessor {
     private static final String API_LINK_NBU = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
 
@@ -32,8 +33,7 @@ public class CurrencyProcessor {
             lastUpdated = LocalDateTime.now();
             return handler.handleResponse(response);
         } catch (Exception e) {
-            //TODO: log it
-            System.out.println("Currency server is down");
+            log.error("Currency server is down", e);
         }
         return null;
     }
@@ -64,8 +64,7 @@ public class CurrencyProcessor {
             }
             currencyList = mapper.readValue(allCurrencies, new TypeReference<List<Currency>>(){});
         } catch (Exception e) {
-            //TODO: Log error here
-            e.printStackTrace();
+            log.error("Can't get currencies.", e);
             return 1D;
         }
         for (Currency currency : currencyList){

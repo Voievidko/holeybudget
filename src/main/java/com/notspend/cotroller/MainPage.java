@@ -5,6 +5,7 @@ import com.notspend.entity.Category;
 import com.notspend.entity.Currency;
 import com.notspend.entity.Expense;
 import com.notspend.entity.User;
+import com.notspend.exception.AccountSyncFailedException;
 import com.notspend.service.CategoryService;
 import com.notspend.service.ExpenseService;
 import com.notspend.service.ExpenseSyncService;
@@ -12,10 +13,10 @@ import com.notspend.service.UserService;
 import com.notspend.util.CalculationHelper;
 import com.notspend.util.SecurityUserHandler;
 import com.notspend.util.CurrencyProcessor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
+@Slf4j
 public class MainPage {
 
     @Autowired
@@ -47,8 +49,8 @@ public class MainPage {
         if (!accountsToSync.isEmpty()){
             try {
                 expenseSyncService.syncDataWithBankServer(accountsToSync);
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (AccountSyncFailedException e) {
+                log.error("Can't synchronize accounts." + e);
             }
         }
 

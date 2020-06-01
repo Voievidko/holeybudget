@@ -82,7 +82,7 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="/expense/add">Add</a>
                 <a class="collapse-item" href="/expense/currentmonth">This month</a>
-                <a class="collapse-item" href="/expense/year">This year</a>
+                <a class="collapse-item" href="/income/profit">This year</a>
                 <a class="collapse-item" href="/expense/all">Show all</a>
             </div>
         </div>
@@ -98,7 +98,8 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <a class="collapse-item" href="/expense/income">Add</a>
                 <a class="collapse-item" href="/income/currentmonth">This month</a>
-                <a class="collapse-item" href="/income/year">Last year</a>
+                <a class="collapse-item" href="/income/year">This year</a>
+                <a class="collapse-item" href="/income/profit">Year profit</a>
             </div>
         </div>
     </li>
@@ -114,13 +115,6 @@
                 <a class="collapse-item" href="/currency/all">Show all</a>
             </div>
         </div>
-    </li>
-
-    <!-- Nav Item - Charts -->
-    <li class="nav-item">
-        <a class="nav-link" href="/statistic/all">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Statistic</span></a>
     </li>
 
     <!-- Divider -->

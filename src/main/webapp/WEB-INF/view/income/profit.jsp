@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib  prefix="javatime" uri="http://sargue.net/jsptags/time" %>
+<%@ taglib prefix="javatime" uri="http://sargue.net/jsptags/time" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -50,8 +50,8 @@
         <div class="container-fluid">
 
           <!-- Page Heading -->
-          <h1 class="h3 mb-2 text-gray-800">Income</h1>
-          <p class="mb-4">View your income during year.</p>
+          <h1 class="h3 mb-2 text-gray-800">Profit</h1>
+          <p class="mb-4">View your profit during year.</p>
 
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
@@ -60,21 +60,30 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Year-Month</th>
-                      <th>Sum</th>
+                      <th>Year</th>
+                      <th>Month</th>
+                      <th>Income</th>
+                      <th>Expense</th>
+                      <th>Profit</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
-                      <th>Year-Month</th>
-                      <th>Sum</th>
+                      <th data-field="year" data-sortable="true">Year</th>
+                      <th>Month</th>
+                      <th>Income</th>
+                      <th>Expense</th>
+                      <th>Profit</th>
                     </tr>
                   </tfoot>
                   <tbody>
-                    <c:forEach var="tempExpense" items="${currentYearExpense}">
+                    <c:forEach var="tempProfit" items="${profit}">
                     <tr>
-                      <td>${tempExpense.key}</td>
-                      <td>${tempExpense.value}</td>
+                      <td>${tempProfit.year}</td>
+                      <td>${tempProfit.month}</td>
+                      <td><fmt:formatNumber type = "number" minFractionDigits = "2" maxFractionDigits = "2"  groupingUsed = "false" value = "${tempProfit.monthIncome}" /></td>
+                      <td><fmt:formatNumber type = "number" minFractionDigits = "2" maxFractionDigits = "2"  groupingUsed = "false" value = "${tempProfit.monthExpense}" /></td>
+                      <td><fmt:formatNumber type = "number" minFractionDigits = "2" maxFractionDigits = "2"  groupingUsed = "false" value = "${tempProfit.profit}" /></td>
                     </tr>
                     </c:forEach>
                   </tbody>

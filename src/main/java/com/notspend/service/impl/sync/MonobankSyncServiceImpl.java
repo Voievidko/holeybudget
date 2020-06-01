@@ -154,8 +154,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         expense.setUser(account.getUser());
                         expense.setAccount(account);
                         expense.setUser(account.getUser());
-                        Integer currencyNumber = monobankExpense.getCurrencyCode();
-                        expense.setCurrency(currencyService.getCurrencyByNumber(currencyNumber));
+                        expense.setCurrency(account.getCurrency());
                         expense.setComment(monobankExpense.getDescription());
                         expense.setSum(-(monobankExpense.getAmount() / 100d));
 

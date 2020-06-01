@@ -66,6 +66,7 @@
                       <th>Category</th>
                       <th>Account</th>
                       <th>Comment</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
@@ -76,13 +77,18 @@
                       <th>Category</th>
                       <th>Account</th>
                       <th>Comment</th>
+                      <th>Action</th>
                     </tr>
                   </tfoot>
                   <tbody>
                     <c:forEach var="tempExpense" items="${currentYearIncome}">
+                    <!-- construct an "delete" link with customer id -->
+                                        <c:url var="deleteLink" value="/expense/delete">
+                                          <c:param name="expenseId" value="${tempExpense.expenseId}" />
+                                        </c:url>
                     <tr>
                       <td>
-<%--                        <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />--%>
+<%--                    <fmt:formatDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />--%>
                         <javatime:parseLocalDate value="${tempExpense.date}" pattern="yyyy-MM-dd" />
                       </td>
                       <td>${tempExpense.sum}</td>
@@ -90,6 +96,9 @@
                       <td>${tempExpense.category.name}</td>
                       <td>${tempExpense.account.type}</td>
                       <td>${tempExpense.comment}</td>
+                      <td>
+                        <a href="${deleteLink}" data-toggle="modal" data-target="#deleteModal" onclick="window.id=${tempExpense.expenseId}">Delete</a>
+                      </td>
                     </tr>
                     </c:forEach>
                   </tbody>

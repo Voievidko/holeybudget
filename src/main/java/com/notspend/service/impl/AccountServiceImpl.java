@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public void updateAccount(Account account) {
+    public synchronized void updateAccount(Account account) {
         accountDao.update(account);
     }
 

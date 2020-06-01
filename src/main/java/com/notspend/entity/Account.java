@@ -128,6 +128,10 @@ public class Account {
         this.summary = this.summary + sum;
     }
 
+    public void minus(Double sum){
+        this.summary = this.summary - sum;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

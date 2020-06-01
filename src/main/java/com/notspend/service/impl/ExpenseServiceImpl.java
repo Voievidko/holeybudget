@@ -27,7 +27,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @Transactional
-    public void addExpense(Expense expense) {
+    public synchronized void addExpense(Expense expense) {
         Account account = expense.getAccount();
         if (expense.getCategory().isIncome()){
             account.plus(expense.getSum());
@@ -80,7 +80,11 @@ public class ExpenseServiceImpl implements ExpenseService {
     public void deleteExpenseById(int id) {
         Expense expense = expenseDao.get(id);
         Account account = expense.getAccount();
-        account.plus(expense.getSum());
+        if (expense.getCategory().isIncome()) {
+            account.minus(Math.abs(expense.getSum()));
+        } else {
+            account.plus(expense.getSum());
+        }
         accountDao.update(account);
         expenseDao.delete(id);
     }

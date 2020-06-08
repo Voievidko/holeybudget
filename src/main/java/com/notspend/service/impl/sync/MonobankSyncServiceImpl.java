@@ -40,7 +40,7 @@ import java.util.Optional;
 @Slf4j
 public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
-    private static final int TEN_MINUTES = 10 * 60;
+    private static final int TEN_MINUTES = 10 * 60; //sec
 
     private final ExpenseService expenseService;
 
@@ -110,6 +110,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             if (delayBetweenSync < TEN_MINUTES){
                 //if last sync was 10 min ago don't need to sync again
                 account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
+                accountService.updateAccount(account);
                 return;
             }
 
@@ -135,6 +136,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             int uploadMonthCounter = 0;
 
             String firstSuccessfulSyncId = null;
+            String lastSuccessSyncId = account.getSynchronizationId();
 
             while (uploadMonthCounter < MAXIMUM_MONTHS_TO_UPLOAD){
 
@@ -145,7 +147,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 }
 
                 for (MonobankStatementAnswer monobankExpense : monobankStatementAnswers){
-                    if (!monobankExpense.getId().equals(account.getSynchronizationId())){
+                    if (!monobankExpense.getId().equals(lastSuccessSyncId)){
                         String mccCategoryName = mccService.getCategoryByMccCode(monobankExpense.getMcc());
                         if (mccCategoryName.isEmpty()) {
                             continue;

@@ -27,7 +27,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     @Transactional
-    public synchronized void addExpense(Expense expense) {
+    public void addExpense(Expense expense) {
         Account account = expense.getAccount();
         if (expense.getCategory().isIncome()){
             account.plus(expense.getSum());

@@ -3,7 +3,7 @@ package com.notspend.util;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.apachecommons.CommonsLog;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -14,7 +14,7 @@ import org.apache.http.impl.client.HttpClients;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
+@CommonsLog
 public class CurrencyProcessor {
     private static final String API_LINK_NBU = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
 

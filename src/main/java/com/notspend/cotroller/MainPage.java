@@ -11,9 +11,9 @@ import com.notspend.service.ExpenseService;
 import com.notspend.service.ExpenseSyncService;
 import com.notspend.service.UserService;
 import com.notspend.util.CalculationHelper;
-import com.notspend.util.SecurityUserHandler;
 import com.notspend.util.CurrencyProcessor;
-import lombok.extern.slf4j.Slf4j;
+import com.notspend.util.SecurityUserHandler;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,11 +21,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
-@Slf4j
+@CommonsLog
 public class MainPage {
 
     @Autowired
@@ -45,7 +47,7 @@ public class MainPage {
         String username = SecurityUserHandler.getCurrentUser();
         User user = userService.getUser(username);
         List<Account> accountList = user.getAccounts();
-        List<Account> accountsToSync = accountList.stream().filter(a -> a.getToken() != null).collect(Collectors.toList());
+        List<Account> accountsToSync = accountList.stream().filter(a -> a.getToken() != null && !a.getToken().isEmpty()).collect(Collectors.toList());
         if (!accountsToSync.isEmpty()){
             try {
                 expenseSyncService.syncDataWithBankServer(accountsToSync);

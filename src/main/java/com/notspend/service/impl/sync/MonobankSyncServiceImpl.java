@@ -13,7 +13,7 @@ import com.notspend.service.ExpenseService;
 import com.notspend.service.ExpenseSyncService;
 import com.notspend.service.MccService;
 import com.notspend.util.TimeHelper;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.apachecommons.CommonsLog;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
@@ -22,8 +22,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.concurrent.DelegatingSecurityContextRunnable;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -35,9 +33,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
-@Slf4j
+@CommonsLog
 public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
     private static final int TEN_MINUTES = 10 * 60; //sec
@@ -65,23 +64,32 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
     @Override
     public void syncDataWithBankServer(List<Account> accounts) throws AccountSyncFailedException {
+        log.info("Start sync for user '" + accounts.get(0).getUser().getUsername() + "'.");
         if (accounts == null || accounts.isEmpty()){
             throw new AccountSyncFailedException("List with accounts are empty or null");
         }
-        accounts.stream()
-                .map(Account::getToken)
-                .filter(token -> token!=null && !token.isEmpty())
-                .findFirst()
-                .orElseThrow(() -> new AccountSyncFailedException("Sync token is empty or null"));
 
-        //We have at least one synchronization token and can start sync for each account.
-        for (Account account : accounts){
-            RunnableMono runnableMono = new RunnableMono(account);
-            SecurityContext context = SecurityContextHolder.getContext();
-            var wrappedRunnable = new DelegatingSecurityContextRunnable(runnableMono, context);
-            Thread thread = new Thread(wrappedRunnable, account.getType());
-            thread.start();
+        List<Thread> accountWithTokensToSync = accounts.stream()
+                .filter(a -> a.getToken() != null && !a.getToken().isEmpty())
+                .map(RunnableMono::new)
+                .map(DelegatingSecurityContextRunnable::new)
+                .map(Thread::new)
+                .collect(Collectors.toList());
+
+        if (accountWithTokensToSync.isEmpty()) {
+            throw new AccountSyncFailedException("There is no accounts to sync");
         }
+
+        new Thread(() -> {
+            for (Thread account : accountWithTokensToSync){
+                account.start();
+                try {
+                    account.join();
+                } catch (InterruptedException e) {
+                    log.error("Can't synchronize account", e);
+                }
+            }
+        }).start();
     }
 
     class RunnableMono implements Runnable {
@@ -105,6 +113,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
 
         @Override
         public void run() {
+
             long delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
 
             if (delayBetweenSync < TEN_MINUTES){

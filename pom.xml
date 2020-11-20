@@ -9,6 +9,7 @@
     <version>1.1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <lombok.version>1.18.12</lombok.version>
         <mysql.driver.version>8.0.16</mysql.driver.version>
@@ -80,7 +81,7 @@
             <version>${hibernate.entitymanager.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.hibernate</groupId>
+            <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
         </dependency>
@@ -242,6 +243,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
                 <configuration>
                     <mainClass>com.notspend.Application</mainClass>
                 </configuration>

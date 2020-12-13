@@ -1,4 +1,4 @@
-#notspend
+# notspend
 Design to track family or personal budget
 
 ## Requirements
@@ -14,7 +14,7 @@ Design to track family or personal budget
 git clone git@github.com:Voievidko/notspend.git
 ```
 
-####Add application.properties file
+#### Add application.properties file
 <br>It should be in the folder: `src/main/resources/`.<br>
 Example:
 
@@ -43,5 +43,5 @@ war file will appear in your local .m2 folder.
 java -jar path/to/folder/with/war/notspend-1.1.0-SNAPSHOT.war
 ```
 During server start all required tables will automatically create in DB specified in application.properties file
-##Reach server
+## Reach server
 Open your browser and type an URL `localhost:8080` 

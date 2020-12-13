@@ -1,9 +1,5 @@
-<h1 align="center">
-  <br>
-  notspend
-</h1>
-
-<h4 align="center">Design to track family or personal budget</h4>
+#notspend
+Design to track family or personal budget
 
 ## Requirements
 1. Java 11
@@ -19,7 +15,7 @@ git clone git@github.com:Voievidko/notspend.git
 ```
 
 ####Add application.properties file
-It should be in the folder: `src/main/resources/`.<br>
+<br>It should be in the folder: `src/main/resources/`.<br>
 Example:
 
 ```

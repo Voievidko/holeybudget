@@ -15,7 +15,7 @@ git clone git@github.com:Voievidko/notspend.git
 ```
 
 #### Add application.properties file
-<br>It should be in the folder: `src/main/resources/`.<br>
+It should be in the folder: `src/main/resources/`.
 Example:
 
 ```

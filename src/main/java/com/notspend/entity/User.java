@@ -54,13 +54,13 @@ public class User {
     private List<Account> accounts = new ArrayList<>();
 
     //for bi-directional relationship
-    public void setExpence(Expense expence) {
+    public void addExpence(Expense expence) {
         expenses.add(expence);
         expence.setUser(this);
     }
 
     //for bi-directional relationship
-    public void setAccount(Account account){
+    public void addAccount(Account account){
         accounts.add(account);
         account.setUser(this);
     }

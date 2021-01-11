@@ -1,11 +1,17 @@
 package com.notspend.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Objects;
 
 @Entity
+@Data
+@EqualsAndHashCode(of = {"accountId"})
+@ToString(of = {"accountId", "type", "summary", "user", "summary"})
 @Table(name = "account")
 public class Account {
 
@@ -45,81 +51,6 @@ public class Account {
     @Column(name = "synchronization_time")
     private Long synchronizationTime;
 
-    public Account() {
-    }
-
-    public int getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public Double getSummary() {
-        return summary;
-    }
-
-    public void setSummary(Double summary) {
-        this.summary = summary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getSynchronizationId() {
-        return synchronizationId;
-    }
-
-    public void setSynchronizationId(String synchronizationId) {
-        this.synchronizationId = synchronizationId;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
-
-    public Long getSynchronizationTime() {
-        return synchronizationTime;
-    }
-
-    public void setSynchronizationTime(Long synchronizationTime) {
-        this.synchronizationTime = synchronizationTime;
-    }
-
     public void substract(Double sum){
         this.summary = this.summary - sum;
     }
@@ -132,20 +63,4 @@ public class Account {
         this.summary = this.summary - sum;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Account)) return false;
-        Account account = (Account) o;
-        return getAccountId() == account.getAccountId() &&
-                Double.compare(account.getSummary(), getSummary()) == 0 &&
-                Objects.equals(getType(), account.getType()) &&
-                Objects.equals(getDescription(), account.getDescription()) &&
-                Objects.equals(getUser().getUsername(), account.getUser().getUsername());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getAccountId(), getType(), getSummary(), getDescription(), getUser());
-    }
 }

@@ -43,5 +43,46 @@ war file will appear in your local .m2 folder.
 java -jar path/to/folder/with/war/notspend-1.1.0-SNAPSHOT.war
 ```
 During server start all required tables will automatically create in DB specified in application.properties file
+
+## Launch MySQL database in docker container
+
+You may run MySQL database container in following way:
+```
+sudo docker run --name notspenddb -p 3306:3306 -e MYSQL_ROOT_PASSWORD=passwordToDb -e MYSQL_DATABASE=notspenddb -d mysql
+```
+where
+
+`--name notspenddb` - docker container name
+
+`-p 3306:3306` - port mapping in the form port_on_host_machine:port_in_docker_container
+
+`-e MYSQL_ROOT_PASSWORD=passwordToDb` - password for root database user
+
+`-e MYSQL_DATABASE=notspenddb` - database name
+
+Make sure that port, password and database name here are the same as in _application.properties_
+
+You may additionally create a new database user during container startup using following options
+
+```
+-e MYSQL_USER=new_user -e MYSQL_PASSWORD=new_user_password
+```
+
+Find more information here https://hub.docker.com/_/mysql
+
+## Launch MySQL client in docker container
+
+Find out MySQL database IP in docker network (bridge network is used by default)
+
+```
+sudo docker inspect notspenddb
+```
+
+Launch MySQL client using IP obtained on prev step (here, 172.17.0.2)
+
+```
+sudo docker run -it --network bridge --rm mysql mysql -h 172.17.0.2 -uroot -p
+```
+
 ## Reach server
 Open your browser and type an URL `localhost:8080` 

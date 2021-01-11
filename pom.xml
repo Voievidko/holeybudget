@@ -62,12 +62,6 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!--Servlet-->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
         <!--If you need for loop and prefix 'c' in JSP files-->
         <dependency>
             <groupId>javax.servlet</groupId>

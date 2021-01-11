@@ -1,11 +1,16 @@
 package com.notspend.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
+@Data
+@EqualsAndHashCode(of = "mccId")
 @Table(name = "mcc")
 public class Mcc {
 
@@ -19,30 +24,4 @@ public class Mcc {
     @Column(name = "category_name")
     private String categoryName;
 
-    public Mcc() {
-    }
-
-    public int getMccId() {
-        return mccId;
-    }
-
-    public void setMccId(int mccId) {
-        this.mccId = mccId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
 }

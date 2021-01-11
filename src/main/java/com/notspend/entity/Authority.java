@@ -1,8 +1,13 @@
 package com.notspend.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 
 @Entity
+@Data
+@EqualsAndHashCode(of = {"authority"})
 @Table(name = "authority")
 public class Authority {
 
@@ -14,19 +19,4 @@ public class Authority {
     @Column(name = "authority", nullable = false)
     private String authority;
 
-    public User getUsername() {
-        return username;
-    }
-
-    public void setUsername(User username) {
-        this.username = username;
-    }
-
-    public String getAuthority() {
-        return authority;
-    }
-
-    public void setAuthority(String authority) {
-        this.authority = authority;
-    }
 }

@@ -19,9 +19,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.LockModeType;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,6 +58,9 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
     private final MccService mccService;
 
     @Autowired
+    private SessionFactory sessionFactory;
+
+    @Autowired
     public MonobankSyncServiceImpl(ExpenseService expenseService, CategoryService categoryService,
                                    AccountService accountService, MccService mccService) {
         this.expenseService = expenseService;
@@ -63,8 +70,10 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
     }
 
     @Override
+    @Transactional
     public void syncDataWithBankServer(List<Account> accounts) throws AccountSyncFailedException {
         if (accounts == null || accounts.isEmpty()){
+            log.error("List with accounts are empty or null");
             throw new AccountSyncFailedException("List with accounts are empty or null");
         }
 
@@ -73,28 +82,38 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 .collect(Collectors.toList());
 
         if (accountWithTokensToSync.isEmpty()) {
-            throw new AccountSyncFailedException("There is no accounts to sync");
+            throw new AccountSyncFailedException("There is no tokens to sync.");
         }
 
         for (Account account : accountWithTokensToSync){
-            syncAccount(account);
+            log.debug("Start to sync account with id: '" + account.getAccountId() + "'");
+            Session session = sessionFactory.getCurrentSession();
+            Account lockedAccount = session.find(Account.class, account.getAccountId());
+            session.lock(lockedAccount, LockModeType.PESSIMISTIC_WRITE);
+            syncAccount(lockedAccount);
+            log.debug("Finish to sync account with id: " + account.getAccountId() + "'");
         }
 
     }
 
     private void syncAccount(Account account){
-        long delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
+        long delayBetweenSync = TEN_MINUTES + 1;
+        if (account.getSynchronizationTime() != null) {
+            delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
+        }
 
         if (delayBetweenSync < TEN_MINUTES){
             //if last sync was 10 min ago don't need to sync again
             account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
             accountService.updateAccount(account);
+            log.debug("Account with id '" + account.getAccountId() + "' will not sync now because of delay.");
             return;
         }
 
         if (account.getSynchronizationTime() == null){
             //this mean it's first time sync for this account
             //so, we can define last sync id and set current time for last sync
+            log.debug("First sync for account: " + account.getAccountId());
             String lastTransactionId = null;
             try {
                 lastTransactionId = getLastTransactionId(account);
@@ -111,11 +130,11 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         long currentEpochTime = TimeHelper.getCurrentEpochTime();
         long epochTimeFrom = currentEpochTime - MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
 
-
         String firstSuccessfulSyncId = null;
         String lastSuccessSyncId = account.getSynchronizationId();
 
         try {
+            log.debug("Retrieve monobank statements for account with id: '" + account.getAccountId() + "'");
             monobankStatementAnswers = getStatements(account, epochTimeFrom, currentEpochTime);
         } catch (Exception e) {
             log.error("Can't retrieve statements.", e);
@@ -130,7 +149,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 Expense expense = new Expense();
                 expense.setUser(account.getUser());
                 expense.setAccount(account);
-                expense.setUser(account.getUser());
                 expense.setCurrency(account.getCurrency());
                 expense.setComment(monobankExpense.getDescription());
                 expense.setSum(-(monobankExpense.getAmount() / 100d));
@@ -156,11 +174,15 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 expense.setTime(LocalTime.ofSecondOfDay(epochTime % 3600));
 
                 expenseService.addExpense(expense);
+                log.debug("Current lastSuccessSyncId: " + lastSuccessSyncId);
+                log.debug("Current firstSuccessfulSyncId: " + firstSuccessfulSyncId);
                 if (firstSuccessfulSyncId == null) {
+                    log.debug("firstSuccessfulSyncId is null, so get it from monobankExpense");
                     firstSuccessfulSyncId = monobankExpense.getId();
                 }
             } else {
-                //we find last sync id
+                log.debug("Last sync id was found");
+                log.debug("Current firstSuccessfulSyncId: " + firstSuccessfulSyncId);
                 if (firstSuccessfulSyncId != null) {
                     account.setSynchronizationId(firstSuccessfulSyncId);
                 }

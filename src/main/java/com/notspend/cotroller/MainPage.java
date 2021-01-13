@@ -49,11 +49,13 @@ public class MainPage {
         List<Account> accountList = user.getAccounts();
         List<Account> accountsToSync = accountList.stream().filter(a -> a.getToken() != null && !a.getToken().isEmpty()).collect(Collectors.toList());
         if (!accountsToSync.isEmpty()){
+            log.debug("Start syncing accounts. Account to sync size: " + accountsToSync.size());
             try {
                 expenseSyncService.syncDataWithBankServer(accountsToSync);
             } catch (AccountSyncFailedException e) {
                 log.error("Can't synchronize accounts." + e);
             }
+            log.debug("Finish syncing accounts. ");
         }
 
         request.getSession().setAttribute("username", username);

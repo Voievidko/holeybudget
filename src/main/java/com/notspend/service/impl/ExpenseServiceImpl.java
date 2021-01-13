@@ -6,6 +6,7 @@ import com.notspend.entity.Account;
 import com.notspend.entity.Expense;
 import com.notspend.service.ExpenseService;
 import com.notspend.util.DateHelper;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
+@CommonsLog
 public class ExpenseServiceImpl implements ExpenseService {
 
     @Autowired
@@ -34,7 +36,6 @@ public class ExpenseServiceImpl implements ExpenseService {
         } else {
             account.substract(expense.getSum());
         }
-
         accountDao.update(account);
         expenseDao.save(expense);
     }

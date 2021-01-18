@@ -19,6 +19,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,43 +87,47 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         }
 
         for (Account account : accountWithTokensToSync){
-            log.debug("Start to sync account with id: '" + account.getAccountId() + "'");
-            Session session = sessionFactory.getCurrentSession();
-            Account lockedAccount = session.find(Account.class, account.getAccountId());
-            session.lock(lockedAccount, LockModeType.PESSIMISTIC_WRITE);
-            syncAccount(lockedAccount);
-            log.debug("Finish to sync account with id: " + account.getAccountId() + "'");
+            syncAccount(account);
         }
-
     }
 
+    @Transactional
     private void syncAccount(Account account){
+        Session session = sessionFactory.getCurrentSession();
+        Account lockedAccount = session.find(Account.class, account.getAccountId());
+        log.debug("Account with id: " + lockedAccount.getAccountId() + "' locked");
+        session.lock(lockedAccount, LockModeType.PESSIMISTIC_WRITE);
+
+        log.debug("Start to sync account with id: '" + lockedAccount.getAccountId() + "'");
+        //Refresh account
+        lockedAccount = accountService.getAccount(lockedAccount.getAccountId());
         long delayBetweenSync = TEN_MINUTES + 1;
-        if (account.getSynchronizationTime() != null) {
-            delayBetweenSync = TimeHelper.getCurrentEpochTime() - account.getSynchronizationTime();
+        if (lockedAccount.getSynchronizationTime() != null) {
+            delayBetweenSync = TimeHelper.getCurrentEpochTime() - lockedAccount.getSynchronizationTime();
+            log.debug("Delay between sync for account with ID: '" + lockedAccount.getAccountId() +"' is " + delayBetweenSync + " sec");
         }
 
         if (delayBetweenSync < TEN_MINUTES){
             //if last sync was 10 min ago don't need to sync again
-            account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
-            accountService.updateAccount(account);
-            log.debug("Account with id '" + account.getAccountId() + "' will not sync now because of delay.");
+            lockedAccount.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
+            accountService.updateAccount(lockedAccount);
+            log.debug("Account with id '" + lockedAccount.getAccountId() + "' will not sync now because of delay.");
             return;
         }
 
-        if (account.getSynchronizationTime() == null){
+        if (lockedAccount.getSynchronizationTime() == null){
             //this mean it's first time sync for this account
             //so, we can define last sync id and set current time for last sync
-            log.debug("First sync for account: " + account.getAccountId());
+            log.debug("First sync for account: " + lockedAccount.getAccountId());
             String lastTransactionId = null;
             try {
-                lastTransactionId = getLastTransactionId(account);
+                lastTransactionId = getLastTransactionId(lockedAccount);
             } catch (Exception e) {
                 log.warn("Can't get last transaction id" + e);
             }
-            account.setSynchronizationId(lastTransactionId);
-            account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
-            accountService.updateAccount(account);
+            lockedAccount.setSynchronizationId(lastTransactionId);
+            lockedAccount.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
+            accountService.updateAccount(lockedAccount);
             return;
         }
 
@@ -131,11 +136,11 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         long epochTimeFrom = currentEpochTime - MAX_MONOBANK_STATEMENT_TIME_IN_SECONDS;
 
         String firstSuccessfulSyncId = null;
-        String lastSuccessSyncId = account.getSynchronizationId();
+        String lastSuccessSyncId = lockedAccount.getSynchronizationId();
 
         try {
-            log.debug("Retrieve monobank statements for account with id: '" + account.getAccountId() + "'");
-            monobankStatementAnswers = getStatements(account, epochTimeFrom, currentEpochTime);
+            log.debug("Retrieve monobank statements for account with id: '" + lockedAccount.getAccountId() + "'");
+            monobankStatementAnswers = getStatements(lockedAccount, epochTimeFrom, currentEpochTime);
         } catch (Exception e) {
             log.error("Can't retrieve statements.", e);
         }
@@ -147,9 +152,9 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                     continue;
                 }
                 Expense expense = new Expense();
-                expense.setUser(account.getUser());
-                expense.setAccount(account);
-                expense.setCurrency(account.getCurrency());
+                expense.setUser(lockedAccount.getUser());
+                expense.setAccount(lockedAccount);
+                expense.setCurrency(lockedAccount.getCurrency());
                 expense.setComment(monobankExpense.getDescription());
                 expense.setSum(-(monobankExpense.getAmount() / 100d));
 
@@ -160,7 +165,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                         .orElse((new Category()));
 
                 if (category.getCategoryId() == 0) {
-                    category.setUser(account.getUser());
+                    category.setUser(lockedAccount.getUser());
                     category.setIncome(false);
                     category.setName(mccCategoryName);
                     categoryService.addCategory(category);
@@ -181,13 +186,14 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                     firstSuccessfulSyncId = monobankExpense.getId();
                 }
             } else {
-                log.debug("Last sync id was found");
-                log.debug("Current firstSuccessfulSyncId: " + firstSuccessfulSyncId);
+                log.debug("Last sync id was found for account ID: '" + lockedAccount.getAccountId() + "'");
                 if (firstSuccessfulSyncId != null) {
-                    account.setSynchronizationId(firstSuccessfulSyncId);
+                    lockedAccount.setSynchronizationId(firstSuccessfulSyncId);
                 }
-                account.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
-                accountService.updateAccount(account);
+                lockedAccount.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
+                accountService.updateAccount(lockedAccount);
+                log.debug("Finish to sync account with id: " + lockedAccount.getAccountId() + "'");
+                log.debug("Account with id: " + lockedAccount.getAccountId() + "' unlocked");
                 return;
             }
         }

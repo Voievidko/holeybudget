@@ -53,4 +53,7 @@
     <changeSet id="16" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/16_add_MCC_codes.sql"></sqlFile>
     </changeSet>
+    <changeSet id="17" author="ivgonchar">
+        <sqlFile path="classpath:/liquibase/changelogs/17_add_demo_data.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

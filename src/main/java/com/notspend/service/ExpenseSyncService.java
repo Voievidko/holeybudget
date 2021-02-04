@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ExpenseSyncService {
     void syncDataWithBankServer(List<Account> accounts) throws AccountSyncFailedException;
+    void syncAccount(Account account) throws AccountSyncFailedException;
 }

@@ -62,6 +62,9 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
     private SessionFactory sessionFactory;
 
     @Autowired
+    private ExpenseSyncService expenseSyncService;
+
+    @Autowired
     public MonobankSyncServiceImpl(ExpenseService expenseService, CategoryService categoryService,
                                    AccountService accountService, MccService mccService) {
         this.expenseService = expenseService;
@@ -87,20 +90,18 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         }
 
         for (Account account : accountWithTokensToSync){
-            syncAccount(account);
+            Session session = sessionFactory.getCurrentSession();
+            Account lockedAccount = session.find(Account.class, account.getAccountId(), LockModeType.PESSIMISTIC_WRITE);
+            log.debug("Account with id: " + lockedAccount.getAccountId() + "' locked");
+            expenseSyncService.syncAccount(lockedAccount);
         }
     }
 
+    @Override
     @Transactional
-    private void syncAccount(Account account){
-        Session session = sessionFactory.getCurrentSession();
-        Account lockedAccount = session.find(Account.class, account.getAccountId());
-        log.debug("Account with id: " + lockedAccount.getAccountId() + "' locked");
-        session.lock(lockedAccount, LockModeType.PESSIMISTIC_WRITE);
-
+    public void syncAccount(Account lockedAccount){
         log.debug("Start to sync account with id: '" + lockedAccount.getAccountId() + "'");
-        //Refresh account
-        lockedAccount = accountService.getAccount(lockedAccount.getAccountId());
+
         long delayBetweenSync = TEN_MINUTES + 1;
         if (lockedAccount.getSynchronizationTime() != null) {
             delayBetweenSync = TimeHelper.getCurrentEpochTime() - lockedAccount.getSynchronizationTime();
@@ -179,8 +180,6 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
                 expense.setTime(LocalTime.ofSecondOfDay(epochTime % 3600));
 
                 expenseService.addExpense(expense);
-                log.debug("Current lastSuccessSyncId: " + lastSuccessSyncId);
-                log.debug("Current firstSuccessfulSyncId: " + firstSuccessfulSyncId);
                 if (firstSuccessfulSyncId == null) {
                     log.debug("firstSuccessfulSyncId is null, so get it from monobankExpense");
                     firstSuccessfulSyncId = monobankExpense.getId();

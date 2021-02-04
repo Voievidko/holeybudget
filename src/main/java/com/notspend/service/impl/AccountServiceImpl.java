@@ -3,6 +3,7 @@ package com.notspend.service.impl;
 import com.notspend.dao.AccountDao;
 import com.notspend.entity.Account;
 import com.notspend.service.AccountService;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@CommonsLog
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
@@ -42,6 +44,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void updateAccount(Account account) {
+        log.debug("Account with id: '" + account.getAccountId() + "' is updating");
         accountDao.update(account);
     }
 

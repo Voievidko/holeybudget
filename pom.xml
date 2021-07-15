@@ -19,7 +19,7 @@
         <liquibase.plugin.version>3.6.3</liquibase.plugin.version>
         <hibernate.entitymanager.version>5.4.3.Final</hibernate.entitymanager.version>
         <hibernate.validator.version>6.0.13.Final</hibernate.validator.version>
-        <spring.framework.version>5.2.3.RELEASE</spring.framework.version>
+        <spring.framework.version>5.2.4.RELEASE</spring.framework.version>
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
         <jackson.databind.version>2.9.10.1</jackson.databind.version>

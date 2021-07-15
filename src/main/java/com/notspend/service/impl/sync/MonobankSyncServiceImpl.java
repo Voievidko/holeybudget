@@ -92,7 +92,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         for (Account account : accountWithTokensToSync){
             Session session = sessionFactory.getCurrentSession();
             Account lockedAccount = session.find(Account.class, account.getAccountId(), LockModeType.PESSIMISTIC_WRITE);
-            log.debug("Account with id: " + lockedAccount.getAccountId() + "' locked");
+            log.debug("Account with ID: '" + lockedAccount.getAccountId() + "' locked");
             expenseSyncService.syncAccount(lockedAccount);
         }
     }
@@ -100,7 +100,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
     @Override
     @Transactional
     public void syncAccount(Account lockedAccount){
-        log.debug("Start to sync account with id: '" + lockedAccount.getAccountId() + "'");
+        log.debug("Start to sync account with ID: '" + lockedAccount.getAccountId() + "'");
 
         long delayBetweenSync = TEN_MINUTES + 1;
         if (lockedAccount.getSynchronizationTime() != null) {
@@ -112,7 +112,7 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
             //if last sync was 10 min ago don't need to sync again
             lockedAccount.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
             accountService.updateAccount(lockedAccount);
-            log.debug("Account with id '" + lockedAccount.getAccountId() + "' will not sync now because of delay.");
+            log.debug("Account with ID: '" + lockedAccount.getAccountId() + "' will not sync now because of delay.");
             return;
         }
 
@@ -140,62 +140,87 @@ public class MonobankSyncServiceImpl implements ExpenseSyncService {
         String lastSuccessSyncId = lockedAccount.getSynchronizationId();
 
         try {
-            log.debug("Retrieve monobank statements for account with id: '" + lockedAccount.getAccountId() + "'");
+            log.debug("Retrieve monobank statements for account with ID: '" + lockedAccount.getAccountId() + "'");
             monobankStatementAnswers = getStatements(lockedAccount, epochTimeFrom, currentEpochTime);
         } catch (Exception e) {
             log.error("Can't retrieve statements.", e);
+            return;
         }
 
         for (MonobankStatementAnswer monobankExpense : monobankStatementAnswers) {
-            if (!monobankExpense.getId().equals(lastSuccessSyncId)) {
-                String mccCategoryName = mccService.getCategoryByMccCode(monobankExpense.getMcc());
-                if (mccCategoryName.isEmpty()) {
-                    continue;
-                }
-                Expense expense = new Expense();
-                expense.setUser(lockedAccount.getUser());
-                expense.setAccount(lockedAccount);
-                expense.setCurrency(lockedAccount.getCurrency());
-                expense.setComment(monobankExpense.getDescription());
-                expense.setSum(-(monobankExpense.getAmount() / 100d));
-
-                List<Category> categories = categoryService.getAllExpenseCategories();
-                Category category = categories.stream()
-                        .filter(c -> c.getName().equalsIgnoreCase(mccCategoryName))
-                        .findFirst()
-                        .orElse((new Category()));
-
-                if (category.getCategoryId() == 0) {
-                    category.setUser(lockedAccount.getUser());
-                    category.setIncome(false);
-                    category.setName(mccCategoryName);
-                    categoryService.addCategory(category);
-                }
-
-                expense.setCategory(categoryService.getCategory(category.getName()));
-
-                long epochTime = monobankExpense.getTime();
-                LocalDate date = LocalDate.ofInstant(Instant.ofEpochSecond(epochTime), ZoneId.systemDefault());
-                expense.setDate(date);
-                expense.setTime(LocalTime.ofSecondOfDay(epochTime % 3600));
-
-                expenseService.addExpense(expense);
-                if (firstSuccessfulSyncId == null) {
-                    log.debug("firstSuccessfulSyncId is null, so get it from monobankExpense");
-                    firstSuccessfulSyncId = monobankExpense.getId();
-                }
-            } else {
+            String currentSyncId = monobankExpense.getId();
+            if (currentSyncId.equals(lastSuccessSyncId)) {
                 log.debug("Last sync id was found for account ID: '" + lockedAccount.getAccountId() + "'");
                 if (firstSuccessfulSyncId != null) {
                     lockedAccount.setSynchronizationId(firstSuccessfulSyncId);
                 }
                 lockedAccount.setSynchronizationTime(TimeHelper.getCurrentEpochTime());
                 accountService.updateAccount(lockedAccount);
-                log.debug("Finish to sync account with id: " + lockedAccount.getAccountId() + "'");
-                log.debug("Account with id: " + lockedAccount.getAccountId() + "' unlocked");
+                log.debug("Finish to sync account with ID: '" + lockedAccount.getAccountId() + "'");
+                log.debug("Account with ID: '" + lockedAccount.getAccountId() + "' unlocked");
                 return;
+            } else {
+                String mccCategoryName = mccService.getCategoryByMccCode(monobankExpense.getMcc());
+                if (mccCategoryName.isEmpty()) {
+                    continue;
+                }
+                Expense expense = createExpense(lockedAccount, monobankExpense);
+                Category category = findExistingOrCreateNewCategory(mccCategoryName);
+                saveCategoryIfItNew(lockedAccount, mccCategoryName, category);
+                saveMonobankExpense(monobankExpense, expense, category);
+
+                if (firstSuccessfulSyncId == null) {
+                    log.debug("firstSuccessfulSyncId is null, so get it from monobankExpense");
+                    firstSuccessfulSyncId = monobankExpense.getId();
+                }
             }
         }
+        log.warn("Seems there is no sync during last month for account '" + lockedAccount.getAccountId() + "'.");
+        if (firstSuccessfulSyncId != null) {
+            lockedAccount.setSynchronizationId(firstSuccessfulSyncId);
+        }
+    }
+
+    private void saveMonobankExpense(MonobankStatementAnswer monobankExpense, Expense expense, Category category) {
+        long epochTime = monobankExpense.getTime();
+        LocalDate date = LocalDate.ofInstant(Instant.ofEpochSecond(epochTime), ZoneId.systemDefault());
+        expense.setCategory(categoryService.getCategory(category.getName()));
+        expense.setDate(date);
+        expense.setTime(getTimeFromDaySeconds(epochTime));
+
+        expenseService.addExpense(expense);
+    }
+
+    private void saveCategoryIfItNew(Account lockedAccount, String mccCategoryName, Category category) {
+        if (category.getCategoryId() == 0) {
+            category.setUser(lockedAccount.getUser());
+            category.setIncome(false);
+            category.setName(mccCategoryName);
+            categoryService.addCategory(category);
+        }
+    }
+
+    private Category findExistingOrCreateNewCategory(String mccCategoryName) {
+        List<Category> categories = categoryService.getAllExpenseCategories();
+        return categories.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(mccCategoryName))
+                .findFirst()
+                .orElse((new Category()));
+    }
+
+    private LocalTime getTimeFromDaySeconds(long epochTime) {
+        return LocalTime.ofSecondOfDay(epochTime % 3600);
+    }
+
+    private Expense createExpense(Account lockedAccount, MonobankStatementAnswer monobankExpense) {
+        log.debug("Create new expense for account with ID: '" + lockedAccount.getAccountId() + "'.");
+        Expense expense = new Expense();
+        expense.setUser(lockedAccount.getUser());
+        expense.setAccount(lockedAccount);
+        expense.setCurrency(lockedAccount.getCurrency());
+        expense.setComment(monobankExpense.getDescription());
+        expense.setSum(-(monobankExpense.getAmount() / 100d));
+        return expense;
     }
 
     private List<MonobankStatementAnswer> getStatements(Account account, long timeFrom, long timeTo){

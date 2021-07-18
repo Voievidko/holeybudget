@@ -29,5 +29,5 @@ drop table `account`;
 drop table `category`;
 drop table `authority`;
 drop table `user`;
-DROP TABLE `holybudgetdb`.`databasechangelog`;
-DROP TABLE `holybudgetdb`.`databasechangeloglock`;
+DROP TABLE `holeybudgetdb`.`databasechangelog`;
+DROP TABLE `holeybudgetdb`.`databasechangeloglock`;

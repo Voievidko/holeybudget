@@ -1,1 +1,1 @@
-ALTER TABLE holybudgetdb.account ADD synchronization_time BIGINT;
+ALTER TABLE holeybudgetdb.account ADD synchronization_time BIGINT;

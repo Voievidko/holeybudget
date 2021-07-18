@@ -8,15 +8,15 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema holybudgetdb
+-- Schema holeybudgetdb
 -- -----------------------------------------------------
-CREATE DATABASE  IF NOT EXISTS `holybudgetdb`
+CREATE DATABASE  IF NOT EXISTS `holeybudgetdb`
   CHARACTER SET utf8
   COLLATE utf8_general_ci;
 -- -----------------------------------------------------
--- Table `holybudgetdb`.`category`
+-- Table `holeybudgetdb`.`category`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `holybudgetdb`.`category` (
+CREATE TABLE IF NOT EXISTS `holeybudgetdb`.`category` (
   `category_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(50) NOT NULL,
   `desciption` VARCHAR(50) NULL,
@@ -25,9 +25,9 @@ ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `holybudgetdb`.`expense`
+-- Table `holeybudgetdb`.`expense`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `holybudgetdb`.`expense` (
+CREATE TABLE IF NOT EXISTS `holeybudgetdb`.`expense` (
   `expense_id` INT NOT NULL AUTO_INCREMENT,
   `sum` DECIMAL(18,2) NOT NULL,
   `category_id` INT NOT NULL,
@@ -38,16 +38,16 @@ CREATE TABLE IF NOT EXISTS `holybudgetdb`.`expense` (
   INDEX `fk_expense_category1_idx` (`category_id` ASC),
   CONSTRAINT `fk_expense_category1`
     FOREIGN KEY (`category_id`)
-    REFERENCES `holybudgetdb`.`category` (`category_id`)
+    REFERENCES `holeybudgetdb`.`category` (`category_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `holybudgetdb`.`account`
+-- Table `holeybudgetdb`.`account`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `holybudgetdb`.`account` (
+CREATE TABLE IF NOT EXISTS `holeybudgetdb`.`account` (
   `account_id` INT NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(50) NOT NULL,
   `summary` DECIMAL(18,2) NOT NULL,
@@ -57,9 +57,9 @@ ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `holybudgetdb`.`user`
+-- Table `holeybudgetdb`.`user`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `holybudgetdb`.`user` (
+CREATE TABLE IF NOT EXISTS `holeybudgetdb`.`user` (
   `username` VARCHAR(50) NOT NULL UNIQUE,
   `email` VARCHAR(50) NOT NULL,
   `password` VARCHAR(200) NOT NULL,
@@ -72,12 +72,12 @@ CREATE TABLE IF NOT EXISTS `holybudgetdb`.`user` (
   INDEX `fk_user_account1_idx` (`account_id` ASC),
   CONSTRAINT `fk_user_expense`
     FOREIGN KEY (`expense_id`)
-    REFERENCES `holybudgetdb`.`expense` (`expense_id`)
+    REFERENCES `holeybudgetdb`.`expense` (`expense_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_account1`
     FOREIGN KEY (`account_id`)
-    REFERENCES `holybudgetdb`.`account` (`account_id`)
+    REFERENCES `holeybudgetdb`.`account` (`account_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;

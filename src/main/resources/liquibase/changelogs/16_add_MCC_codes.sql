@@ -1,4 +1,4 @@
-CREATE TABLE `holybudgetdb`.`mcc` (
+CREATE TABLE `holeybudgetdb`.`mcc` (
   `mcc_id` INT NOT NULL,
   `description` VARCHAR(300),
   `category_name` VARCHAR(50),

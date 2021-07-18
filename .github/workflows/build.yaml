@@ -33,5 +33,5 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "target/holeybudget-1.2.0-SNAPSHOT.war"
+          source: "target/holeybudget-*.war"
           target: "~/source"

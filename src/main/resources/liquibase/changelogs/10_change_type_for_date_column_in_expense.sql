@@ -1,1 +1,1 @@
-ALTER TABLE notspenddb.expense MODIFY COLUMN `date` DATE;
+ALTER TABLE holybudgetdb.expense MODIFY COLUMN `date` DATE;

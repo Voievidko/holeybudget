@@ -1,4 +1,4 @@
-USE notspenddb;
+USE holybudgetdb;
 ALTER TABLE `user` DROP FOREIGN KEY fk_user_expense;
 ALTER TABLE `user` DROP FOREIGN KEY fk_user_account1;
 ALTER TABLE `user` DROP COLUMN expense_id;

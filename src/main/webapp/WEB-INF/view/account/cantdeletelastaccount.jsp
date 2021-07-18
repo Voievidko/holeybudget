@@ -8,10 +8,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="NotSpend - it's about money">
+  <meta name="description" content="HoleyBudget - it's about money">
   <meta name="author" content="Roman Voievidko">
 
-  <title>NotSpend - it's about money</title>
+  <title>HoleyBudget - it's about money</title>
 
   <!-- Custom fonts for this template-->
   <link href="../../../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">

@@ -1,4 +1,4 @@
-CREATE TABLE `notspenddb`.`mcc` (
+CREATE TABLE `holybudgetdb`.`mcc` (
   `mcc_id` INT NOT NULL,
   `description` VARCHAR(300),
   `category_name` VARCHAR(50),

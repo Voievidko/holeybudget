@@ -1,7 +1,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; NotSpend 2020</span>
+            <span>Copyright &copy; HoleyBudget 2021</span>
         </div>
     </div>
 </footer>

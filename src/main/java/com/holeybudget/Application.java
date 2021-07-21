@@ -10,17 +10,6 @@ import org.springframework.context.annotation.Import;
 @EnableAutoConfiguration(exclude = HibernateJpaAutoConfiguration.class)
 public class Application {
     public static void main(String[] args) {
-//        System.out.println();
-//        System.out.println();
-//        System.out.println();
-//        System.out.println(args.length);
-//        System.out.println();
-//        System.out.println();
-//        System.out.println();
-//        SpringApplication.run(Application.class, args);
-
-        SpringApplication application = new SpringApplication(Application.class);
-        application.setAddCommandLineProperties(false);
-        application.run(args);
+        SpringApplication.run(Application.class, args);
     }
 }

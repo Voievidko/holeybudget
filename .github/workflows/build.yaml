@@ -35,3 +35,11 @@ jobs:
           port: 22
           source: "target/holeybudget-*.war"
           target: "~/source"
+      - name: start server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP_ADDRESS }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          dbusername: ${{ secrets.DB_USERNAME }}
+          script: whoami

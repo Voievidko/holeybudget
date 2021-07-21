@@ -42,4 +42,4 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           dbusername: ${{ secrets.DB_USERNAME }}
-          script: whoami
+          script: java -Djdbc.url=${{ secrets.DB_URL }} -Djdbc.username=${{ secrets.DB_USERNAME }} -Djdbc.password=${{ secrets.DB_PASSWORD }} -jar target/holeybudget-*.war

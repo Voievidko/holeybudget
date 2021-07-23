@@ -1,11 +1,3 @@
--- Create table variable
-CREATE TABLE currency (
-                          name   VARCHAR(50) NOT NULL,
-                          code   VARCHAR(50) NOT NULL,
-                          symbol VARCHAR(50),
-                          PRIMARY KEY (code)
-)ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
-
 -- Insert currency records
 INSERT INTO currency (name, code, symbol) VALUES ('Leke', 'ALL', 'Lek');
 INSERT INTO currency (name, code, symbol) VALUES ('Dollars', 'USD', '$');

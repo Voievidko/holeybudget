@@ -1,1 +1,0 @@
-ALTER TABLE holeybudgetdb.account ADD synchronization_time BIGINT;

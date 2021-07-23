@@ -1,10 +1,3 @@
-CREATE TABLE `holeybudgetdb`.`mcc` (
-  `mcc_id` INT NOT NULL,
-  `description` VARCHAR(300),
-  `category_name` VARCHAR(50),
-  PRIMARY KEY (`mcc_id`))
-ENGINE = InnoDB CHARACTER SET utf8 COLLATE utf8_general_ci;
-
 INSERT INTO mcc (mcc_id, description, category_name) VALUES (742,'Ветеринарные услуги','Animals');
 INSERT INTO mcc (mcc_id, description, category_name) VALUES (763,'Сельскохозяйственные кооперативы','Other');
 INSERT INTO mcc (mcc_id, description, category_name) VALUES (780,'Услуги садоводства и ландшафтного дизайна','Repair');

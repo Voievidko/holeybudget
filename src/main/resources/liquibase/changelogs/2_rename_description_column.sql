@@ -1,1 +1,0 @@
-ALTER TABLE `category` CHANGE `desciption` `description` varchar(45);

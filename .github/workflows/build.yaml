@@ -43,6 +43,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
           script: |
+            rm -f ~/source/target/holeybudget.war
             mv ~/source/target/holeybudget*.war ~/source/target/holeybudget.war
       - name: Start Service
         uses: appleboy/ssh-action@master

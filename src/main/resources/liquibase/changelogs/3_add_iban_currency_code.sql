@@ -1,5 +1,3 @@
-ALTER TABLE currency ADD COLUMN number INT AFTER code;
-
 UPDATE currency SET number=8   WHERE code = 'ALL';
 UPDATE currency SET number=840 WHERE code = 'USD';
 UPDATE currency SET number=971 WHERE code = 'AFN';

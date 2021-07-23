@@ -9,48 +9,12 @@
         <sqlFile path="classpath:/liquibase/changelogs/1_initial_script.sql"></sqlFile>
     </changeSet>
     <changeSet id="2" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/2_rename_description_column.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/2_add_currency_logic.sql"></sqlFile>
     </changeSet>
     <changeSet id="3" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/3_change_table_relationships.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/3_add_iban_currency_code.sql"></sqlFile>
     </changeSet>
     <changeSet id="4" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/4_add_account_to_expense_table.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="5" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/5_add_user_to_category_table.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="6" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/6_change_user_table.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="7" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/7_create_authority_table.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="8" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/8_change_date_column.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="9" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/9_add_income_boolean_to_category_table.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="10" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/10_change_type_for_date_column_in_expense.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="11" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/11_add_currency_logic.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="12" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/12_add_currency_to_expense_and_account.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="13" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/13_add_token_to_account.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="14" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/14_add_sync_time_to_account.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="15" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/15_add_iban_currency_code.sql"></sqlFile>
-    </changeSet>
-    <changeSet id="16" author="voievidko">
-        <sqlFile path="classpath:/liquibase/changelogs/16_add_MCC_codes.sql"></sqlFile>
+        <sqlFile path="classpath:/liquibase/changelogs/4_add_MCC_codes.sql"></sqlFile>
     </changeSet>
 </databaseChangeLog>

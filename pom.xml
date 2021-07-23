@@ -13,6 +13,7 @@
         <maven.compiler.release>11</maven.compiler.release>
         <lombok.version>1.18.12</lombok.version>
         <sqlite.driver.version>3.36.0.1</sqlite.driver.version>
+        <sqlite.dialect.version>0.1.2</sqlite.dialect.version>
         <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
         <maven.war.plugin.version>3.2.0</maven.war.plugin.version>
         <liquibase.driver.version>3.6.3</liquibase.driver.version>
@@ -74,7 +75,7 @@
         <dependency>
             <groupId>com.github.gwenn</groupId>
             <artifactId>sqlite-dialect</artifactId>
-            <version>0.1.2</version>
+            <version>${sqlite.dialect.version}</version>
         </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>

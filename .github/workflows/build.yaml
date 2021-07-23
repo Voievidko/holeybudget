@@ -33,8 +33,17 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           port: 22
-          source: "holeybudget.war"
+          source: "holeybudget*.war"
           target: "~/source"
+      - name: Rename jar
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP_ADDRESS }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          port: 22
+          script: |
+            mv ~/source/holeybudget*.war holeybudget.war
       - name: Start Service
         uses: appleboy/ssh-action@master
         with:

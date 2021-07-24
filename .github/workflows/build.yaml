@@ -27,6 +27,7 @@ jobs:
           name: Package
           path: staging
       - name: Upload application
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SERVER_IP_ADDRESS }}
@@ -36,6 +37,7 @@ jobs:
           source: "target/holeybudget-*.war"
           target: "~/source"
       - name: Rename jar
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP_ADDRESS }}
@@ -46,6 +48,7 @@ jobs:
             rm -f ~/source/target/holeybudget.war
             mv ~/source/target/holeybudget*.war ~/source/target/holeybudget.war
       - name: Start Service
+        if: ${{ github.ref == 'refs/heads/master' }}
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP_ADDRESS }}

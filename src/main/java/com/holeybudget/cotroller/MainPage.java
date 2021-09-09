@@ -13,6 +13,7 @@ import com.holeybudget.service.UserService;
 import com.holeybudget.util.CalculationHelper;
 import com.holeybudget.util.CurrencyProcessor;
 import com.holeybudget.util.SecurityUserHandler;
+import java.util.Comparator;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -137,6 +138,57 @@ public class MainPage {
                 .collect(Collectors.toMap(Currency::getCode, b -> CurrencyProcessor.getCurrencyRateToUah(b.getCode())));
 
         request.getSession().setAttribute("currencyValues", currencyValues);
+
+
+        //Top month expenses
+        List<Expense> topMonthExpenses = expensesThisMonth.stream()
+            .sorted((o1, o2) -> {
+                    double o1currency = CurrencyProcessor.getCurrencyRateToUah(o1.getCurrency().getCode());
+                    double o2currency = CurrencyProcessor.getCurrencyRateToUah(o2.getCurrency().getCode());
+                    if (o1.getSum() * o1currency < o2.getSum() * o2currency) return 1;
+                    else if (o1.getSum() * o1currency > o2.getSum() * o2currency) return -1;
+                    else return 0;
+                }
+            )
+            .limit(5)
+            .collect(Collectors.toList());
+        request.getSession().setAttribute("topMonthExpenses", topMonthExpenses);
+
+        //Today
+        List<Expense> today = expensesThisMonth.stream()
+            .filter(e -> e.getDate().getYear() == LocalDate.now().getYear())
+            .filter(e -> e.getDate().getMonthValue() == LocalDate.now().getMonthValue())
+            .filter(e -> e.getDate().getDayOfMonth() == LocalDate.now().getDayOfMonth())
+            .sorted((o1, o2) -> {
+                    double o1currency = CurrencyProcessor.getCurrencyRateToUah(o1.getCurrency().getCode());
+                    double o2currency = CurrencyProcessor.getCurrencyRateToUah(o2.getCurrency().getCode());
+                    if (o1.getSum() * o1currency < o2.getSum() * o2currency) return 1;
+                    else if (o1.getSum() * o1currency > o2.getSum() * o2currency) return -1;
+                    else return 0;
+                }
+            )
+            .limit(5)
+            .collect(Collectors.toList());
+
+        request.getSession().setAttribute("topTodayExpenses", today);
+
+
+        //Year
+        List<Expense> year = expenseService.getAllExpenseDuringYear().stream()
+            .filter(e -> e.getDate().getYear() == LocalDate.now().getYear())
+            .sorted((o1, o2) -> {
+                    double o1currency = CurrencyProcessor.getCurrencyRateToUah(o1.getCurrency().getCode());
+                    double o2currency = CurrencyProcessor.getCurrencyRateToUah(o2.getCurrency().getCode());
+                    if (o1.getSum() * o1currency < o2.getSum() * o2currency) return 1;
+                    else if (o1.getSum() * o1currency > o2.getSum() * o2currency) return -1;
+                    else return 0;
+                }
+            )
+            .limit(5)
+            .collect(Collectors.toList());
+
+        request.getSession().setAttribute("topYearExpenses", year);
+
         return "index";
     }
 

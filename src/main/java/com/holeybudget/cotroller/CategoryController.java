@@ -120,7 +120,7 @@ public class CategoryController {
         }
     }
 
-    @PostMapping("transferToExistCategory")
+    @GetMapping("transferToExistCategory")
     public String transferToOtherCategoryAndDelete(@ModelAttribute("categoryId") int toCategoryId,
                                                    @ModelAttribute("categoryToDelete") int fromCategoryId,
                                                    Model model){

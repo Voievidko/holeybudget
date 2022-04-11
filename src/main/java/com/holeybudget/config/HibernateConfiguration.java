@@ -22,9 +22,6 @@ public class HibernateConfiguration {
     @Autowired
     private Environment environment;
 
-    @Autowired
-    private DataSource dataSource;
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -38,7 +35,7 @@ public class HibernateConfiguration {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.holeybudget.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         return sessionFactory;

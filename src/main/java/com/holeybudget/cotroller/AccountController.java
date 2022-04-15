@@ -106,7 +106,7 @@ public class AccountController {
 
     }
 
-    @PostMapping("transferToExistAccount")
+    @GetMapping("transferToExistAccount")
     public String transferToOtherAccountAndDelete(@ModelAttribute("accountId") int toAccountId,
                                                   @ModelAttribute("accountToDelete") int fromAccountId,
                                                   Model model){

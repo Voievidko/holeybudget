@@ -86,3 +86,17 @@ sudo docker run -it --network bridge --rm mysql mysql -h 172.17.0.2 -uroot -p
 
 ## Reach server
 Open your browser and type an URL `localhost:8080` 
+
+## Build and deploy docker image
+```
+mvn package
+```
+```
+docker build --platform=linux/amd64 -t voievidko/holeybudget .
+```
+```
+docker image tag voievidko/holeybudget voievidko/holeybudget:v1.3.0
+docker image tag voievidko/holeybudget voievidko/holeybudget:latest
+docker push voievidko/holeybudget:v1.3.0
+docker push voievidko/holeybudget:latest
+```

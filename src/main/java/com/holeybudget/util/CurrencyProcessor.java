@@ -16,6 +16,7 @@ import java.util.List;
 
 @CommonsLog
 public class CurrencyProcessor {
+    //TODO: Replace with international currency API
     private static final String API_LINK_NBU = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json";
 
     private static String allCurrencies = null;
@@ -73,5 +74,30 @@ public class CurrencyProcessor {
             }
         }
         return 1D;
+    }
+
+    public static Double getCurrencyRate(String incomeCode, String outComeCode){
+        ObjectMapper mapper = new ObjectMapper();
+        List<Currency> currencyList = null;
+        try {
+            if (allCurrencies == null || lastUpdated.plusHours(6L).isBefore(LocalDateTime.now())){
+                allCurrencies = getCurrencies();
+            }
+            currencyList = mapper.readValue(allCurrencies, new TypeReference<List<Currency>>(){});
+        } catch (Exception e) {
+            log.error("Can't get currencies.", e);
+            return 1D;
+        }
+        double incomeToUah = 1;
+        double outcomeToUah = 1;
+        for (Currency currency : currencyList){
+            if (currency.getCc().equals(incomeCode)){
+                incomeToUah = currency.getRate();
+            }
+            if (currency.getCc().equals(outComeCode)){
+                outcomeToUah = currency.getRate();
+            }
+        }
+        return incomeToUah / outcomeToUah;
     }
 }

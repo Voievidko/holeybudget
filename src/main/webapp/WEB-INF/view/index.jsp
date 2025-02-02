@@ -67,7 +67,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (This month)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%=session.getAttribute("earnCurrentMonth")%> UAH</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%=session.getAttribute("earnCurrentMonth")%> <%=session.getAttribute("defaultCurrency")%></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -84,7 +84,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Spends (This month)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%=session.getAttribute("spendCurrentMonth")%> UAH</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%=session.getAttribute("spendCurrentMonth")%> <%=session.getAttribute("defaultCurrency")%>   </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -101,7 +101,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total money</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%=session.getAttribute("totalSum")%> UAH</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800"><%=session.getAttribute("totalSum")%> <%=session.getAttribute("defaultCurrency")%></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>

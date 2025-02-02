@@ -201,29 +201,35 @@ public class ExpenseController {
 
     @GetMapping("all")
     public String showAll(Model model){
+        String username = SecurityUserHandler.getCurrentUser();
+        User user = userService.getUser(username);
+        Currency userCurrency = user.getDefaultCurrency();
         List<Expense> expenses = expenseService.getAllExpenses();
         model.addAttribute("expenseName", "Expenses during all time");
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", CalculationHelper.expenseSum(expenses));
+        model.addAttribute("totalSum", CalculationHelper.expenseSum(expenses, userCurrency));
 
         //for sums
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
-        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
+        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts, userCurrency));
         return "expense/all";
     }
 
     @GetMapping("currentmonth")
     public String showCurrentMonth(Model model){
+        String username = SecurityUserHandler.getCurrentUser();
+        User user = userService.getUser(username);
+        Currency userCurrency = user.getDefaultCurrency();
         List<Expense> expenses = expenseService.getExpensesDuringCurrentMonth();
         model.addAttribute("expenseName", "Expenses during " + expenseService.getCurrentMonthName());
         model.addAttribute("expenses", expenses);
-        model.addAttribute("totalSum", CalculationHelper.expenseSum(expenses));
+        model.addAttribute("totalSum", CalculationHelper.expenseSum(expenses, userCurrency));
 
         //for sums
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
-        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
+        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts, userCurrency));
         return "expense/all";
     }
 }

@@ -128,9 +128,12 @@ public class AccountController {
 
     @GetMapping("transfer")
     public String transferMoneyBetweenAccounts(Model model){
+        String username = SecurityUserHandler.getCurrentUser();
+        User user = userService.getUser(username);
+        Currency userCurrency = user.getDefaultCurrency();
         List<Account> accounts = accountService.getAccounts();
         model.addAttribute("accounts", accounts);
-        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts));
+        model.addAttribute("allMoneySummary", CalculationHelper.accountSum(accounts, userCurrency));
         return "account/transfer";
     }
 

@@ -6,10 +6,7 @@ import com.holeybudget.entity.Currency;
 import com.holeybudget.entity.Expense;
 import com.holeybudget.entity.User;
 import com.holeybudget.exception.AccountSyncFailedException;
-import com.holeybudget.service.CategoryService;
-import com.holeybudget.service.ExpenseService;
-import com.holeybudget.service.ExpenseSyncService;
-import com.holeybudget.service.UserService;
+import com.holeybudget.service.*;
 import com.holeybudget.util.CalculationHelper;
 import com.holeybudget.util.CurrencyProcessor;
 import com.holeybudget.util.SecurityUserHandler;
@@ -43,12 +40,24 @@ public class MainPage {
     @Autowired
     private ExpenseSyncService expenseSyncService;
 
+    @Autowired
+    private CurrencyService currencyService;
+
     @GetMapping(value = "/")
     public String getMainPage(HttpServletRequest request){
         String username = SecurityUserHandler.getCurrentUser();
         User user = userService.getUser(username);
+        Currency userCurrency = user.getDefaultCurrency();
+        if (userCurrency == null){
+            userCurrency = currencyService.getCurrencyByCode("USD");
+            user.setDefaultCurrency(userCurrency);
+            userService.updateUser(user);
+        }
+        final Currency defaultCurrency = userCurrency;
         List<Account> accountList = user.getAccounts();
-        List<Account> accountsToSync = accountList.stream().filter(a -> a.getToken() != null && !a.getToken().isEmpty()).collect(Collectors.toList());
+        List<Account> accountsToSync = accountList.stream()
+                .filter(a -> a.getToken() != null && !a.getToken().isEmpty())
+                .collect(Collectors.toList());
         if (!accountsToSync.isEmpty()){
             log.debug("Start syncing accounts. Account to sync size: " + accountsToSync.size());
             try {
@@ -60,13 +69,13 @@ public class MainPage {
         }
 
         request.getSession().setAttribute("username", username);
-        request.getSession().setAttribute("totalSum", String.format("%.2f", CalculationHelper.accountSum(accountList)));
+        request.getSession().setAttribute("totalSum", String.format("%.2f", CalculationHelper.accountSum(accountList, defaultCurrency)));
 
         List<Expense> expenseDuringCurrentMonth = expenseService.getExpensesDuringCurrentMonth();
         List<Expense> incomeDuringCurrentMonth = expenseService.getIncomesDuringCurrentMonth();
 
-        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", CalculationHelper.expenseSum(expenseDuringCurrentMonth)));
-        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", CalculationHelper.expenseSum(incomeDuringCurrentMonth)));
+        request.getSession().setAttribute("spendCurrentMonth", String.format("%.2f", CalculationHelper.expenseSum(expenseDuringCurrentMonth, defaultCurrency)));
+        request.getSession().setAttribute("earnCurrentMonth", String.format("%.2f", CalculationHelper.expenseSum(incomeDuringCurrentMonth, defaultCurrency)));
 
         //Data for year income graph
         List<Expense> incomeDuringLastYear = expenseService.getAllIncomeDuringYear();
@@ -78,7 +87,7 @@ public class MainPage {
             int currentMonthNumber = getRightMonthOrder(i);
             for (Expense expense : incomeDuringLastYear) {
                 if ((expense.getDate().getMonthValue()) == currentMonthNumber) {
-                    monthSum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
+                    monthSum += expense.getCurrency().getCode().equals(defaultCurrency.getCode()) ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRate(expense.getCurrency().getCode(), defaultCurrency.getCode());
                 }
             }
             incomeSumForEachMonth.add(monthSum);
@@ -99,7 +108,7 @@ public class MainPage {
             Double daySum = 0d;
             for (Expense expense : expensesThisMonth) {
                 if ((expense.getDate().getDayOfMonth()) == i) {
-                    daySum += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
+                    daySum += expense.getCurrency().getCode().equals(defaultCurrency.getCode()) ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRate(expense.getCurrency().getCode(), defaultCurrency.getCode());
                 }
             }
             expenseSumForEachDay.add(daySum);
@@ -110,6 +119,7 @@ public class MainPage {
 
         request.getSession().setAttribute("expensePerDay", expensePerDay);
         request.getSession().setAttribute("days", days);
+        request.getSession().setAttribute("defaultCurrency", defaultCurrency.getCode());
 
         //Group monthExpenseByCategory
         List<Category> categories = categoryService.getAllExpenseCategories();
@@ -119,7 +129,7 @@ public class MainPage {
             Double sumByCategory = 0d;
             for(Expense expense : expensesThisMonth){
                 if(expense.getCategory().getName().equals(category.getName())){
-                    sumByCategory += expense.getCurrency().getCode().equals("UAH") ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRateToUah(expense.getCurrency().getCode());
+                    sumByCategory += expense.getCurrency().getCode().equals(defaultCurrency.getCode()) ? expense.getSum() : expense.getSum() * CurrencyProcessor.getCurrencyRate(expense.getCurrency().getCode(), defaultCurrency.getCode());
                 }
             }
             expenseSumForEachCategory.add(sumByCategory);
@@ -143,8 +153,8 @@ public class MainPage {
         //Top month expenses
         List<Expense> topMonthExpenses = expensesThisMonth.stream()
             .sorted((o1, o2) -> {
-                    double o1currency = CurrencyProcessor.getCurrencyRateToUah(o1.getCurrency().getCode());
-                    double o2currency = CurrencyProcessor.getCurrencyRateToUah(o2.getCurrency().getCode());
+                    double o1currency = CurrencyProcessor.getCurrencyRate(o1.getCurrency().getCode(), defaultCurrency.getCode());
+                    double o2currency = CurrencyProcessor.getCurrencyRate(o2.getCurrency().getCode(), defaultCurrency.getCode());
                     if (o1.getSum() * o1currency < o2.getSum() * o2currency) return 1;
                     else if (o1.getSum() * o1currency > o2.getSum() * o2currency) return -1;
                     else return 0;
@@ -160,8 +170,8 @@ public class MainPage {
             .filter(e -> e.getDate().getMonthValue() == LocalDate.now().getMonthValue())
             .filter(e -> e.getDate().getDayOfMonth() == LocalDate.now().getDayOfMonth())
             .sorted((o1, o2) -> {
-                    double o1currency = CurrencyProcessor.getCurrencyRateToUah(o1.getCurrency().getCode());
-                    double o2currency = CurrencyProcessor.getCurrencyRateToUah(o2.getCurrency().getCode());
+                    double o1currency = CurrencyProcessor.getCurrencyRate(o1.getCurrency().getCode(), defaultCurrency.getCode());
+                    double o2currency = CurrencyProcessor.getCurrencyRate(o2.getCurrency().getCode(), defaultCurrency.getCode());
                     if (o1.getSum() * o1currency < o2.getSum() * o2currency) return 1;
                     else if (o1.getSum() * o1currency > o2.getSum() * o2currency) return -1;
                     else return 0;
@@ -177,8 +187,8 @@ public class MainPage {
         List<Expense> year = expenseService.getAllExpenseDuringYear().stream()
             .filter(e -> e.getDate().getYear() == LocalDate.now().getYear())
             .sorted((o1, o2) -> {
-                    double o1currency = CurrencyProcessor.getCurrencyRateToUah(o1.getCurrency().getCode());
-                    double o2currency = CurrencyProcessor.getCurrencyRateToUah(o2.getCurrency().getCode());
+                    double o1currency = CurrencyProcessor.getCurrencyRate(o1.getCurrency().getCode(), defaultCurrency.getCode());
+                    double o2currency = CurrencyProcessor.getCurrencyRate(o2.getCurrency().getCode(), defaultCurrency.getCode());
                     if (o1.getSum() * o1currency < o2.getSum() * o2currency) return 1;
                     else if (o1.getSum() * o1currency > o2.getSum() * o2currency) return -1;
                     else return 0;

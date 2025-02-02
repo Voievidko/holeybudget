@@ -17,4 +17,7 @@
     <changeSet id="4" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/4_add_MCC_codes.sql"></sqlFile>
     </changeSet>
+    <changeSet id="5" author="voievidko">
+        <sqlFile path="classpath:/liquibase/changelogs/5_add_default_currency.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

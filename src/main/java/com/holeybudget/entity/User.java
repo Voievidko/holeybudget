@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Data
 @EqualsAndHashCode(of = "username")
-@ToString(of = {"username", "email", "name", "surname", "enabled", })
+@ToString(of = {"username", "email", "name", "surname", "enabled", "currency"})
 @Table(name = "user")
 public class User {
 
@@ -42,6 +42,10 @@ public class User {
 
     @Column(name = "enabled")
     private boolean enabled;
+
+    @ManyToOne
+    @JoinColumn(name = "default_currency", referencedColumnName = "code")
+    private Currency defaultCurrency;
 
     @OneToMany (mappedBy = "user",
                 cascade = {CascadeType.PERSIST, CascadeType.MERGE,

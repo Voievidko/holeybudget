@@ -68,12 +68,12 @@ public class LiquibaseProperties {
     /**
      * Login user of the database to migrate.
      */
-    private String user = environment.getRequiredProperty("jdbc.username");
+    private String user = System.getenv("JDBC_USERNAME");
 
     /**
      * Login password of the database to migrate.
      */
-    private String password = environment.getRequiredProperty("jdbc.password");
+    private String password = System.getenv("JDBC_PASSWORD");
 
     /**
      * JDBC URL of the database to migrate. If not set, the primary configured data source

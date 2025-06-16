@@ -6,5 +6,5 @@ import com.holeybudget.entity.Profit;
 import java.util.List;
 
 public interface ProfitService {
-    List<Profit> getProfitTableDuringLastYear(List<Expense> currentYearIncome, List<Expense> currentYearExpense);
+    List<Profit> getProfitTableDuringLastYear(List<Expense> currentYearIncome, List<Expense> currentYearExpense, String outcomeCode);
 }

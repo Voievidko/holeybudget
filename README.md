@@ -91,9 +91,11 @@ Open your browser and type an URL `localhost:8080`
 ```
 mvn package
 ```
+Start docker daemon
 ```
 docker build --platform=linux/amd64 -t voievidko/holeybudget .
 ```
+Login to docker app with master creds
 ```
 docker image tag voievidko/holeybudget voievidko/holeybudget:v1.3.0
 docker image tag voievidko/holeybudget voievidko/holeybudget:latest

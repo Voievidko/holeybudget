@@ -15,7 +15,7 @@ import java.util.List;
 public class ProfitServiceImpl implements ProfitService {
 
     @Override
-    public List<Profit> getProfitTableDuringLastYear(List<Expense> currentYearIncome, List<Expense> currentYearExpense) {
+    public List<Profit> getProfitTableDuringLastYear(List<Expense> currentYearIncome, List<Expense> currentYearExpense, String outcomeCode) {
         List<Profit> yearProfit = new ArrayList<>();
 
         LocalDate today = LocalDate.now();
@@ -27,14 +27,14 @@ public class ProfitServiceImpl implements ProfitService {
             double monthIncomeSum = currentYearIncome.stream()
                     .filter(e -> e.getDate().getMonthValue() == monthToSync.getMonthValue())
                     .filter(e -> e.getDate().getYear() == monthToSync.getYear())
-                    .map(e -> e.getSum() * CurrencyProcessor.getCurrencyRateToUah(e.getCurrency().getCode()))
+                    .map(e -> e.getSum() * CurrencyProcessor.getCurrencyRate(e.getCurrency().getCode(), outcomeCode))
                     .mapToDouble(Double::doubleValue)
                     .sum();
 
             double monthExpenseSum = currentYearExpense.stream()
                     .filter(e -> e.getDate().getMonthValue() == monthToSync.getMonthValue())
                     .filter(e -> e.getDate().getYear() == monthToSync.getYear())
-                    .map(e -> e.getSum() * CurrencyProcessor.getCurrencyRateToUah(e.getCurrency().getCode()))
+                    .map(e -> e.getSum() * CurrencyProcessor.getCurrencyRate(e.getCurrency().getCode(), outcomeCode))
                     .mapToDouble(Double::doubleValue)
                     .sum();
 

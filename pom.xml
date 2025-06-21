@@ -22,7 +22,7 @@
         <spring.framework.version>5.2.3.RELEASE</spring.framework.version>
         <spring.security.version>5.1.5.RELEASE</spring.security.version>
         <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
-        <jackson.databind.version>2.9.10.1</jackson.databind.version>
+        <jackson.databind.version>2.12.7.1</jackson.databind.version>
         <httpclient.version>4.5.9</httpclient.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>

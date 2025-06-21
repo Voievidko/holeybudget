@@ -20,4 +20,7 @@
     <changeSet id="5" author="voievidko">
         <sqlFile path="classpath:/liquibase/changelogs/5_add_default_currency.sql"></sqlFile>
     </changeSet>
+    <changeSet id="17" author="ivgonchar">
+        <sqlFile path="classpath:/liquibase/changelogs/17_add_demo_data.sql"></sqlFile>
+    </changeSet>
 </databaseChangeLog>

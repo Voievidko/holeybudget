@@ -65,8 +65,13 @@ public class ExpenseController {
             model.addAttribute("currencies", currencies);
         }
 
-        //insert today's date
-        expense.setDate(LocalDate.now());
+        if (!model.containsAttribute("date")){
+            //insert today's date
+            expense.setDate(LocalDate.now());
+        } else {
+            expense.setDate((LocalDate) model.getAttribute("date"));
+        }
+
         model.addAttribute("expense", expense);
         model.addAttribute("type", "Expense");
         return "expense/add";
@@ -111,6 +116,7 @@ public class ExpenseController {
 
         if(expense.getCurrency().equals(expense.getAccount().getCurrency())){
             expenseService.addExpense(expense);
+            LocalDate date = expense.getDate();
             if (expense.getCategory().isIncome()) {
                 return "redirect:/";
             } else {
@@ -131,6 +137,7 @@ public class ExpenseController {
                 redirectAttributes.addFlashAttribute("categories", categoriesForRedirection);
                 redirectAttributes.addFlashAttribute("accounts", accountsForRedirection);
                 redirectAttributes.addFlashAttribute("currencies", currenciesForRedirection);
+                redirectAttributes.addFlashAttribute("date", date);
                 return "redirect:add";
             }
         } else {

@@ -97,8 +97,8 @@ docker build --platform=linux/amd64 -t voievidko/holeybudget .
 ```
 Login to docker app with master creds
 ```
-docker image tag voievidko/holeybudget voievidko/holeybudget:v1.3.0
+docker image tag voievidko/holeybudget voievidko/holeybudget:v1.4.0
 docker image tag voievidko/holeybudget voievidko/holeybudget:latest
-docker push voievidko/holeybudget:v1.3.0
+docker push voievidko/holeybudget:v1.4.0
 docker push voievidko/holeybudget:latest
 ```
